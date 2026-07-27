@@ -7,6 +7,7 @@ import { TelStrategy } from '../lib/call/tel';
 import { orderStrategyIds } from '../lib/call/select';
 import type { CallStrategy, StrategyId } from '../lib/call/strategy';
 import { validateToE164 } from '../lib/phone/validate';
+import { buildScreenPopUrl } from '../lib/crm/template';
 import { recordEvent } from '../lib/diagnostics/service';
 import {
   getConfig,
@@ -52,9 +53,20 @@ export default defineBackground(() => {
     // Diagnostics: numbers are redacted at report time, so we can log freely.
     if (outcome.ok) {
       await recordEvent('call', 'info', `call placed via ${outcome.strategy}`);
+      await maybeScreenPop(e164);
     } else {
       await recordEvent('call', 'error', `call failed (${outcome.strategy}): ${outcome.reason}`);
     }
+  }
+
+  // Screen-pop (§3.F5): on an outgoing call, open the configured CRM URL in a
+  // background tab. Disabled when the template is empty or has no placeholder.
+  async function maybeScreenPop(e164: string): Promise<void> {
+    const { screenPopUrl } = await getConfig();
+    const url = buildScreenPopUrl(screenPopUrl, e164);
+    if (!url) return;
+    await browser.tabs.create({ url, active: false });
+    await recordEvent('call', 'info', 'screen-pop opened');
   }
 
   // --- Context menu: right-click on a selection → call (§3.F2) ---

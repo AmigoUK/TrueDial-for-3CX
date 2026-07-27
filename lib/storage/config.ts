@@ -15,6 +15,9 @@ export interface Config {
   detectionMode: DetectionMode;
   /** Preferred call path; the orchestrator falls back from here. */
   preferredPath: PreferredPath;
+  /** Screen-pop URL template (§3.F5); empty = disabled. Placeholders:
+   *  {number} (E.164), {national}. Opened on an outgoing call. */
+  screenPopUrl: string;
   /** When true, scan ONLY hosts on the allowlist (the CWS plan B). */
   allowlistMode: boolean;
   allowlist: string[];
@@ -28,6 +31,7 @@ export const DEFAULT_CONFIG: Config = {
   defaultRegion: 'GB',
   detectionMode: 'subtle',
   preferredPath: 'auto',
+  screenPopUrl: '',
   allowlistMode: false,
   allowlist: [],
   siteOverrides: {},

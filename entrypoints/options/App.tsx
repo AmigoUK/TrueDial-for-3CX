@@ -157,6 +157,23 @@ export function App() {
           )}
         </section>
 
+        <section>
+          <h2>Screen-pop (CRM)</h2>
+          <label class="field">
+            <span>Szablon URL otwierany przy połączeniu wychodzącym</span>
+            <input
+              type="text"
+              placeholder="https://crm.twojafirma.pl/search?phone={number}"
+              value={cfg.screenPopUrl}
+              onInput={(e) => update({ screenPopUrl: (e.target as HTMLInputElement).value })}
+            />
+            <span class="hint">
+              Placeholdery: <code>{'{number}'}</code> (E.164), <code>{'{national}'}</code>.
+              Puste pole = wyłączone.
+            </span>
+          </label>
+        </section>
+
         <div class="row between actions">
           <button class="primary" onClick={save}>Zapisz</button>
           {saved && <span class="ok">✓ Zapisano</span>}

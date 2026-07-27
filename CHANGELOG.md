@@ -9,6 +9,16 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 _Nothing yet._
 
+## [0.3.0] — 2026-07-27
+
+### Added
+- Screen-pop URL (§3.F5): a configurable template opened on an outgoing call,
+  with `{number}` (E.164) and `{national}` placeholders. Empty template =
+  disabled.
+- CRM adapter interface (§9) with `GenericUrlAdapter` as the proof that the
+  interface works; native CRM adapters follow in phase 2.
+- "Screen-pop (CRM)" section on the Settings page.
+
 ## [0.2.0] — 2026-07-27
 
 ### Added
@@ -56,7 +66,8 @@ guiding principle: **never break the host page**.
 - 35 tests (Vitest): phone corpus, false-positive corpus, messaging,
   orchestrator, and a DOM-level scanner integration (happy-dom).
 
-[Unreleased]: https://github.com/AmigoUK/TrueDial-for-3CX/compare/v0.2.0...HEAD
+[Unreleased]: https://github.com/AmigoUK/TrueDial-for-3CX/compare/v0.3.0...HEAD
+[0.3.0]: https://github.com/AmigoUK/TrueDial-for-3CX/compare/v0.2.0...v0.3.0
 [0.2.0]: https://github.com/AmigoUK/TrueDial-for-3CX/compare/v0.1.0...v0.2.0
 [0.1.0]: https://github.com/AmigoUK/TrueDial-for-3CX/compare/v0.0.1...v0.1.0
 [0.0.1]: https://github.com/AmigoUK/TrueDial-for-3CX/releases/tag/v0.0.1
