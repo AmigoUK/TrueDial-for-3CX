@@ -1,11 +1,11 @@
-// Typed messaging między content scriptem / popupem / options a service workerem.
-// Content script jest traktowany jako KANAŁ NIEZAUFANY (strona może próbować
-// spoofować wiadomości), więc każdy komunikat waliduje się schematem zod PRZED
-// użyciem, a w SW dodatkowo sprawdzamy `sender.id` (patrz background.ts).
+// Typed messaging between the content script / popup / options and the service
+// worker. The content script is treated as an UNTRUSTED channel (the page may
+// try to spoof messages), so every message is validated against a zod schema
+// BEFORE use, and the SW additionally checks `sender.id` (see background.ts).
 
 import { z } from 'zod';
 
-// E.164: '+' i 1–15 cyfr, pierwsza cyfra 1–9.
+// E.164: '+' followed by 1–15 digits, first digit 1–9.
 const e164 = z.string().regex(/^\+[1-9]\d{6,14}$/, 'not E.164');
 
 export const messageSchema = z.discriminatedUnion('type', [
@@ -17,7 +17,7 @@ export const messageSchema = z.discriminatedUnion('type', [
 
 export type Message = z.infer<typeof messageSchema>;
 
-/** Zwraca zwalidowaną wiadomość albo `null` (nigdy nie rzuca). */
+/** Returns the validated message, or `null` (never throws). */
 export function parseMessage(input: unknown): Message | null {
   const res = messageSchema.safeParse(input);
   return res.success ? res.data : null;

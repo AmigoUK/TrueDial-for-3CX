@@ -1,22 +1,24 @@
-// Warstwa 1 detekcji: tani, tolerancyjny wychwyt KANDYDATÓW na numer telefonu.
-// Celowo NIE waliduje poprawności — od tego jest warstwa 2 (libphonenumber).
-// Zadanie: znaleźć ciągi wyglądające jak numer, z separatorami, i odrzucić
-// oczywiste śmieci (za krótkie, za długie, wewnątrz tokenów alfanumerycznych).
+// Detection layer 1: a cheap, tolerant sweep for phone-number CANDIDATES.
+// It deliberately does NOT validate correctness — that is layer 2's job
+// (libphonenumber). Its task: find strings that look like a number, with
+// separators, and reject the obvious rubbish (too short, too long, or sitting
+// inside an alphanumeric token).
 
 export interface Candidate {
-  /** Surowy fragment tekstu dokładnie tak, jak wystąpił. */
+  /** The raw fragment exactly as it appeared. */
   raw: string;
-  /** Offset początku w przekazanym tekście (dla renderera). */
+  /** Start offset within the supplied text (for the renderer). */
   index: number;
 }
 
-// Dozwolone znaki wewnątrz kandydata: cyfry, spacja, - . ( ) oraz wiodący +/(.
-// Kotwiczymy tak, by numer nie sąsiadował z literą/cyfrą (część większego tokenu).
+// Characters allowed inside a candidate: digits, space, - . ( ) and a leading
+// +/(. We anchor so the number does not sit next to a letter/digit (i.e. it is
+// not part of a larger token).
 const CANDIDATE_RE = /(?<![\p{L}\d])(\(?\+?\d[\d\s().-]{5,}\d)(?![\p{L}\d])/gu;
 
 const MIN_DIGITS = 7;
 const MAX_DIGITS = 16;
-// Separatory, które w praktyce łączą numer z kodem/SKU (np. "SKU-123456-X").
+// Separators that in practice join a number to a code/SKU (e.g. "SKU-123456-X").
 const CODE_JOINERS = new Set(['-', '.', '/']);
 
 function countDigits(s: string): number {
@@ -35,14 +37,14 @@ export function extractCandidates(text: string): Candidate[] {
     const raw = m[1]!;
     const digits = countDigits(raw);
     if (digits < MIN_DIGITS || digits > MAX_DIGITS) continue;
-    // Długi ciąg samych cyfr bez separatorów (>11) → prawdopodobny record ID.
+    // A long run of bare digits with no separators (>11) is a likely record ID.
     const hasSeparator = /[\s().+-]/.test(raw);
     if (!hasSeparator && digits > 11) continue;
 
     const start = m.index;
     const end = start + raw.length;
-    // Odrzuć, jeśli numer łączy się przez -./ z tokenem alfanumerycznym po
-    // którejś stronie (np. "SKU-4842123456-X"): to kod, nie telefon.
+    // Reject when the number joins an alphanumeric token via -./ on either side
+    // (e.g. "SKU-4842123456-X"): that is a code, not a phone number.
     const joinedBefore = CODE_JOINERS.has(text[start - 1] ?? '') && isAlnum(text[start - 2]);
     const joinedAfter = CODE_JOINERS.has(text[end] ?? '') && isAlnum(text[end + 1]);
     if (joinedBefore || joinedAfter) continue;

@@ -1,8 +1,8 @@
-// Wykluczenia strukturalne stosowane PRZED regexem (tanio odrzucamy).
-// Cel: nie dotykać pól edycyjnych, elementów niewidocznych, kodu itp. —
-// realizacja naczelnej zasady „never break the host page".
+// Structural exclusions applied BEFORE the regex (we reject cheaply).
+// Goal: never touch editable fields, invisible elements, code, etc. — the
+// implementation of the guiding principle, "never break the host page".
 
-// Tagi, których wnętrza w ogóle nie skanujemy.
+// Tags whose contents we do not scan at all.
 const SKIP_TAGS = new Set([
   'INPUT',
   'TEXTAREA',
@@ -14,26 +14,26 @@ const SKIP_TAGS = new Set([
   'PRE',
   'KBD',
   'SAMP',
-  'A', // istniejące linki zostawiamy nietknięte (w tym tel:)
+  'A', // leave existing links (including tel:) untouched
 ]);
 
-/** Czy element (lub jego przodek) dyskwalifikuje tekst z detekcji. */
+/** Whether an element (or an ancestor) disqualifies its text from detection. */
 export function isExcludedElement(el: Element | null): boolean {
   for (let node: Element | null = el; node; node = node.parentElement) {
     if (SKIP_TAGS.has(node.tagName)) return true;
     if ((node as HTMLElement).isContentEditable) return true;
     if (node.getAttribute('aria-hidden') === 'true') return true;
-    // Nasze własne artefakty renderera — nie skanuj ponownie.
+    // Our own renderer artefacts — do not re-scan them.
     if (node.hasAttribute('data-truedial')) return true;
   }
   return false;
 }
 
-/** Czy element jest realnie widoczny (tani sygnał, bez wymuszania layoutu). */
+/** Whether an element is genuinely visible (a cheap signal, no forced layout). */
 export function isVisible(el: Element | null): boolean {
   if (!el) return false;
   const htmlEl = el as HTMLElement;
-  // offsetParent === null → display:none lub odłączony (poza position:fixed).
+  // offsetParent === null → display:none or detached (except position:fixed).
   if (htmlEl.offsetParent === null && getComputedStyle(htmlEl).position !== 'fixed') {
     return false;
   }

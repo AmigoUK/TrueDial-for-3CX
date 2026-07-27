@@ -1,15 +1,15 @@
-// Strategia dzwonienia #2 z §3.F3: deep-link do web clienta 3CX.
-// Działa BEZ konfiguracji admina i na starszych wersjach — dlatego jest
-// pierwszą (i w plasterku 1 jedyną) zaimplementowaną ścieżką.
+// Call path #2 from the plan (§3.F3): the 3CX web client deep link.
+// It works WITHOUT administrator configuration and on older versions — which is
+// why it is the first (and, in slice 1, only) implemented path.
 //
-// Ten plik zawiera:
-//  - czyste, testowalne funkcje: normalizeFqdn, buildDeepLinkUrl
-//  - klasę DeepLinkStrategy implementującą CallStrategy (używa browser.tabs)
+// This file contains:
+//  - pure, testable functions: normalizeFqdn, buildDeepLinkUrl
+//  - the DeepLinkStrategy class implementing CallStrategy (uses browser.tabs)
 
 import { browser } from 'wxt/browser';
 import type { CallStrategy, CallOutcome } from './strategy';
 
-/** Sprowadza FQDN do gołego host[:port] — bez protokołu i końcowego slasha. */
+/** Reduces an FQDN to a bare host[:port] — no protocol, no trailing slash. */
 export function normalizeFqdn(fqdn: string): string {
   return fqdn
     .trim()
@@ -17,7 +17,7 @@ export function normalizeFqdn(fqdn: string): string {
     .replace(/\/+$/, '');
 }
 
-/** Buduje URL web clienta 3CX inicjujący połączenie na podany numer E.164. */
+/** Builds the 3CX web client URL that starts a call to the given E.164 number. */
 export function buildDeepLinkUrl(fqdn: string, e164: string): string {
   const host = normalizeFqdn(fqdn);
   return `https://${host}/webclient/#/call?phone=${encodeURIComponent(e164)}`;
@@ -39,7 +39,7 @@ export class DeepLinkStrategy implements CallStrategy {
     const host = normalizeFqdn(fqdn);
     const url = buildDeepLinkUrl(host, e164);
 
-    // Preferuj istniejącą kartę web clienta (fokus zamiast duplikacji).
+    // Prefer an existing web client tab (focus rather than duplicate).
     const existing = await browser.tabs.query({ url: `*://${host}/webclient/*` });
     const tab = existing[0];
     if (tab?.id != null) {

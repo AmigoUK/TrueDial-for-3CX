@@ -1,21 +1,20 @@
-// Wspólny interfejs ścieżek dzwonienia. W plasterku 1 istnieje tylko
-// DeepLinkStrategy; kolejne plasterki dokładają CallControlStrategy (CCAPI)
-// i TelStrategy (tel:) BEZ zmian w wołających — CallOrchestrator wybiera
-// pierwszą dostępną wg priorytetu.
+// The shared interface for call paths. In slice 1 only DeepLinkStrategy exists;
+// later slices add CallControlStrategy (CCAPI) and TelStrategy (tel:) WITHOUT
+// changing callers — CallOrchestrator picks the first available one by priority.
 
 export type StrategyId = 'ccapi' | 'deeplink' | 'tel';
 
 export interface CallOutcome {
   ok: boolean;
   strategy: StrategyId;
-  /** Powód niepowodzenia (do jawnego raportowania — zero silent failures). */
+  /** The failure reason (for explicit reporting — zero silent failures). */
   reason?: string;
 }
 
 export interface CallStrategy {
   readonly id: StrategyId;
-  /** Czy strategia jest skonfigurowana i użyteczna teraz. */
+  /** Whether the strategy is configured and usable right now. */
   isAvailable(): Promise<boolean>;
-  /** Inicjuje połączenie na numer w E.164. */
+  /** Places a call to an E.164 number. */
   placeCall(e164: string): Promise<CallOutcome>;
 }

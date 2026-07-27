@@ -1,7 +1,8 @@
-// Renderer trybu subtelnego. Owija dopasowany fragment w lekki <span> BEZ
-// zmiany tekstu i bez owijania w <a> (żadnego przejmowania nawigacji).
-// Modyfikacja DOM jest minimalna i odwracalna; używamy Range.surroundContents
-// (splituje text node), NIGDY innerHTML. Klik obsługiwany delegacją na document.
+// The subtle-mode renderer. It wraps a matched fragment in a lightweight <span>
+// WITHOUT changing the text and without wrapping in <a> (no navigation hijack).
+// The DOM change is minimal and reversible; we use Range.surroundContents
+// (which splits the text node), NEVER innerHTML. Clicks are handled by
+// delegation on document.
 
 import type { Match } from '../scanner/scanner';
 
@@ -56,8 +57,8 @@ export class Renderer {
     );
   }
 
-  /** Nakłada podświetlenia. Wewnątrz jednego text node'a idzie od końca, żeby
-   *  offsety wcześniejszych dopasowań pozostały ważne po splitcie. */
+  /** Applies highlights. Within a single text node we go last-to-first so that
+   *  earlier matches' offsets stay valid after each split. */
   apply(matches: Match[]): void {
     if (!matches.length) return;
     this.ensureStyle();
@@ -80,11 +81,12 @@ export class Renderer {
           span.setAttribute('data-e164', m.e164);
           span.setAttribute('role', 'button');
           span.setAttribute('tabindex', '0');
-          span.setAttribute('aria-label', `Zadzwoń ${m.e164} przez 3CX`);
-          span.setAttribute('title', `Zadzwoń ${m.e164} przez 3CX`);
+          span.setAttribute('aria-label', `Call ${m.e164} via 3CX`);
+          span.setAttribute('title', `Call ${m.e164} via 3CX`);
           range.surroundContents(span);
         } catch {
-          // Range mógł przeciąć granice — pomiń cicho ten fragment (never break host).
+          // The range may cross element boundaries — skip this fragment quietly
+          // (never break the host page).
         }
       }
     }

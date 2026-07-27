@@ -4,8 +4,9 @@ import { Renderer } from '../lib/renderer/renderer';
 import { getConfig, isSiteEnabled } from '../lib/storage';
 import type { Message } from '../lib/messaging/schema';
 
-// Content script (all_frames): TYLKO detekcja + prezentacja. Nie zna sekretów,
-// nie woła API 3CX — dzwonienie deleguje do SW komunikatem PLACE_CALL.
+// Content script (all_frames): detection and presentation ONLY. It holds no
+// secrets and calls no 3CX API — it delegates dialling to the SW via a
+// PLACE_CALL message.
 export default defineContentScript({
   matches: ['<all_urls>'],
   allFrames: true,
@@ -26,7 +27,7 @@ export default defineContentScript({
       onMatches: (matches) => renderer.apply(matches),
     });
 
-    // Aktywacja klawiaturą (dostępność): Enter/Spacja na podświetleniu.
+    // Keyboard activation (accessibility): Enter/Space on a highlight.
     document.addEventListener('keydown', (ev) => {
       if (ev.key !== 'Enter' && ev.key !== ' ') return;
       const el = (ev.target as Element | null)?.closest?.('[data-truedial]');
@@ -41,7 +42,7 @@ export default defineContentScript({
     if (document.body) startWhenReady();
     else document.addEventListener('DOMContentLoaded', startWhenReady, { once: true });
 
-    // Per-site toggle / zmiana trybu z popupu → przeładuj kartę, by odzwierciedlić.
+    // A per-site toggle / mode change from the popup → reload the tab to reflect it.
     browser.storage.onChanged.addListener((changes, area) => {
       if (area === 'local' && changes.config) location.reload();
     });

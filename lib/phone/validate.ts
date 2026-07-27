@@ -1,14 +1,14 @@
-// Warstwa 2 detekcji: twarda walidacja kandydata przez libphonenumber-js.
-// Akceptujemy WYŁĄCZNIE numery, które biblioteka uzna za `isValid()`, i
-// zwracamy je w kanonicznej postaci E.164. To odsiewa IBAN-y, daty, numery
-// zamówień i inne false-positive'y, które przeszły warstwę 1.
+// Detection layer 2: strict validation of a candidate via libphonenumber-js.
+// We accept ONLY numbers the library reports as `isValid()`, and return them in
+// canonical E.164 form. This filters out IBANs, dates, order numbers and other
+// false positives that survived layer 1.
 
 import { parsePhoneNumberFromString, type CountryCode } from 'libphonenumber-js/min';
 
 /**
- * Waliduje surowego kandydata i zwraca E.164 albo `null`.
- * @param raw surowy fragment (np. "022 123 45 67", "+48 22 123 45 67")
- * @param defaultCountry region domyślny dla numerów krajowych (np. 'PL', 'GB')
+ * Validates a raw candidate and returns E.164, or `null`.
+ * @param raw the raw fragment (e.g. "022 123 45 67", "+48 22 123 45 67")
+ * @param defaultCountry the default region for national numbers (e.g. 'PL', 'GB')
  */
 export function validateToE164(raw: string, defaultCountry: CountryCode): string | null {
   let parsed;
@@ -18,5 +18,5 @@ export function validateToE164(raw: string, defaultCountry: CountryCode): string
     return null;
   }
   if (!parsed || !parsed.isValid()) return null;
-  return parsed.number; // format E.164
+  return parsed.number; // E.164 format
 }

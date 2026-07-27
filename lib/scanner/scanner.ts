@@ -1,9 +1,9 @@
-// Scanner: znajduje w drzewie DOM prawdziwe numery telefonów i raportuje je
-// jako pozycje (text node + offsety) do renderera. Nie modyfikuje DOM.
+// Scanner: finds genuine phone numbers in the DOM tree and reports them as
+// positions (text node + offsets) to the renderer. It does not modify the DOM.
 //
-// Wydajność (§7.2): TreeWalker po text nodes, przyrostowe skanowanie mutacji
-// z debounce 250 ms, requestIdleCallback dla dużych batchy, twardy limit
-// podświetleń na stronę. Zero długich tasków > 50 ms na stronach referencyjnych.
+// Performance (§7.2): a TreeWalker over text nodes, incremental scanning of
+// mutations with a 250 ms debounce, requestIdleCallback for large batches, and
+// a hard per-page highlight cap. No long tasks > 50 ms on reference pages.
 
 import type { CountryCode } from 'libphonenumber-js/min';
 import { extractCandidates } from '../phone/candidates';
@@ -17,13 +17,13 @@ export interface Match {
   e164: string;
 }
 
-const MAX_MATCHES = 200; // §7.2: powyżej — tylko licznik
+const MAX_MATCHES = 200; // §7.2: beyond this, only a counter
 const DEBOUNCE_MS = 250;
 
 export interface ScannerOptions {
   defaultRegion: CountryCode;
   onMatches: (matches: Match[]) => void;
-  /** Wywoływane, gdy przekroczono limit — do pokazania licznika w popupie. */
+  /** Called when the cap is exceeded — to show a counter in the popup. */
   onOverflow?: (total: number) => void;
 }
 
@@ -35,7 +35,7 @@ export class Scanner {
 
   constructor(private readonly opts: ScannerOptions) {}
 
-  /** Pierwsze pełne skanowanie + start obserwatora mutacji. */
+  /** First full scan plus start the mutation observer. */
   start(root: ParentNode = document.body): void {
     this.scanSubtree(root);
     this.observer = new MutationObserver((records) => this.onMutations(records));
@@ -80,7 +80,7 @@ export class Scanner {
 
   private scanSubtree(root: Node): void {
     if (this.matchCount >= MAX_MATCHES) return;
-    // Text node dostarczony wprost.
+    // A text node supplied directly.
     if (root.nodeType === Node.TEXT_NODE) {
       this.scanTextNode(root as Text);
       return;

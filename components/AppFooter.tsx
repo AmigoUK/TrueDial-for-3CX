@@ -1,5 +1,5 @@
-// Stopka kredytowa — wyłącznie na pełnoekranowej Options page (popup pomijamy,
-// space-constrained). Mała, stonowana, jedna linia, separatory „·".
+// Credit footer — only on the full-screen Options page (the popup is skipped,
+// being space-constrained). Small, muted, single line, "·" separators.
 const REPO = 'https://github.com/AmigoUK/TrueDial-for-3CX';
 
 export function AppFooter() {

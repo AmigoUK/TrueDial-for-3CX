@@ -3,6 +3,9 @@ import { type Runtime } from 'wxt/browser';
 import { parseMessage, type Message } from '../lib/messaging/schema';
 import { CallOrchestrator } from '../lib/call/orchestrator';
 import { DeepLinkStrategy } from '../lib/call/deeplink';
+import { TelStrategy } from '../lib/call/tel';
+import { orderStrategyIds } from '../lib/call/select';
+import type { CallStrategy, StrategyId } from '../lib/call/strategy';
 import { validateToE164 } from '../lib/phone/validate';
 import {
   getConfig,
@@ -12,15 +15,32 @@ import {
   type Config,
 } from '../lib/storage';
 
-// Service worker: router komunikatów + CallOrchestrator + context menu.
-// Cały stan żyje w browser.storage — SW jest w pełni restartowalny (MV3).
+// Service worker: message router + CallOrchestrator + context menu.
+// All state lives in browser.storage — the SW is fully restartable (MV3).
 export default defineBackground(() => {
-  // Orchestrator budowany leniwie z aktualnego FQDN (SW mógł zostać wybudzony).
-  const orchestrator = new CallOrchestrator([
-    new DeepLinkStrategy(async () => (await getConfig()).fqdn),
-  ]);
+  // Instantiate a strategy by id. New paths (e.g. 'ccapi') slot in here.
+  function makeStrategy(id: StrategyId): CallStrategy | null {
+    switch (id) {
+      case 'deeplink':
+        return new DeepLinkStrategy(async () => (await getConfig()).fqdn);
+      case 'tel':
+        return new TelStrategy();
+      default:
+        return null; // 'ccapi' not implemented yet
+    }
+  }
+
+  // Built per call from the current config (the SW may have been woken).
+  async function makeOrchestrator(): Promise<CallOrchestrator> {
+    const cfg = await getConfig();
+    const strategies = orderStrategyIds(cfg.preferredPath)
+      .map(makeStrategy)
+      .filter((s): s is CallStrategy => s !== null);
+    return new CallOrchestrator(strategies);
+  }
 
   async function placeCall(e164: string, source?: string): Promise<void> {
+    const orchestrator = await makeOrchestrator();
     const outcome = await orchestrator.placeCall(e164);
     await pushHistory({
       e164,
@@ -30,7 +50,7 @@ export default defineBackground(() => {
     });
   }
 
-  // --- Context menu: prawy-klik na zaznaczeniu → zadzwoń (§3.F2) ---
+  // --- Context menu: right-click on a selection → call (§3.F2) ---
   browser.runtime.onInstalled.addListener(() => {
     browser.contextMenus.create({
       id: 'truedial-call',
@@ -46,11 +66,11 @@ export default defineBackground(() => {
     if (e164) await placeCall(e164, info.pageUrl);
   });
 
-  // --- Router komunikatów (content/popup/options) ---
-  // Zwrócenie Promise → polyfill odsyła rozwiązaną wartość jako odpowiedź;
-  // zwrócenie undefined → wiadomość nieobsłużona.
+  // --- Message router (content/popup/options) ---
+  // Returning a Promise → the polyfill sends the resolved value as the response;
+  // returning undefined → the message is not handled.
   browser.runtime.onMessage.addListener((raw: unknown, sender: Runtime.MessageSender) => {
-    // Zaufanie: wiadomość musi pochodzić z NASZEGO rozszerzenia.
+    // Trust: the message must originate from OUR extension.
     if (sender.id !== browser.runtime.id) return undefined;
     const msg = parseMessage(raw);
     if (!msg) return undefined;

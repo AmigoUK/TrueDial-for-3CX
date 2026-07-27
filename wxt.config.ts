@@ -1,9 +1,9 @@
 import { defineConfig } from 'wxt';
 import preact from '@preact/preset-vite';
 
-// WXT config — Manifest V3. Autodetekcja host permissions jest OPCJONALNA
-// (grant w onboardingu), a domena PBX dodawana dynamicznie po konfiguracji.
-// Zasada naczelna: never break the host page.
+// WXT config — Manifest V3. Auto-detection host permissions are OPTIONAL
+// (granted during onboarding); the PBX domain is added dynamically after setup.
+// Guiding principle: never break the host page.
 export default defineConfig({
   srcDir: '.',
   vite: () => ({
@@ -16,7 +16,7 @@ export default defineConfig({
       'Reliable click-to-call for 3CX. Detects phone numbers without breaking the page and dials via your 3CX web client. Unofficial — not affiliated with 3CX.',
     default_locale: 'en',
     permissions: ['storage', 'contextMenus', 'tabs'],
-    // Autodetekcja: opcjonalne, żądane w onboardingu z wyjaśnieniem (§8, R3).
+    // Auto-detection: optional, requested during onboarding with a rationale (§8, R3).
     optional_host_permissions: ['<all_urls>'],
     action: {
       default_title: 'TrueDial for 3CX',

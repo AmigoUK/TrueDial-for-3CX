@@ -1,21 +1,24 @@
-// Kształt konfiguracji + czysta logika decyzji „czy skanować tę domenę".
-// Wydzielone z warstwy chrome.storage, by było w 100% testowalne w node.
+// The configuration shape plus the pure "should we scan this domain" logic.
+// Kept out of the chrome.storage layer so it is 100% testable under Node.
 
 import type { CountryCode } from 'libphonenumber-js/min';
+import type { PreferredPath } from '../call/select';
 
 export type DetectionMode = 'subtle' | 'off';
 
 export interface Config {
-  /** FQDN instancji 3CX (host[:port]); brak = rozszerzenie nieskonfigurowane. */
+  /** The 3CX instance FQDN (host[:port]); absent = the extension is unconfigured. */
   fqdn?: string;
-  /** Region domyślny dla numerów krajowych (libphonenumber). */
+  /** Default region for national numbers (libphonenumber). */
   defaultRegion: CountryCode;
-  /** Tryb prezentacji detekcji (plasterek 1: 'subtle' lub 'off'). */
+  /** Presentation mode for detection (slice 1: 'subtle' or 'off'). */
   detectionMode: DetectionMode;
-  /** Gdy true — skanujemy WYŁĄCZNIE hosty z allowlisty (plan B na CWS). */
+  /** Preferred call path; the orchestrator falls back from here. */
+  preferredPath: PreferredPath;
+  /** When true, scan ONLY hosts on the allowlist (the CWS plan B). */
   allowlistMode: boolean;
   allowlist: string[];
-  /** Per-site włącz/wyłącz z popupu; wygrywa nad wszystkim. */
+  /** Per-site enable/disable from the popup; overrides everything. */
   siteOverrides: Record<string, boolean>;
   historyRetentionDays: number;
 }
@@ -24,6 +27,7 @@ export const DEFAULT_CONFIG: Config = {
   fqdn: undefined,
   defaultRegion: 'GB',
   detectionMode: 'subtle',
+  preferredPath: 'auto',
   allowlistMode: false,
   allowlist: [],
   siteOverrides: {},
@@ -34,10 +38,10 @@ export function withConfigDefaults(partial: Partial<Config>): Config {
   return { ...DEFAULT_CONFIG, ...partial };
 }
 
-/** Czy content script ma skanować dany host. Kolejność: override → allowlist. */
+/** Whether the content script should scan a given host. Order: override → allowlist. */
 export function isSiteEnabled(cfg: Config, host: string): boolean {
   const override = cfg.siteOverrides[host];
-  if (override !== undefined) return override; // ręczna decyzja wygrywa
+  if (override !== undefined) return override; // a manual decision wins
   if (cfg.allowlistMode) return cfg.allowlist.includes(host);
   return true;
 }

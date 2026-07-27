@@ -2,9 +2,10 @@ import { useEffect, useState } from 'preact/hooks';
 import type { CountryCode } from 'libphonenumber-js/min';
 import { getConfig, setConfig, type Config, type DetectionMode } from '../../lib/storage';
 import { normalizeFqdn, buildDeepLinkUrl } from '../../lib/call/deeplink';
+import type { PreferredPath } from '../../lib/call/select';
 import { AppFooter } from '../../components/AppFooter';
 
-// Curated lista regionów (picker, nie wolny tekst) — najczęstsze rynki 3CX SMB.
+// Curated region list (a picker, not free text) — the most common 3CX SMB markets.
 const REGIONS: { code: CountryCode; label: string }[] = [
   { code: 'GB', label: 'United Kingdom (+44)' },
   { code: 'PL', label: 'Polska (+48)' },
@@ -81,6 +82,21 @@ export function App() {
           <button class="ghost" disabled={!cfg.fqdn} onClick={testDeepLink}>
             Testuj deep-link
           </button>
+
+          <label class="field">
+            <span>Preferowana ścieżka połączenia</span>
+            <select
+              value={cfg.preferredPath}
+              onChange={(e) => update({ preferredPath: (e.target as HTMLSelectElement).value as PreferredPath })}
+            >
+              <option value="auto">Automatycznie (deep-link, potem tel:)</option>
+              <option value="deeplink">Tylko deep-link web clienta</option>
+              <option value="tel">Tylko tel: (aplikacja desktopowa)</option>
+            </select>
+            <span class="hint">
+              Przy niepowodzeniu ścieżki rozszerzenie schodzi do następnej — bez cichych awarii.
+            </span>
+          </label>
         </section>
 
         <section>

@@ -1,6 +1,6 @@
-// Wrappery nad browser.storage. Config i historia w `local` (trwałe), stan
-// ulotny w `session`. ŻADEN stan nie żyje w zmiennych globalnych SW — SW jest
-// w pełni restartowalny w dowolnym momencie (wymóg MV3).
+// Wrappers over chrome.storage. Config and history live in `local` (persistent);
+// ephemeral state lives in `session`. NO state lives in the SW's global
+// variables — the SW is fully restartable at any moment (an MV3 requirement).
 
 import { browser } from 'wxt/browser';
 import { type Config, withConfigDefaults } from './config';
@@ -38,7 +38,7 @@ export async function getHistory(): Promise<CallHistoryEntry[]> {
   return (raw[HISTORY_KEY] as CallHistoryEntry[] | undefined) ?? [];
 }
 
-/** Dokłada wpis i przycina wg retencji (retention w dniach z configu). */
+/** Appends an entry and prunes by retention (retention in days from config). */
 export async function pushHistory(entry: CallHistoryEntry): Promise<void> {
   const cfg = await getConfig();
   const cutoff = entry.ts - cfg.historyRetentionDays * 24 * 60 * 60 * 1000;
