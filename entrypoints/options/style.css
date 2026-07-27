@@ -63,6 +63,8 @@ button { font-family: inherit; cursor: pointer; border-radius: 9px; font-size: 1
 .ghost:disabled { opacity: .4; cursor: not-allowed; }
 
 .mono { font-family: ui-monospace, SFMono-Regular, Menlo, monospace; }
+.health { display: flex; flex-wrap: wrap; gap: 6px 20px; padding: 10px 12px; margin-bottom: 12px; background: #0d1526; border-radius: 8px; font-size: 13px; }
+.health b { color: var(--text); }
 .diag { list-style: none; margin: 0; padding: 0; display: flex; flex-direction: column; gap: 2px; max-height: 260px; overflow-y: auto; }
 .diag li { display: grid; grid-template-columns: 84px 72px 1fr; gap: 8px; padding: 5px 8px; border-radius: 6px; background: #0d1526; align-items: baseline; }
 .diag li span:nth-child(2) { color: var(--muted); text-transform: uppercase; letter-spacing: .03em; }

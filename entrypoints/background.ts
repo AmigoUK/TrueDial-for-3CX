@@ -10,6 +10,7 @@ import { orderStrategyIds } from '../lib/call/select';
 import type { CallStrategy, StrategyId } from '../lib/call/strategy';
 import { validateToE164 } from '../lib/phone/validate';
 import { buildScreenPopUrl } from '../lib/crm/template';
+import { runHealthCheck } from '../lib/diagnostics/health';
 import { recordEvent } from '../lib/diagnostics/service';
 import {
   getConfig,
@@ -137,6 +138,16 @@ export default defineBackground(() => {
       case 'GET_SITE_ENABLED': {
         const cfg: Config = await getConfig();
         return { enabled: isSiteEnabled(cfg, msg.host) };
+      }
+      case 'HEALTH_CHECK': {
+        const cfg = await getConfig();
+        const snap = await runHealthCheck({ cfg, getToken: ccapiTokenProvider().getToken });
+        await recordEvent(
+          'config',
+          snap.reachable === false ? 'warn' : 'info',
+          `health: reachable=${snap.reachable} token=${snap.tokenOk} path=${snap.recommended}`,
+        );
+        return snap;
       }
     }
   }

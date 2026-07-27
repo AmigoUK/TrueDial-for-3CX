@@ -9,6 +9,15 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 _Nothing yet._
 
+## [0.5.0] — 2026-07-27
+
+### Added
+- Connectivity health check (§6.3) on the Settings diagnostics panel: PBX
+  reachability, API token validity, the configured call paths and the path that
+  will actually be used.
+- Explicit path recommendation via `recommendedPath` — the first configured path
+  matching the user's preference order (no silent degradation).
+
 ## [0.4.0] — 2026-07-27
 
 ### Added
@@ -81,7 +90,8 @@ guiding principle: **never break the host page**.
 - 35 tests (Vitest): phone corpus, false-positive corpus, messaging,
   orchestrator, and a DOM-level scanner integration (happy-dom).
 
-[Unreleased]: https://github.com/AmigoUK/TrueDial-for-3CX/compare/v0.4.0...HEAD
+[Unreleased]: https://github.com/AmigoUK/TrueDial-for-3CX/compare/v0.5.0...HEAD
+[0.5.0]: https://github.com/AmigoUK/TrueDial-for-3CX/compare/v0.4.0...v0.5.0
 [0.4.0]: https://github.com/AmigoUK/TrueDial-for-3CX/compare/v0.3.0...v0.4.0
 [0.3.0]: https://github.com/AmigoUK/TrueDial-for-3CX/compare/v0.2.0...v0.3.0
 [0.2.0]: https://github.com/AmigoUK/TrueDial-for-3CX/compare/v0.1.0...v0.2.0
