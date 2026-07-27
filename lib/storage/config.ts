@@ -23,6 +23,11 @@ export interface Config {
   /** Screen-pop URL template (§3.F5); empty = disabled. Placeholders:
    *  {number} (E.164), {national}. Opened on an outgoing call. */
   screenPopUrl: string;
+  /** Confirmation sound on a placed call (§3.F7). Volume is user-controlled to
+   *  address the "damaged my hearing" complaint; default is deliberately quiet. */
+  soundEnabled: boolean;
+  soundVolume: number; // 0..1
+  soundName: string;
   /** When true, scan ONLY hosts on the allowlist (the CWS plan B). */
   allowlistMode: boolean;
   allowlist: string[];
@@ -37,6 +42,9 @@ export const DEFAULT_CONFIG: Config = {
   detectionMode: 'subtle',
   preferredPath: 'auto',
   screenPopUrl: '',
+  soundEnabled: true,
+  soundVolume: 0.4,
+  soundName: 'beep',
   allowlistMode: false,
   allowlist: [],
   siteOverrides: {},

@@ -9,6 +9,15 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 _Nothing yet._
 
+## [0.8.0] — 2026-07-27
+
+### Added
+- Confirmation sound when a call is placed, synthesised with WebAudio in an
+  offscreen document (no bundled audio assets).
+- Sound settings on the Settings page: enable/disable, tone choice and a
+  **volume slider** (default deliberately quiet) — directly addressing the
+  "damaged my hearing" complaint — plus a "Test sound" button.
+
 ## [0.7.0] — 2026-07-27
 
 ### Added
@@ -105,7 +114,8 @@ guiding principle: **never break the host page**.
 - 35 tests (Vitest): phone corpus, false-positive corpus, messaging,
   orchestrator, and a DOM-level scanner integration (happy-dom).
 
-[Unreleased]: https://github.com/AmigoUK/TrueDial-for-3CX/compare/v0.7.0...HEAD
+[Unreleased]: https://github.com/AmigoUK/TrueDial-for-3CX/compare/v0.8.0...HEAD
+[0.8.0]: https://github.com/AmigoUK/TrueDial-for-3CX/compare/v0.7.0...v0.8.0
 [0.7.0]: https://github.com/AmigoUK/TrueDial-for-3CX/compare/v0.6.0...v0.7.0
 [0.6.0]: https://github.com/AmigoUK/TrueDial-for-3CX/compare/v0.5.0...v0.6.0
 [0.5.0]: https://github.com/AmigoUK/TrueDial-for-3CX/compare/v0.4.0...v0.5.0

@@ -10,6 +10,8 @@ import {
 } from '../../lib/storage';
 import { normalizeFqdn, buildDeepLinkUrl } from '../../lib/call/deeplink';
 import type { PreferredPath } from '../../lib/call/select';
+import { TONE_NAMES } from '../../lib/audio/tone';
+import type { Message } from '../../lib/messaging/schema';
 import { Diagnostics } from './Diagnostics';
 import { AppFooter } from '../../components/AppFooter';
 
@@ -233,6 +235,53 @@ export function App() {
               Zezwól na autodetekcję na wszystkich stronach (&lt;all_urls&gt;)
             </button>
           )}
+        </section>
+
+        <section>
+          <h2>Dźwięk potwierdzenia</h2>
+          <label class="row">
+            <input
+              type="checkbox"
+              checked={cfg.soundEnabled}
+              onChange={(e) => update({ soundEnabled: (e.target as HTMLInputElement).checked })}
+            />
+            <span>Odtwarzaj krótki dźwięk po zainicjowaniu połączenia</span>
+          </label>
+          <div class="row" style="gap:12px;margin-top:10px">
+            <label class="field" style="flex:1">
+              <span>Ton</span>
+              <select
+                value={cfg.soundName}
+                onChange={(e) => update({ soundName: (e.target as HTMLSelectElement).value })}
+              >
+                {TONE_NAMES.map((n) => (
+                  <option value={n} key={n}>{n}</option>
+                ))}
+              </select>
+            </label>
+            <label class="field" style="flex:2">
+              <span>Głośność: {Math.round(cfg.soundVolume * 100)}%</span>
+              <input
+                type="range"
+                min="0"
+                max="1"
+                step="0.05"
+                value={cfg.soundVolume}
+                onInput={(e) => update({ soundVolume: Number((e.target as HTMLInputElement).value) })}
+              />
+            </label>
+          </div>
+          <button
+            class="ghost"
+            style="margin-top:6px"
+            onClick={async () => {
+              await setConfig(cfg); // persist so the SW reads current settings
+              const msg: Message = { type: 'TEST_SOUND' };
+              await browser.runtime.sendMessage(msg);
+            }}
+          >
+            Testuj dźwięk
+          </button>
         </section>
 
         <section>

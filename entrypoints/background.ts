@@ -12,6 +12,7 @@ import type { CallStrategy, StrategyId } from '../lib/call/strategy';
 import { validateToE164 } from '../lib/phone/validate';
 import { buildScreenPopUrl } from '../lib/crm/template';
 import { runHealthCheck } from '../lib/diagnostics/health';
+import { playConfirmation } from '../lib/audio/player';
 import { recordEvent } from '../lib/diagnostics/service';
 import {
   getConfig,
@@ -83,6 +84,10 @@ export default defineBackground(() => {
     if (outcome.ok) {
       await recordEvent('call', 'info', `call placed via ${outcome.strategy}`);
       await maybeScreenPop(e164);
+      const cfg = await getConfig();
+      if (cfg.soundEnabled) {
+        await playConfirmation(cfg.soundName, cfg.soundVolume).catch(() => {});
+      }
     } else {
       await recordEvent('call', 'error', `call failed (${outcome.strategy}): ${outcome.reason}`);
     }
@@ -146,6 +151,11 @@ export default defineBackground(() => {
           await browser.action.setBadgeText({ tabId, text: formatBadge(msg.count) });
           await browser.action.setBadgeBackgroundColor({ tabId, color: '#2563eb' });
         }
+        return { ok: true };
+      }
+      case 'TEST_SOUND': {
+        const cfg = await getConfig();
+        await playConfirmation(cfg.soundName, cfg.soundVolume).catch(() => {});
         return { ok: true };
       }
       case 'HEALTH_CHECK': {

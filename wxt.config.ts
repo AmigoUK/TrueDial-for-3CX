@@ -15,7 +15,7 @@ export default defineConfig({
     description:
       'Reliable click-to-call for 3CX. Detects phone numbers without breaking the page and dials via your 3CX web client. Unofficial — not affiliated with 3CX.',
     default_locale: 'en',
-    permissions: ['storage', 'contextMenus', 'tabs'],
+    permissions: ['storage', 'contextMenus', 'tabs', 'offscreen'],
     // Auto-detection: optional, requested during onboarding with a rationale (§8, R3).
     optional_host_permissions: ['<all_urls>'],
     action: {
