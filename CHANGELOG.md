@@ -9,6 +9,13 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 _Nothing yet._
 
+## [0.9.0] — 2026-07-27
+
+### Added
+- First-run onboarding wizard (§10): a guided four-step setup (FQDN → call path
+  → region → auto-detection permission) shown automatically when unconfigured,
+  and available any time via a "Setup wizard" button.
+
 ## [0.8.0] — 2026-07-27
 
 ### Added
@@ -114,7 +121,8 @@ guiding principle: **never break the host page**.
 - 35 tests (Vitest): phone corpus, false-positive corpus, messaging,
   orchestrator, and a DOM-level scanner integration (happy-dom).
 
-[Unreleased]: https://github.com/AmigoUK/TrueDial-for-3CX/compare/v0.8.0...HEAD
+[Unreleased]: https://github.com/AmigoUK/TrueDial-for-3CX/compare/v0.9.0...HEAD
+[0.9.0]: https://github.com/AmigoUK/TrueDial-for-3CX/compare/v0.8.0...v0.9.0
 [0.8.0]: https://github.com/AmigoUK/TrueDial-for-3CX/compare/v0.7.0...v0.8.0
 [0.7.0]: https://github.com/AmigoUK/TrueDial-for-3CX/compare/v0.6.0...v0.7.0
 [0.6.0]: https://github.com/AmigoUK/TrueDial-for-3CX/compare/v0.5.0...v0.6.0

@@ -12,41 +12,43 @@ import { normalizeFqdn, buildDeepLinkUrl } from '../../lib/call/deeplink';
 import type { PreferredPath } from '../../lib/call/select';
 import { TONE_NAMES } from '../../lib/audio/tone';
 import type { Message } from '../../lib/messaging/schema';
+import { isConfigured } from '../../lib/onboarding/steps';
+import { REGIONS, suggestRegion } from './regions';
+import { Wizard } from './Wizard';
 import { Diagnostics } from './Diagnostics';
 import { AppFooter } from '../../components/AppFooter';
-
-// Curated region list (a picker, not free text) — the most common 3CX SMB markets.
-const REGIONS: { code: CountryCode; label: string }[] = [
-  { code: 'GB', label: 'United Kingdom (+44)' },
-  { code: 'PL', label: 'Polska (+48)' },
-  { code: 'DE', label: 'Deutschland (+49)' },
-  { code: 'FR', label: 'France (+33)' },
-  { code: 'ES', label: 'España (+34)' },
-  { code: 'IT', label: 'Italia (+39)' },
-  { code: 'NL', label: 'Nederland (+31)' },
-  { code: 'US', label: 'United States (+1)' },
-  { code: 'IE', label: 'Ireland (+353)' },
-];
-
-function suggestRegion(): CountryCode {
-  const loc = navigator.language.split('-')[1]?.toUpperCase();
-  return (REGIONS.find((r) => r.code === loc)?.code ?? 'GB') as CountryCode;
-}
 
 export function App() {
   const [cfg, setCfg] = useState<Config | null>(null);
   const [saved, setSaved] = useState(false);
   const [importErr, setImportErr] = useState(false);
+  const [showWizard, setShowWizard] = useState(false);
 
   useEffect(() => {
     void (async () => {
       const c = await getConfig();
       if (!c.fqdn && !c.defaultRegion) c.defaultRegion = suggestRegion();
       setCfg(c);
+      setShowWizard(!isConfigured(c));
     })();
   }, []);
 
   if (!cfg) return <div class="pad">Ładowanie…</div>;
+
+  if (showWizard) {
+    return (
+      <div class="shell">
+        <Wizard
+          initial={cfg}
+          onDone={async (final) => {
+            setCfg(await setConfig(final));
+            setShowWizard(false);
+          }}
+        />
+        <AppFooter />
+      </div>
+    );
+  }
 
   const update = (patch: Partial<Config>) => setCfg({ ...cfg, ...patch });
 
@@ -97,6 +99,7 @@ export function App() {
         <p class="muted">
           Niezależne rozszerzenie click-to-call. Nie jest powiązane z 3CX.
         </p>
+        <button class="ghost" onClick={() => setShowWizard(true)}>Kreator konfiguracji</button>
 
         <section>
           <h2>Połączenie z 3CX</h2>
