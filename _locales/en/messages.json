@@ -1,0 +1,10 @@
+{
+  "extName": {
+    "message": "TrueDial for 3CX",
+    "description": "Extension name"
+  },
+  "extDescription": {
+    "message": "Reliable click-to-call for 3CX. Detects phone numbers without breaking the page. Unofficial — not affiliated with 3CX.",
+    "description": "Extension description"
+  }
+}
