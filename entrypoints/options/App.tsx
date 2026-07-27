@@ -3,6 +3,7 @@ import type { CountryCode } from 'libphonenumber-js/min';
 import { getConfig, setConfig, type Config, type DetectionMode } from '../../lib/storage';
 import { normalizeFqdn, buildDeepLinkUrl } from '../../lib/call/deeplink';
 import type { PreferredPath } from '../../lib/call/select';
+import { Diagnostics } from './Diagnostics';
 import { AppFooter } from '../../components/AppFooter';
 
 // Curated region list (a picker, not free text) — the most common 3CX SMB markets.
@@ -160,6 +161,8 @@ export function App() {
           <button class="primary" onClick={save}>Zapisz</button>
           {saved && <span class="ok">✓ Zapisano</span>}
         </div>
+
+        <Diagnostics />
       </main>
       <AppFooter />
     </div>

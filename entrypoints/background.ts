@@ -7,6 +7,7 @@ import { TelStrategy } from '../lib/call/tel';
 import { orderStrategyIds } from '../lib/call/select';
 import type { CallStrategy, StrategyId } from '../lib/call/strategy';
 import { validateToE164 } from '../lib/phone/validate';
+import { recordEvent } from '../lib/diagnostics/service';
 import {
   getConfig,
   setSiteEnabled,
@@ -48,15 +49,22 @@ export default defineBackground(() => {
       source,
       status: outcome.ok ? 'placed' : 'failed',
     });
+    // Diagnostics: numbers are redacted at report time, so we can log freely.
+    if (outcome.ok) {
+      await recordEvent('call', 'info', `call placed via ${outcome.strategy}`);
+    } else {
+      await recordEvent('call', 'error', `call failed (${outcome.strategy}): ${outcome.reason}`);
+    }
   }
 
   // --- Context menu: right-click on a selection → call (§3.F2) ---
-  browser.runtime.onInstalled.addListener(() => {
+  browser.runtime.onInstalled.addListener((details) => {
     browser.contextMenus.create({
       id: 'truedial-call',
       title: 'Zadzwoń przez 3CX: „%s”',
       contexts: ['selection'],
     });
+    void recordEvent('lifecycle', 'info', `installed/updated (${details.reason})`);
   });
 
   browser.contextMenus.onClicked.addListener(async (info) => {

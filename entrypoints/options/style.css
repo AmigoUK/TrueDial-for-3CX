@@ -62,6 +62,14 @@ button { font-family: inherit; cursor: pointer; border-radius: 9px; font-size: 1
 .ghost:hover:not(:disabled) { border-color: var(--accent); }
 .ghost:disabled { opacity: .4; cursor: not-allowed; }
 
+.mono { font-family: ui-monospace, SFMono-Regular, Menlo, monospace; }
+.diag { list-style: none; margin: 0; padding: 0; display: flex; flex-direction: column; gap: 2px; max-height: 260px; overflow-y: auto; }
+.diag li { display: grid; grid-template-columns: 84px 72px 1fr; gap: 8px; padding: 5px 8px; border-radius: 6px; background: #0d1526; align-items: baseline; }
+.diag li span:nth-child(2) { color: var(--muted); text-transform: uppercase; letter-spacing: .03em; }
+.diag-error { border-left: 2px solid var(--err, #f87171); }
+.diag-warn { border-left: 2px solid #eab308; }
+.diag-info { border-left: 2px solid transparent; }
+
 .app-footer {
   width: 100%;
   padding: 12px 16px;

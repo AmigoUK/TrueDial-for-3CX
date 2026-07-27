@@ -9,6 +9,16 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 _Nothing yet._
 
+## [0.2.0] — 2026-07-27
+
+### Added
+- Diagnostics panel on the Settings page: an always-on local ring buffer of the
+  last 50 events (lifecycle, calls, errors).
+- "Copy diagnostic report" — a paste-ready, anonymised report (versions,
+  settings and events, with phone numbers and URLs redacted) for IT tickets.
+- The service worker now records every call attempt and its outcome, plus
+  install/update lifecycle events.
+
 ## [0.1.0] — 2026-07-27
 
 ### Added
@@ -46,6 +56,7 @@ guiding principle: **never break the host page**.
 - 35 tests (Vitest): phone corpus, false-positive corpus, messaging,
   orchestrator, and a DOM-level scanner integration (happy-dom).
 
-[Unreleased]: https://github.com/AmigoUK/TrueDial-for-3CX/compare/v0.1.0...HEAD
+[Unreleased]: https://github.com/AmigoUK/TrueDial-for-3CX/compare/v0.2.0...HEAD
+[0.2.0]: https://github.com/AmigoUK/TrueDial-for-3CX/compare/v0.1.0...v0.2.0
 [0.1.0]: https://github.com/AmigoUK/TrueDial-for-3CX/compare/v0.0.1...v0.1.0
 [0.0.1]: https://github.com/AmigoUK/TrueDial-for-3CX/releases/tag/v0.0.1
