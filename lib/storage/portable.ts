@@ -25,7 +25,7 @@ const importSchema = z
     ccExtension: z.string(),
     ccDeviceId: z.string(),
     defaultRegion: z.string(),
-    detectionMode: z.enum(['subtle', 'off']),
+    detectionMode: z.enum(['subtle', 'aggressive', 'off']),
     preferredPath: z.enum(['auto', 'ccapi', 'deeplink', 'tel']),
     screenPopUrl: z.string(),
     allowlistMode: z.boolean(),

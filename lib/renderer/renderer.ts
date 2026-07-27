@@ -9,6 +9,9 @@ import type { Match } from '../scanner/scanner';
 const STYLE_ID = 'truedial-style';
 const ATTR = 'data-truedial';
 
+// Subtle (default): dotted underline, icon on hover only. Aggressive (opt-in
+// per site): solid accent underline and an always-visible icon — a stronger,
+// link-like affordance, but still no <a> and no navigation hijack.
 const CSS = `
 [${ATTR}]{
   cursor:pointer;
@@ -25,12 +28,22 @@ const CSS = `
   transition:opacity .12s;
 }
 [${ATTR}]:hover::after{ opacity:.85; }
+[${ATTR}][data-aggressive]{
+  text-decoration:underline solid #2563eb;
+  color:#2563eb;
+}
+[${ATTR}][data-aggressive]::after{ opacity:.9; }
 `;
+
+export type RenderMode = 'subtle' | 'aggressive';
 
 export class Renderer {
   private clickBound = false;
 
-  constructor(private readonly onCall: (e164: string) => void) {}
+  constructor(
+    private readonly onCall: (e164: string) => void,
+    private readonly mode: RenderMode = 'subtle',
+  ) {}
 
   private ensureStyle(): void {
     if (document.getElementById(STYLE_ID)) return;
@@ -78,6 +91,7 @@ export class Renderer {
           range.setEnd(node, m.end);
           const span = document.createElement('span');
           span.setAttribute(ATTR, '');
+          if (this.mode === 'aggressive') span.setAttribute('data-aggressive', '');
           span.setAttribute('data-e164', m.e164);
           span.setAttribute('role', 'button');
           span.setAttribute('tabindex', '0');

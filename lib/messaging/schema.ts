@@ -14,6 +14,7 @@ export const messageSchema = z.discriminatedUnion('type', [
   z.object({ type: z.literal('SET_SITE_ENABLED'), host: z.string().min(1), enabled: z.boolean() }),
   z.object({ type: z.literal('GET_SITE_ENABLED'), host: z.string().min(1) }),
   z.object({ type: z.literal('HEALTH_CHECK') }),
+  z.object({ type: z.literal('DETECTION_COUNT'), count: z.number().int().nonnegative() }),
 ]);
 
 export type Message = z.infer<typeof messageSchema>;

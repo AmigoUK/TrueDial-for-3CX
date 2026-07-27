@@ -4,7 +4,7 @@
 import type { CountryCode } from 'libphonenumber-js/min';
 import type { PreferredPath } from '../call/select';
 
-export type DetectionMode = 'subtle' | 'off';
+export type DetectionMode = 'subtle' | 'aggressive' | 'off';
 
 export interface Config {
   /** The 3CX instance FQDN (host[:port]); absent = the extension is unconfigured. */

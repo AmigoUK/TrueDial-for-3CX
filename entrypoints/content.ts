@@ -21,10 +21,23 @@ export default defineContentScript({
       browser.runtime.sendMessage(msg).catch(() => {});
     };
 
-    const renderer = new Renderer(placeCall);
+    const renderer = new Renderer(placeCall, cfg.detectionMode === 'aggressive' ? 'aggressive' : 'subtle');
+
+    // Report the running detected-number count to the SW for the toolbar badge.
+    let detected = 0;
+    const reportCount = (n: number): void => {
+      const msg: Message = { type: 'DETECTION_COUNT', count: n };
+      browser.runtime.sendMessage(msg).catch(() => {});
+    };
+
     const scanner = new Scanner({
       defaultRegion: cfg.defaultRegion,
-      onMatches: (matches) => renderer.apply(matches),
+      onMatches: (matches) => {
+        renderer.apply(matches);
+        detected += matches.length;
+        reportCount(detected);
+      },
+      onOverflow: (total) => reportCount(total),
     });
 
     // Keyboard activation (accessibility): Enter/Space on a highlight.

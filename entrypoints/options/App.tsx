@@ -198,6 +198,7 @@ export function App() {
               onChange={(e) => update({ detectionMode: (e.target as HTMLSelectElement).value as DetectionMode })}
             >
               <option value="subtle">Subtelny (podkreślenie + ikona na hover)</option>
+              <option value="aggressive">Agresywny (wyraźne, klikalne numery)</option>
               <option value="off">Wyłączony</option>
             </select>
           </label>

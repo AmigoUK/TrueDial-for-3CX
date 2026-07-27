@@ -7,6 +7,7 @@ import { TelStrategy } from '../lib/call/tel';
 import { CallControlStrategy } from '../lib/call/ccapi';
 import { TokenManager } from '../lib/call/token';
 import { orderStrategyIds } from '../lib/call/select';
+import { formatBadge } from '../lib/scanner/badge';
 import type { CallStrategy, StrategyId } from '../lib/call/strategy';
 import { validateToE164 } from '../lib/phone/validate';
 import { buildScreenPopUrl } from '../lib/crm/template';
@@ -122,10 +123,10 @@ export default defineBackground(() => {
     if (sender.id !== browser.runtime.id) return undefined;
     const msg = parseMessage(raw);
     if (!msg) return undefined;
-    return handle(msg);
+    return handle(msg, sender);
   });
 
-  async function handle(msg: Message): Promise<unknown> {
+  async function handle(msg: Message, sender: Runtime.MessageSender): Promise<unknown> {
     switch (msg.type) {
       case 'PLACE_CALL':
         await placeCall(msg.e164, msg.source);
@@ -138,6 +139,14 @@ export default defineBackground(() => {
       case 'GET_SITE_ENABLED': {
         const cfg: Config = await getConfig();
         return { enabled: isSiteEnabled(cfg, msg.host) };
+      }
+      case 'DETECTION_COUNT': {
+        const tabId = sender.tab?.id;
+        if (tabId != null) {
+          await browser.action.setBadgeText({ tabId, text: formatBadge(msg.count) });
+          await browser.action.setBadgeBackgroundColor({ tabId, color: '#2563eb' });
+        }
+        return { ok: true };
       }
       case 'HEALTH_CHECK': {
         const cfg = await getConfig();
