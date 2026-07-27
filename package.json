@@ -1,6 +1,6 @@
 {
   "name": "truedial-for-3cx",
-  "version": "0.3.0",
+  "version": "0.4.0",
   "description": "TrueDial for 3CX — reliable click-to-call Chrome extension (unofficial). Never breaks the host page.",
   "private": true,
   "type": "module",

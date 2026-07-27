@@ -90,7 +90,8 @@ export function App() {
               value={cfg.preferredPath}
               onChange={(e) => update({ preferredPath: (e.target as HTMLSelectElement).value as PreferredPath })}
             >
-              <option value="auto">Automatycznie (deep-link, potem tel:)</option>
+              <option value="auto">Automatycznie (Call Control API → deep-link → tel:)</option>
+              <option value="ccapi">Tylko Call Control API</option>
               <option value="deeplink">Tylko deep-link web clienta</option>
               <option value="tel">Tylko tel: (aplikacja desktopowa)</option>
             </select>
@@ -98,6 +99,52 @@ export function App() {
               Przy niepowodzeniu ścieżki rozszerzenie schodzi do następnej — bez cichych awarii.
             </span>
           </label>
+        </section>
+
+        <section>
+          <h2>Call Control API (opcjonalnie)</h2>
+          <p class="hint">
+            Pełny status połączenia. Wymaga aplikacji API w konsoli 3CX
+            (Admin → Integrations → API) oraz odpowiedniej licencji. Poświadczenia
+            są przechowywane lokalnie i nigdy nie są synchronizowane.
+          </p>
+          <label class="field">
+            <span>Client ID</span>
+            <input
+              type="text"
+              value={cfg.clientId ?? ''}
+              onInput={(e) => update({ clientId: (e.target as HTMLInputElement).value })}
+            />
+          </label>
+          <label class="field">
+            <span>Client Secret</span>
+            <input
+              type="password"
+              autocomplete="off"
+              value={cfg.clientSecret ?? ''}
+              onInput={(e) => update({ clientSecret: (e.target as HTMLInputElement).value })}
+            />
+          </label>
+          <div class="row" style="gap:12px">
+            <label class="field" style="flex:1">
+              <span>Numer wewnętrzny (ext.)</span>
+              <input
+                type="text"
+                placeholder="np. 100"
+                value={cfg.ccExtension ?? ''}
+                onInput={(e) => update({ ccExtension: (e.target as HTMLInputElement).value })}
+              />
+            </label>
+            <label class="field" style="flex:1">
+              <span>Device ID</span>
+              <input
+                type="text"
+                placeholder="z GET /callcontrol/{ext}/devices"
+                value={cfg.ccDeviceId ?? ''}
+                onInput={(e) => update({ ccDeviceId: (e.target as HTMLInputElement).value })}
+              />
+            </label>
+          </div>
         </section>
 
         <section>

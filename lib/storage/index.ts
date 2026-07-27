@@ -4,11 +4,13 @@
 
 import { browser } from 'wxt/browser';
 import { type Config, withConfigDefaults } from './config';
+import type { TokenSet } from '../call/token';
 
 export * from './config';
 
 const CONFIG_KEY = 'config';
 const HISTORY_KEY = 'history';
+const CC_TOKEN_KEY = 'ccToken';
 
 export interface CallHistoryEntry {
   e164: string;
@@ -50,4 +52,16 @@ export async function pushHistory(entry: CallHistoryEntry): Promise<void> {
 
 export async function clearHistory(): Promise<void> {
   await browser.storage.local.remove(HISTORY_KEY);
+}
+
+// Cached Call Control API token. Kept in local so it survives SW restarts; it is
+// short-lived and refreshed by the TokenManager.
+export async function loadCcToken(): Promise<TokenSet | null> {
+  const raw = await browser.storage.local.get(CC_TOKEN_KEY);
+  return (raw[CC_TOKEN_KEY] as TokenSet | undefined) ?? null;
+}
+
+export async function saveCcToken(t: TokenSet | null): Promise<void> {
+  if (t === null) await browser.storage.local.remove(CC_TOKEN_KEY);
+  else await browser.storage.local.set({ [CC_TOKEN_KEY]: t });
 }

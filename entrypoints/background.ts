@@ -4,6 +4,8 @@ import { parseMessage, type Message } from '../lib/messaging/schema';
 import { CallOrchestrator } from '../lib/call/orchestrator';
 import { DeepLinkStrategy } from '../lib/call/deeplink';
 import { TelStrategy } from '../lib/call/tel';
+import { CallControlStrategy } from '../lib/call/ccapi';
+import { TokenManager } from '../lib/call/token';
 import { orderStrategyIds } from '../lib/call/select';
 import type { CallStrategy, StrategyId } from '../lib/call/strategy';
 import { validateToE164 } from '../lib/phone/validate';
@@ -14,6 +16,8 @@ import {
   setSiteEnabled,
   pushHistory,
   isSiteEnabled,
+  loadCcToken,
+  saveCcToken,
   type Config,
 } from '../lib/storage';
 
@@ -23,13 +27,36 @@ export default defineBackground(() => {
   // Instantiate a strategy by id. New paths (e.g. 'ccapi') slot in here.
   function makeStrategy(id: StrategyId): CallStrategy | null {
     switch (id) {
+      case 'ccapi':
+        return new CallControlStrategy(async () => {
+          const c = await getConfig();
+          return { fqdn: c.fqdn, extension: c.ccExtension, deviceId: c.ccDeviceId };
+        }, ccapiTokenProvider());
       case 'deeplink':
         return new DeepLinkStrategy(async () => (await getConfig()).fqdn);
       case 'tel':
         return new TelStrategy();
       default:
-        return null; // 'ccapi' not implemented yet
+        return null;
     }
+  }
+
+  // A TokenProvider that reads FQDN + credentials from the live config on each
+  // refresh (the SW may have been woken with a changed config).
+  function ccapiTokenProvider() {
+    return {
+      async getToken(force = false): Promise<string> {
+        const c = await getConfig();
+        const tm = new TokenManager({
+          fqdn: c.fqdn ?? '',
+          clientId: c.clientId ?? '',
+          clientSecret: c.clientSecret ?? '',
+          load: loadCcToken,
+          save: saveCcToken,
+        });
+        return tm.getToken(force);
+      },
+    };
   }
 
   // Built per call from the current config (the SW may have been woken).

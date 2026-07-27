@@ -9,6 +9,11 @@ export type DetectionMode = 'subtle' | 'off';
 export interface Config {
   /** The 3CX instance FQDN (host[:port]); absent = the extension is unconfigured. */
   fqdn?: string;
+  /** Call Control API credentials & target (§6). Secrets stay in storage.local. */
+  clientId?: string;
+  clientSecret?: string;
+  ccExtension?: string;
+  ccDeviceId?: string;
   /** Default region for national numbers (libphonenumber). */
   defaultRegion: CountryCode;
   /** Presentation mode for detection (slice 1: 'subtle' or 'off'). */

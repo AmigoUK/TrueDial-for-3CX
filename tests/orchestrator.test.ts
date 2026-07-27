@@ -12,8 +12,8 @@ function fake(id: StrategyId, available: boolean, outcome: Partial<CallOutcome> 
 }
 
 describe('orderStrategyIds', () => {
-  it('auto → deeplink, potem tel', () => {
-    expect(orderStrategyIds('auto')).toEqual(['deeplink', 'tel']);
+  it('auto → ccapi, potem deeplink, potem tel', () => {
+    expect(orderStrategyIds('auto')).toEqual(['ccapi', 'deeplink', 'tel']);
   });
   it('wymuszony deeplink', () => {
     expect(orderStrategyIds('deeplink')).toEqual(['deeplink']);

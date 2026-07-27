@@ -9,6 +9,21 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 _Nothing yet._
 
+## [0.4.0] — 2026-07-27
+
+### Added
+- **Call Control API path** (§6.2): places calls via
+  `POST /callcontrol/{ext}/devices/{deviceId}/makecall` with a Bearer token —
+  the preferred, richest path.
+- **TokenManager**: OAuth client-credentials against `/connect/token`, with a
+  cached token, proactive refresh before expiry and a lazy refresh-and-retry on
+  a 401.
+- Settings: Call Control API section (Client ID/Secret, extension, device ID)
+  and a "Call Control API only" preferred-path option.
+
+### Changed
+- 'auto' path order is now Call Control API → deep link → `tel:`.
+
 ## [0.3.0] — 2026-07-27
 
 ### Added
@@ -66,7 +81,8 @@ guiding principle: **never break the host page**.
 - 35 tests (Vitest): phone corpus, false-positive corpus, messaging,
   orchestrator, and a DOM-level scanner integration (happy-dom).
 
-[Unreleased]: https://github.com/AmigoUK/TrueDial-for-3CX/compare/v0.3.0...HEAD
+[Unreleased]: https://github.com/AmigoUK/TrueDial-for-3CX/compare/v0.4.0...HEAD
+[0.4.0]: https://github.com/AmigoUK/TrueDial-for-3CX/compare/v0.3.0...v0.4.0
 [0.3.0]: https://github.com/AmigoUK/TrueDial-for-3CX/compare/v0.2.0...v0.3.0
 [0.2.0]: https://github.com/AmigoUK/TrueDial-for-3CX/compare/v0.1.0...v0.2.0
 [0.1.0]: https://github.com/AmigoUK/TrueDial-for-3CX/compare/v0.0.1...v0.1.0

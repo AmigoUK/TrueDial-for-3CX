@@ -1,19 +1,21 @@
 // Pure, testable ordering of call strategies from the user's preference.
-// When the Call Control API strategy lands, 'auto' becomes
-// ['ccapi', 'deeplink', 'tel'] and 'ccapi' joins PreferredPath.
+// 'auto' tries the richest path first (Call Control API) and degrades to the
+// deep link, then the tel: handler.
 
 import type { StrategyId } from './strategy';
 
-export type PreferredPath = 'auto' | 'deeplink' | 'tel';
+export type PreferredPath = 'auto' | 'ccapi' | 'deeplink' | 'tel';
 
 export function orderStrategyIds(preferred: PreferredPath): StrategyId[] {
   switch (preferred) {
+    case 'ccapi':
+      return ['ccapi'];
     case 'deeplink':
       return ['deeplink'];
     case 'tel':
       return ['tel'];
     case 'auto':
     default:
-      return ['deeplink', 'tel'];
+      return ['ccapi', 'deeplink', 'tel'];
   }
 }
