@@ -1,6 +1,7 @@
 import { useEffect, useState } from 'preact/hooks';
 import { AsYouType, type CountryCode } from 'libphonenumber-js/min';
 import { validateToE164 } from '../../lib/phone/validate';
+import { t } from '../../lib/i18n';
 import {
   getConfig,
   getHistory,
@@ -42,7 +43,7 @@ export function App() {
     })();
   }, []);
 
-  if (!cfg) return <div class="pad">Ładowanie…</div>;
+  if (!cfg) return <div class="pad">{t('common_loading')}</div>;
 
   const health: Health = cfg.fqdn ? 'ready' : 'unconfigured';
   const region = cfg.defaultRegion as CountryCode;
@@ -71,36 +72,36 @@ export function App() {
 
       {health === 'unconfigured' && (
         <button class="cta" onClick={() => browser.runtime.openOptionsPage()}>
-          Skonfiguruj połączenie z 3CX →
+          {t('popup_configure')}
         </button>
       )}
 
       <label class="field">
-        <span class="muted small">Wybierz numer</span>
+        <span class="muted small">{t('popup_dialLabel')}</span>
         <input
           type="tel"
           value={formatted}
-          placeholder="np. +48 22 123 45 67"
+          placeholder={t('popup_dialPlaceholder')}
           onInput={(e) => setInput((e.target as HTMLInputElement).value)}
         />
         <div class="small">
-          {input && (e164 ? <span class="ok">✓ {e164}</span> : <span class="err">Niepoprawny numer</span>)}
+          {input && (e164 ? <span class="ok">✓ {e164}</span> : <span class="err">{t('popup_invalid')}</span>)}
         </div>
       </label>
       <button class="cta" disabled={!e164 || health === 'unconfigured'} onClick={() => e164 && call(e164)}>
-        Zadzwoń
+        {t('popup_call')}
       </button>
 
       {host && (
         <label class="row between toggle">
-          <span class="small">Detekcja na <b>{host}</b></span>
+          <span class="small">{t('popup_detectionOn')} <b>{host}</b></span>
           <input type="checkbox" checked={siteOn} onChange={toggleSite} />
         </label>
       )}
 
       <section>
         <div class="row between">
-          <span class="muted small">Historia</span>
+          <span class="muted small">{t('popup_history')}</span>
           {history.length > 0 && (
             <button
               class="link"
@@ -109,12 +110,12 @@ export function App() {
                 setHistory([]);
               }}
             >
-              wyczyść
+              {t('popup_clear')}
             </button>
           )}
         </div>
         {history.length === 0 ? (
-          <div class="small muted">Brak połączeń.</div>
+          <div class="small muted">{t('popup_noCalls')}</div>
         ) : (
           <ul class="history">
             {history.slice(0, 8).map((h) => (

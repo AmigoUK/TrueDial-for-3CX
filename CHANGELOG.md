@@ -9,6 +9,21 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 _Nothing yet._
 
+## [1.0.0-rc.1] — 2026-07-27
+
+Release candidate for 1.0.0. Feature-complete for the MVP scope; promotion to
+1.0.0 awaits real-browser E2E and live-3CX validation (DoD §14).
+
+### Added
+- Full internationalisation (`_locales`): the UI is now translatable, shipping
+  complete **English (default)**, **Polish**, **German**, **French** and
+  **Spanish** catalogues. Missing keys fall back to English.
+- Manifest name and description are localised via `__MSG__`.
+
+### Changed
+- All in-app UI strings now resolve through the i18n layer (`t()`); `_locales`
+  moved under `public/` so they are bundled into the build.
+
 ## [0.9.0] — 2026-07-27
 
 ### Added
@@ -121,7 +136,8 @@ guiding principle: **never break the host page**.
 - 35 tests (Vitest): phone corpus, false-positive corpus, messaging,
   orchestrator, and a DOM-level scanner integration (happy-dom).
 
-[Unreleased]: https://github.com/AmigoUK/TrueDial-for-3CX/compare/v0.9.0...HEAD
+[Unreleased]: https://github.com/AmigoUK/TrueDial-for-3CX/compare/v1.0.0-rc.1...HEAD
+[1.0.0-rc.1]: https://github.com/AmigoUK/TrueDial-for-3CX/compare/v0.9.0...v1.0.0-rc.1
 [0.9.0]: https://github.com/AmigoUK/TrueDial-for-3CX/compare/v0.8.0...v0.9.0
 [0.8.0]: https://github.com/AmigoUK/TrueDial-for-3CX/compare/v0.7.0...v0.8.0
 [0.7.0]: https://github.com/AmigoUK/TrueDial-for-3CX/compare/v0.6.0...v0.7.0

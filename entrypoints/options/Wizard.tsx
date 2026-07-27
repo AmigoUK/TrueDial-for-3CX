@@ -4,6 +4,7 @@ import type { Config } from '../../lib/storage';
 import type { PreferredPath } from '../../lib/call/select';
 import { buildDeepLinkUrl, normalizeFqdn } from '../../lib/call/deeplink';
 import { STEPS, type Step, canAdvance, nextStep, prevStep } from '../../lib/onboarding/steps';
+import { t } from '../../lib/i18n';
 import { REGIONS } from './regions';
 
 // Guided first-run setup (§10). Renders the pure step machine and writes into a
@@ -21,48 +22,48 @@ export function Wizard({ initial, onDone }: { initial: Config; onDone: (cfg: Con
 
   return (
     <main class="card wizard">
-      <div class="wizard-progress">Krok {idx + 1} z {STEPS.length}</div>
+      <div class="wizard-progress">{t('wiz_step')} {idx + 1} {t('wiz_of')} {STEPS.length}</div>
 
       {step === 'fqdn' && (
         <div>
-          <h2>1 · Adres 3CX</h2>
+          <h2>{t('wiz_s1_title')}</h2>
           <label class="field">
-            <span>FQDN instancji 3CX</span>
+            <span>{t('opt_fqdnLabel')}</span>
             <input
               type="text"
               placeholder="pbx.twojafirma.pl"
               value={cfg.fqdn ?? ''}
               onInput={(e) => update({ fqdn: (e.target as HTMLInputElement).value })}
             />
-            <span class="hint">Np. adres, pod którym otwierasz web client 3CX.</span>
+            <span class="hint">{t('wiz_s1_hint')}</span>
           </label>
         </div>
       )}
 
       {step === 'path' && (
         <div>
-          <h2>2 · Sposób dzwonienia</h2>
+          <h2>{t('wiz_s2_title')}</h2>
           <label class="field">
-            <span>Preferowana ścieżka</span>
+            <span>{t('opt_pathLabel')}</span>
             <select
               value={cfg.preferredPath}
               onChange={(e) => update({ preferredPath: (e.target as HTMLSelectElement).value as PreferredPath })}
             >
-              <option value="auto">Automatycznie (zalecane)</option>
-              <option value="ccapi">Tylko Call Control API</option>
-              <option value="deeplink">Tylko deep-link web clienta</option>
-              <option value="tel">Tylko tel:</option>
+              <option value="auto">{t('wiz_path_auto')}</option>
+              <option value="ccapi">{t('opt_path_ccapi')}</option>
+              <option value="deeplink">{t('opt_path_deeplink')}</option>
+              <option value="tel">{t('opt_path_tel')}</option>
             </select>
           </label>
-          <button class="ghost" disabled={!cfg.fqdn} onClick={testDeepLink}>Testuj deep-link</button>
+          <button class="ghost" disabled={!cfg.fqdn} onClick={testDeepLink}>{t('opt_testDeepLink')}</button>
         </div>
       )}
 
       {step === 'region' && (
         <div>
-          <h2>3 · Region domyślny</h2>
+          <h2>{t('wiz_s3_title')}</h2>
           <label class="field">
-            <span>Kraj dla numerów bez prefiksu</span>
+            <span>{t('wiz_s3_label')}</span>
             <select
               value={cfg.defaultRegion}
               onChange={(e) => update({ defaultRegion: (e.target as HTMLSelectElement).value as CountryCode })}
@@ -77,35 +78,30 @@ export function Wizard({ initial, onDone }: { initial: Config; onDone: (cfg: Con
 
       {step === 'permissions' && (
         <div>
-          <h2>4 · Autodetekcja</h2>
-          <p class="hint">
-            Aby wykrywać numery na stronach, zezwól na dostęp — albo ogranicz go do
-            wybranych domen w ustawieniach później.
-          </p>
-          <button class="ghost" onClick={grantAllUrls}>
-            Zezwól na wszystkich stronach (&lt;all_urls&gt;)
-          </button>
+          <h2>{t('wiz_s4_title')}</h2>
+          <p class="hint">{t('wiz_s4_hint')}</p>
+          <button class="ghost" onClick={grantAllUrls}>{t('wiz_grantAll')}</button>
         </div>
       )}
 
       {step === 'done' && (
         <div>
-          <h2>Gotowe 🎉</h2>
+          <h2>{t('wiz_done_title')}</h2>
           <p class="hint">
-            3CX: <b>{cfg.fqdn ? normalizeFqdn(cfg.fqdn) : '—'}</b> · ścieżka:{' '}
-            <b>{cfg.preferredPath}</b> · region: <b>{cfg.defaultRegion}</b>
+            3CX: <b>{cfg.fqdn ? normalizeFqdn(cfg.fqdn) : '—'}</b> · {t('wiz_sum_path')}:{' '}
+            <b>{cfg.preferredPath}</b> · {t('wiz_sum_region')}: <b>{cfg.defaultRegion}</b>
           </p>
-          <p class="hint">Możesz zmienić wszystko w ustawieniach w dowolnej chwili.</p>
+          <p class="hint">{t('wiz_done_hint')}</p>
         </div>
       )}
 
       <div class="row between actions">
-        <button class="ghost" disabled={idx === 0} onClick={() => setStep(prevStep(step))}>Wstecz</button>
+        <button class="ghost" disabled={idx === 0} onClick={() => setStep(prevStep(step))}>{t('wiz_back')}</button>
         {step === 'done' ? (
-          <button class="primary" onClick={() => onDone(cfg)}>Zakończ</button>
+          <button class="primary" onClick={() => onDone(cfg)}>{t('wiz_finish')}</button>
         ) : (
           <button class="primary" disabled={!canAdvance(step, cfg)} onClick={() => setStep(nextStep(step))}>
-            Dalej
+            {t('wiz_next')}
           </button>
         )}
       </div>

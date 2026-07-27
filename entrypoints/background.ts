@@ -8,6 +8,7 @@ import { CallControlStrategy } from '../lib/call/ccapi';
 import { TokenManager } from '../lib/call/token';
 import { orderStrategyIds } from '../lib/call/select';
 import { formatBadge } from '../lib/scanner/badge';
+import { t } from '../lib/i18n';
 import type { CallStrategy, StrategyId } from '../lib/call/strategy';
 import { validateToE164 } from '../lib/phone/validate';
 import { buildScreenPopUrl } from '../lib/crm/template';
@@ -107,7 +108,7 @@ export default defineBackground(() => {
   browser.runtime.onInstalled.addListener((details) => {
     browser.contextMenus.create({
       id: 'truedial-call',
-      title: 'Zadzwoń przez 3CX: „%s”',
+      title: t('ctx_call'),
       contexts: ['selection'],
     });
     void recordEvent('lifecycle', 'info', `installed/updated (${details.reason})`);

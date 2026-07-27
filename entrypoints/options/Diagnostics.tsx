@@ -4,6 +4,7 @@ import { getEvents, clearEvents } from '../../lib/diagnostics/service';
 import { buildReport, type DiagEvent } from '../../lib/diagnostics/events';
 import type { HealthSnapshot } from '../../lib/diagnostics/health';
 import type { Message } from '../../lib/messaging/schema';
+import { t } from '../../lib/i18n';
 
 // Diagnostics panel (§3.F4): the always-on local ring buffer plus a one-click
 // anonymised report the user can paste into an IT ticket. This is what replaces
@@ -29,7 +30,8 @@ export function Diagnostics() {
     await refresh();
   };
 
-  const yesNo = (v: boolean | null): string => (v === null ? 'n/d' : v ? 'tak' : 'nie');
+  const yesNo = (v: boolean | null): string =>
+    v === null ? t('diag_na') : v ? t('diag_yes') : t('diag_no');
 
   const copyReport = async () => {
     const cfg = await getConfig();
@@ -48,17 +50,14 @@ export function Diagnostics() {
 
   return (
     <section>
-      <h2>Diagnostyka</h2>
-      <p class="hint">
-        Lokalny bufor ostatnich zdarzeń. Raport jest zanonimizowany (numery i
-        adresy URL są maskowane) — nic nie opuszcza przeglądarki bez Twojej akcji.
-      </p>
+      <h2>{t('diag_title')}</h2>
+      <p class="hint">{t('diag_hint')}</p>
 
       <div class="row" style="gap:10px;margin-bottom:12px">
         <button class="ghost" onClick={runHealth} disabled={checking}>
-          {checking ? 'Testuję…' : 'Uruchom test łączności'}
+          {checking ? t('diag_checking') : t('diag_runHealth')}
         </button>
-        <button class="ghost" onClick={copyReport}>Kopiuj raport diagnostyczny</button>
+        <button class="ghost" onClick={copyReport}>{t('diag_copyReport')}</button>
         <button
           class="ghost"
           onClick={async () => {
@@ -66,22 +65,22 @@ export function Diagnostics() {
             await refresh();
           }}
         >
-          Wyczyść
+          {t('diag_clear')}
         </button>
-        {copied && <span class="ok">✓ Skopiowano</span>}
+        {copied && <span class="ok">{t('diag_copied')}</span>}
       </div>
 
       {health && (
         <div class="health">
-          <span>PBX osiągalny: <b>{yesNo(health.reachable)}</b></span>
-          <span>Token API: <b>{yesNo(health.tokenOk)}</b></span>
-          <span>Aktywna ścieżka: <b>{health.recommended ?? 'brak (nieskonfigurowane)'}</b></span>
-          <span>Skonfigurowane: <b>{health.configured.join(', ')}</b></span>
+          <span>{t('diag_reachable')} <b>{yesNo(health.reachable)}</b></span>
+          <span>{t('diag_token')} <b>{yesNo(health.tokenOk)}</b></span>
+          <span>{t('diag_activePath')} <b>{health.recommended ?? t('diag_none')}</b></span>
+          <span>{t('diag_configured')} <b>{health.configured.join(', ')}</b></span>
         </div>
       )}
 
       {events.length === 0 ? (
-        <p class="hint">Brak zdarzeń.</p>
+        <p class="hint">{t('diag_noEvents')}</p>
       ) : (
         <ul class="diag">
           {[...events].reverse().slice(0, 20).map((e) => (

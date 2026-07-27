@@ -10,10 +10,9 @@ export default defineConfig({
     plugins: [preact()],
   }),
   manifest: {
-    name: 'TrueDial for 3CX',
+    name: '__MSG_extName__',
     short_name: 'TrueDial',
-    description:
-      'Reliable click-to-call for 3CX. Detects phone numbers without breaking the page and dials via your 3CX web client. Unofficial — not affiliated with 3CX.',
+    description: '__MSG_extDescription__',
     default_locale: 'en',
     permissions: ['storage', 'contextMenus', 'tabs', 'offscreen'],
     // Auto-detection: optional, requested during onboarding with a rationale (§8, R3).

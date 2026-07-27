@@ -13,6 +13,7 @@ import type { PreferredPath } from '../../lib/call/select';
 import { TONE_NAMES } from '../../lib/audio/tone';
 import type { Message } from '../../lib/messaging/schema';
 import { isConfigured } from '../../lib/onboarding/steps';
+import { t } from '../../lib/i18n';
 import { REGIONS, suggestRegion } from './regions';
 import { Wizard } from './Wizard';
 import { Diagnostics } from './Diagnostics';
@@ -33,7 +34,7 @@ export function App() {
     })();
   }, []);
 
-  if (!cfg) return <div class="pad">Ładowanie…</div>;
+  if (!cfg) return <div class="pad">{t('common_loading')}</div>;
 
   if (showWizard) {
     return (
@@ -96,55 +97,45 @@ export function App() {
     <div class="shell">
       <main class="card">
         <h1>TrueDial <span class="muted">for 3CX</span></h1>
-        <p class="muted">
-          Niezależne rozszerzenie click-to-call. Nie jest powiązane z 3CX.
-        </p>
-        <button class="ghost" onClick={() => setShowWizard(true)}>Kreator konfiguracji</button>
+        <p class="muted">{t('opt_tagline')}</p>
+        <button class="ghost" onClick={() => setShowWizard(true)}>{t('opt_wizardBtn')}</button>
 
         <section>
-          <h2>Połączenie z 3CX</h2>
+          <h2>{t('opt_sec_connection')}</h2>
           <label class="field">
-            <span>FQDN instancji 3CX</span>
+            <span>{t('opt_fqdnLabel')}</span>
             <input
               type="text"
-              placeholder="pbx.twojafirma.pl lub pbx.twojafirma.pl:5001"
+              placeholder="pbx.twojafirma.pl : 5001"
               value={cfg.fqdn ?? ''}
               onInput={(e) => update({ fqdn: (e.target as HTMLInputElement).value })}
             />
-            <span class="hint">
-              Ścieżka MVP: deep-link web clienta (bez konfiguracji admina).
-            </span>
+            <span class="hint">{t('opt_fqdnHint')}</span>
           </label>
           <button class="ghost" disabled={!cfg.fqdn} onClick={testDeepLink}>
-            Testuj deep-link
+            {t('opt_testDeepLink')}
           </button>
 
           <label class="field">
-            <span>Preferowana ścieżka połączenia</span>
+            <span>{t('opt_pathLabel')}</span>
             <select
               value={cfg.preferredPath}
               onChange={(e) => update({ preferredPath: (e.target as HTMLSelectElement).value as PreferredPath })}
             >
-              <option value="auto">Automatycznie (Call Control API → deep-link → tel:)</option>
-              <option value="ccapi">Tylko Call Control API</option>
-              <option value="deeplink">Tylko deep-link web clienta</option>
-              <option value="tel">Tylko tel: (aplikacja desktopowa)</option>
+              <option value="auto">{t('opt_path_auto')}</option>
+              <option value="ccapi">{t('opt_path_ccapi')}</option>
+              <option value="deeplink">{t('opt_path_deeplink')}</option>
+              <option value="tel">{t('opt_path_tel')}</option>
             </select>
-            <span class="hint">
-              Przy niepowodzeniu ścieżki rozszerzenie schodzi do następnej — bez cichych awarii.
-            </span>
+            <span class="hint">{t('opt_pathHint')}</span>
           </label>
         </section>
 
         <section>
-          <h2>Call Control API (opcjonalnie)</h2>
-          <p class="hint">
-            Pełny status połączenia. Wymaga aplikacji API w konsoli 3CX
-            (Admin → Integrations → API) oraz odpowiedniej licencji. Poświadczenia
-            są przechowywane lokalnie i nigdy nie są synchronizowane.
-          </p>
+          <h2>{t('opt_sec_ccapi')}</h2>
+          <p class="hint">{t('opt_ccapiHint')}</p>
           <label class="field">
-            <span>Client ID</span>
+            <span>{t('opt_clientId')}</span>
             <input
               type="text"
               value={cfg.clientId ?? ''}
@@ -152,7 +143,7 @@ export function App() {
             />
           </label>
           <label class="field">
-            <span>Client Secret</span>
+            <span>{t('opt_clientSecret')}</span>
             <input
               type="password"
               autocomplete="off"
@@ -162,16 +153,16 @@ export function App() {
           </label>
           <div class="row" style="gap:12px">
             <label class="field" style="flex:1">
-              <span>Numer wewnętrzny (ext.)</span>
+              <span>{t('opt_extension')}</span>
               <input
                 type="text"
-                placeholder="np. 100"
+                placeholder="100"
                 value={cfg.ccExtension ?? ''}
                 onInput={(e) => update({ ccExtension: (e.target as HTMLInputElement).value })}
               />
             </label>
             <label class="field" style="flex:1">
-              <span>Device ID</span>
+              <span>{t('opt_deviceId')}</span>
               <input
                 type="text"
                 placeholder="z GET /callcontrol/{ext}/devices"
@@ -183,9 +174,9 @@ export function App() {
         </section>
 
         <section>
-          <h2>Detekcja numerów</h2>
+          <h2>{t('opt_sec_detection')}</h2>
           <label class="field">
-            <span>Region domyślny (numery krajowe)</span>
+            <span>{t('opt_regionLabel')}</span>
             <select
               value={cfg.defaultRegion}
               onChange={(e) => update({ defaultRegion: (e.target as HTMLSelectElement).value as CountryCode })}
@@ -197,14 +188,14 @@ export function App() {
           </label>
 
           <label class="field">
-            <span>Tryb prezentacji</span>
+            <span>{t('opt_modeLabel')}</span>
             <select
               value={cfg.detectionMode}
               onChange={(e) => update({ detectionMode: (e.target as HTMLSelectElement).value as DetectionMode })}
             >
-              <option value="subtle">Subtelny (podkreślenie + ikona na hover)</option>
-              <option value="aggressive">Agresywny (wyraźne, klikalne numery)</option>
-              <option value="off">Wyłączony</option>
+              <option value="subtle">{t('opt_mode_subtle')}</option>
+              <option value="aggressive">{t('opt_mode_aggressive')}</option>
+              <option value="off">{t('opt_mode_off')}</option>
             </select>
           </label>
 
@@ -214,12 +205,12 @@ export function App() {
               checked={cfg.allowlistMode}
               onChange={(e) => update({ allowlistMode: (e.target as HTMLInputElement).checked })}
             />
-            <span>Skanuj tylko wybrane domeny (allowlist)</span>
+            <span>{t('opt_allowlistToggle')}</span>
           </label>
 
           {cfg.allowlistMode ? (
             <label class="field">
-              <span>Allowlist (po jednej domenie w linii)</span>
+              <span>{t('opt_allowlistLabel')}</span>
               <textarea
                 rows={4}
                 value={cfg.allowlist.join('\n')}
@@ -234,25 +225,23 @@ export function App() {
               />
             </label>
           ) : (
-            <button class="ghost" onClick={grantAllUrls}>
-              Zezwól na autodetekcję na wszystkich stronach (&lt;all_urls&gt;)
-            </button>
+            <button class="ghost" onClick={grantAllUrls}>{t('opt_grantAll')}</button>
           )}
         </section>
 
         <section>
-          <h2>Dźwięk potwierdzenia</h2>
+          <h2>{t('opt_sec_sound')}</h2>
           <label class="row">
             <input
               type="checkbox"
               checked={cfg.soundEnabled}
               onChange={(e) => update({ soundEnabled: (e.target as HTMLInputElement).checked })}
             />
-            <span>Odtwarzaj krótki dźwięk po zainicjowaniu połączenia</span>
+            <span>{t('opt_soundEnable')}</span>
           </label>
           <div class="row" style="gap:12px;margin-top:10px">
             <label class="field" style="flex:1">
-              <span>Ton</span>
+              <span>{t('opt_tone')}</span>
               <select
                 value={cfg.soundName}
                 onChange={(e) => update({ soundName: (e.target as HTMLSelectElement).value })}
@@ -263,7 +252,7 @@ export function App() {
               </select>
             </label>
             <label class="field" style="flex:2">
-              <span>Głośność: {Math.round(cfg.soundVolume * 100)}%</span>
+              <span>{t('opt_volume')}: {Math.round(cfg.soundVolume * 100)}%</span>
               <input
                 type="range"
                 min="0"
@@ -283,46 +272,39 @@ export function App() {
               await browser.runtime.sendMessage(msg);
             }}
           >
-            Testuj dźwięk
+            {t('opt_testSound')}
           </button>
         </section>
 
         <section>
-          <h2>Screen-pop (CRM)</h2>
+          <h2>{t('opt_sec_screenpop')}</h2>
           <label class="field">
-            <span>Szablon URL otwierany przy połączeniu wychodzącym</span>
+            <span>{t('opt_screenpopLabel')}</span>
             <input
               type="text"
               placeholder="https://crm.twojafirma.pl/search?phone={number}"
               value={cfg.screenPopUrl}
               onInput={(e) => update({ screenPopUrl: (e.target as HTMLInputElement).value })}
             />
-            <span class="hint">
-              Placeholdery: <code>{'{number}'}</code> (E.164), <code>{'{national}'}</code>.
-              Puste pole = wyłączone.
-            </span>
+            <span class="hint">{t('opt_screenpopHint')}</span>
           </label>
         </section>
 
         <div class="row between actions">
-          <button class="primary" onClick={save}>Zapisz</button>
-          {saved && <span class="ok">✓ Zapisano</span>}
+          <button class="primary" onClick={save}>{t('opt_save')}</button>
+          {saved && <span class="ok">{t('opt_saved')}</span>}
         </div>
 
         <section>
-          <h2>Kopia zapasowa / polityka</h2>
-          <p class="hint">
-            Eksport pomija sekret klienta. Wdrożenia enterprise mogą wymusić
-            konfigurację przez politykę (chrome.storage.managed) — ma ona
-            pierwszeństwo nad ustawieniami lokalnymi.
-          </p>
+          <h2>{t('opt_sec_backup')}</h2>
+          <p class="hint">{t('opt_backupHint')}</p>
           <div class="row" style="gap:12px">
-            <button class="ghost" onClick={doExport}>Eksportuj konfigurację (JSON)</button>
+            <button class="ghost" onClick={doExport}>{t('opt_export')}</button>
             <label class="ghost" style="cursor:pointer">
-              Importuj z pliku…
+              {t('opt_import')}
               <input type="file" accept="application/json" style="display:none" onChange={doImport} />
             </label>
-            {importErr && <span class="err">Niepoprawny plik konfiguracji</span>}
+            {importErr && <span class="err">{t('opt_importErr')}</span>}
           </div>
         </section>
 
