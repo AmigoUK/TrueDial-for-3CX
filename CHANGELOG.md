@@ -9,6 +9,14 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 _Nothing yet._
 
+## [0.6.0] — 2026-07-27
+
+### Added
+- Import/export of the configuration as JSON on the Settings page. Exports omit
+  the client secret by default.
+- Enterprise policy support: `chrome.storage.managed` is validated and overlaid
+  on top of the user's config (policy wins), for GPO/Intune deployments.
+
 ## [0.5.0] — 2026-07-27
 
 ### Added
@@ -90,7 +98,8 @@ guiding principle: **never break the host page**.
 - 35 tests (Vitest): phone corpus, false-positive corpus, messaging,
   orchestrator, and a DOM-level scanner integration (happy-dom).
 
-[Unreleased]: https://github.com/AmigoUK/TrueDial-for-3CX/compare/v0.5.0...HEAD
+[Unreleased]: https://github.com/AmigoUK/TrueDial-for-3CX/compare/v0.6.0...HEAD
+[0.6.0]: https://github.com/AmigoUK/TrueDial-for-3CX/compare/v0.5.0...v0.6.0
 [0.5.0]: https://github.com/AmigoUK/TrueDial-for-3CX/compare/v0.4.0...v0.5.0
 [0.4.0]: https://github.com/AmigoUK/TrueDial-for-3CX/compare/v0.3.0...v0.4.0
 [0.3.0]: https://github.com/AmigoUK/TrueDial-for-3CX/compare/v0.2.0...v0.3.0

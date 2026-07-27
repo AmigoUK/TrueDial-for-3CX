@@ -4,9 +4,11 @@
 
 import { browser } from 'wxt/browser';
 import { type Config, withConfigDefaults } from './config';
+import { importConfig, mergeManaged } from './portable';
 import type { TokenSet } from '../call/token';
 
 export * from './config';
+export { exportConfig, importConfig } from './portable';
 
 const CONFIG_KEY = 'config';
 const HISTORY_KEY = 'history';
@@ -19,9 +21,23 @@ export interface CallHistoryEntry {
   status: 'placed' | 'failed';
 }
 
+// Enterprise policy (§8): read chrome.storage.managed and validate it through
+// the same import schema. Returns null when there is no policy.
+async function getManagedConfig(): Promise<Partial<Config> | null> {
+  try {
+    const managed = await browser.storage.managed?.get();
+    if (!managed || Object.keys(managed).length === 0) return null;
+    return importConfig(JSON.stringify(managed));
+  } catch {
+    return null; // no managed store configured
+  }
+}
+
 export async function getConfig(): Promise<Config> {
   const raw = await browser.storage.local.get(CONFIG_KEY);
-  return withConfigDefaults(raw[CONFIG_KEY] ?? {});
+  const local = withConfigDefaults(raw[CONFIG_KEY] ?? {});
+  // A managed policy overlays (and wins over) the user's local config.
+  return mergeManaged(local, await getManagedConfig());
 }
 
 export async function setConfig(patch: Partial<Config>): Promise<Config> {

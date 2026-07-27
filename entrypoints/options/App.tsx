@@ -1,6 +1,13 @@
 import { useEffect, useState } from 'preact/hooks';
 import type { CountryCode } from 'libphonenumber-js/min';
-import { getConfig, setConfig, type Config, type DetectionMode } from '../../lib/storage';
+import {
+  getConfig,
+  setConfig,
+  exportConfig,
+  importConfig,
+  type Config,
+  type DetectionMode,
+} from '../../lib/storage';
 import { normalizeFqdn, buildDeepLinkUrl } from '../../lib/call/deeplink';
 import type { PreferredPath } from '../../lib/call/select';
 import { Diagnostics } from './Diagnostics';
@@ -27,6 +34,7 @@ function suggestRegion(): CountryCode {
 export function App() {
   const [cfg, setCfg] = useState<Config | null>(null);
   const [saved, setSaved] = useState(false);
+  const [importErr, setImportErr] = useState(false);
 
   useEffect(() => {
     void (async () => {
@@ -56,6 +64,28 @@ export function App() {
 
   const testDeepLink = () => {
     if (cfg.fqdn) browser.tabs.create({ url: buildDeepLinkUrl(cfg.fqdn, '+000000000') });
+  };
+
+  const doExport = () => {
+    const blob = new Blob([exportConfig(cfg)], { type: 'application/json' });
+    const url = URL.createObjectURL(blob);
+    const a = document.createElement('a');
+    a.href = url;
+    a.download = 'truedial-config.json';
+    a.click();
+    URL.revokeObjectURL(url);
+  };
+
+  const doImport = async (e: Event) => {
+    const file = (e.target as HTMLInputElement).files?.[0];
+    if (!file) return;
+    const patch = importConfig(await file.text());
+    setImportErr(patch === null);
+    if (patch) {
+      setCfg(await setConfig(patch));
+      setSaved(true);
+      setTimeout(() => setSaved(false), 1800);
+    }
   };
 
   return (
@@ -225,6 +255,23 @@ export function App() {
           <button class="primary" onClick={save}>Zapisz</button>
           {saved && <span class="ok">✓ Zapisano</span>}
         </div>
+
+        <section>
+          <h2>Kopia zapasowa / polityka</h2>
+          <p class="hint">
+            Eksport pomija sekret klienta. Wdrożenia enterprise mogą wymusić
+            konfigurację przez politykę (chrome.storage.managed) — ma ona
+            pierwszeństwo nad ustawieniami lokalnymi.
+          </p>
+          <div class="row" style="gap:12px">
+            <button class="ghost" onClick={doExport}>Eksportuj konfigurację (JSON)</button>
+            <label class="ghost" style="cursor:pointer">
+              Importuj z pliku…
+              <input type="file" accept="application/json" style="display:none" onChange={doImport} />
+            </label>
+            {importErr && <span class="err">Niepoprawny plik konfiguracji</span>}
+          </div>
+        </section>
 
         <Diagnostics />
       </main>
