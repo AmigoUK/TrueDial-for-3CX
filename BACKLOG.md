@@ -14,7 +14,7 @@ Statuses: `todo` → `in progress` → `done`. Estimates are person-days.
 | 4   | Honest path diagnostics: surface which call strategy succeeded or failed (and why) in the popup; health check accessible from the popup                                                                            | P2       | 1–2 d    | done   |
 | 5   | CRM screen-pop presets for HubSpot, Zoho CRM and Salesforce (URL templates, no OAuth)                                                                                                                              | P2       | 1–2 d    | done   |
 | 6   | Smoke E2E: Playwright loads the built extension, asserts detection on the demo corpus, no false highlights, and an unmodified host DOM                                                                             | P2       | 2 d      | done   |
-| 7   | Chrome Web Store pack: privacy policy, listing copy, permission justifications, screenshots, submission checklist                                                                                                  | P3       | 1–2 d    | todo   |
+| 7   | Chrome Web Store pack: privacy policy, listing copy, permission justifications, screenshots, submission checklist                                                                                                  | P3       | 1–2 d    | done   |
 | 8   | Live 3CX V20 verification protocol (manual test script; release 1.0.0 is gated on it)                                                                                                                              | P1 gate  | 0.5 d    | todo   |
 
 ## Rejected (with rationale)

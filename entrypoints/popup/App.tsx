@@ -30,7 +30,11 @@ async function activeHost(): Promise<string | null> {
   const [tab] = await browser.tabs.query({ active: true, currentWindow: true });
   if (!tab?.url) return null;
   try {
-    return new URL(tab.url).host;
+    const url = new URL(tab.url);
+    // The per-site toggle only makes sense for web pages — not chrome://,
+    // extension pages or the Web Store.
+    if (url.protocol !== 'http:' && url.protocol !== 'https:') return null;
+    return url.host;
   } catch {
     return null;
   }
