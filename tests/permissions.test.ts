@@ -32,9 +32,10 @@ describe('contentScriptMatches', () => {
     expect(contentScriptMatches(['https://a.com/*', '<all_urls>'])).toEqual(['<all_urls>']);
   });
   it('passes granted origins through, deduplicated', () => {
-    expect(
-      contentScriptMatches(['https://a.com/*', 'https://a.com/*', '*://b.com/*']),
-    ).toEqual(['https://a.com/*', '*://b.com/*']);
+    expect(contentScriptMatches(['https://a.com/*', 'https://a.com/*', '*://b.com/*'])).toEqual([
+      'https://a.com/*',
+      '*://b.com/*',
+    ]);
   });
   it('is empty when nothing is granted (no registration at all)', () => {
     expect(contentScriptMatches([])).toEqual([]);

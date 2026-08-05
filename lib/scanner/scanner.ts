@@ -79,7 +79,9 @@ export class Scanner {
     this.pending.clear();
     const run = () => nodes.forEach((n) => this.scanSubtree(n as ParentNode));
     if ('requestIdleCallback' in window) {
-      (window as unknown as { requestIdleCallback: (cb: () => void) => void }).requestIdleCallback(run);
+      (window as unknown as { requestIdleCallback: (cb: () => void) => void }).requestIdleCallback(
+        run,
+      );
     } else {
       run();
     }

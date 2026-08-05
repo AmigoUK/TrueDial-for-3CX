@@ -15,7 +15,11 @@ function makeStore(initial: TokenSet | null = null) {
 }
 
 function tokenResponse(access: string, expiresIn = 3600) {
-  return { ok: true, status: 200, json: async () => ({ access_token: access, expires_in: expiresIn }) };
+  return {
+    ok: true,
+    status: 200,
+    json: async () => ({ access_token: access, expires_in: expiresIn }),
+  };
 }
 
 describe('TokenManager', () => {
@@ -41,8 +45,13 @@ describe('TokenManager', () => {
     const store = makeStore({ accessToken: 'cached', expiresAt: 10_000_000 });
     const fetchFn = vi.fn(async () => tokenResponse('fresh')) as unknown as typeof fetch;
     const tm = new TokenManager({
-      fqdn: 'pbx.test', clientId: 'id', clientSecret: 'secret',
-      fetchFn, now: () => 0, load: store.load, save: store.save,
+      fqdn: 'pbx.test',
+      clientId: 'id',
+      clientSecret: 'secret',
+      fetchFn,
+      now: () => 0,
+      load: store.load,
+      save: store.save,
     });
 
     expect(await tm.getToken()).toBe('cached');
@@ -53,8 +62,13 @@ describe('TokenManager', () => {
     const store = makeStore({ accessToken: 'old', expiresAt: 20_000 });
     const fetchFn = vi.fn(async () => tokenResponse('new')) as unknown as typeof fetch;
     const tm = new TokenManager({
-      fqdn: 'pbx.test', clientId: 'id', clientSecret: 'secret',
-      fetchFn, now: () => 0, load: store.load, save: store.save,
+      fqdn: 'pbx.test',
+      clientId: 'id',
+      clientSecret: 'secret',
+      fetchFn,
+      now: () => 0,
+      load: store.load,
+      save: store.save,
     });
     // 20s left < 30s safety margin → refresh.
     expect(await tm.getToken()).toBe('new');
@@ -65,18 +79,32 @@ describe('TokenManager', () => {
     const store = makeStore({ accessToken: 'cached', expiresAt: 10_000_000 });
     const fetchFn = vi.fn(async () => tokenResponse('forced')) as unknown as typeof fetch;
     const tm = new TokenManager({
-      fqdn: 'pbx.test', clientId: 'id', clientSecret: 'secret',
-      fetchFn, now: () => 0, load: store.load, save: store.save,
+      fqdn: 'pbx.test',
+      clientId: 'id',
+      clientSecret: 'secret',
+      fetchFn,
+      now: () => 0,
+      load: store.load,
+      save: store.save,
     });
     expect(await tm.getToken(true)).toBe('forced');
   });
 
   it('throws and does not cache on token endpoint error', async () => {
     const store = makeStore();
-    const fetchFn = vi.fn(async () => ({ ok: false, status: 401, json: async () => ({}) })) as unknown as typeof fetch;
+    const fetchFn = vi.fn(async () => ({
+      ok: false,
+      status: 401,
+      json: async () => ({}),
+    })) as unknown as typeof fetch;
     const tm = new TokenManager({
-      fqdn: 'pbx.test', clientId: 'id', clientSecret: 'secret',
-      fetchFn, now: () => 0, load: store.load, save: store.save,
+      fqdn: 'pbx.test',
+      clientId: 'id',
+      clientSecret: 'secret',
+      fetchFn,
+      now: () => 0,
+      load: store.load,
+      save: store.save,
     });
     await expect(tm.getToken()).rejects.toThrow();
     expect(store.value).toBeNull();

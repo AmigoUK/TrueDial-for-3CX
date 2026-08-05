@@ -16,30 +16,32 @@ describe('Scanner (DOM)', () => {
     document.body.innerHTML = '';
   });
 
-  it('wykrywa prawdziwy numer w tekście', () => {
-    const { matches } = collect('<p>Zadzwoń +44 20 7946 0958 dzisiaj</p>');
+  it('detects a genuine number in text', () => {
+    const { matches } = collect('<p>Call +44 20 7946 0958 today</p>');
     expect(matches.map((m) => m.e164)).toContain('+442079460958');
   });
 
-  it('NIE dotyka pól input/textarea (never break host)', () => {
-    const { matches } = collect('<input value="+44 20 7946 0958"><textarea>+44 20 7946 0958</textarea>');
+  it('does NOT touch input/textarea fields (never break host)', () => {
+    const { matches } = collect(
+      '<input value="+44 20 7946 0958"><textarea>+44 20 7946 0958</textarea>',
+    );
     expect(matches).toHaveLength(0);
   });
 
-  it('NIE traktuje Salesforce record ID jako numeru', () => {
+  it('does NOT treat a Salesforce record ID as a number', () => {
     const { matches } = collect('<div>Record: 0011x00000ABCDeAAF · 500170000012345</div>');
     expect(matches).toHaveLength(0);
   });
 
-  it('NIE skanuje istniejących linków ani <code>', () => {
+  it('does NOT scan existing links or <code>', () => {
     const { matches } = collect(
       '<a href="tel:+442079460958">+44 20 7946 0958</a><code>+44 20 7946 0958</code>',
     );
     expect(matches).toHaveLength(0);
   });
 
-  it('renderer nie zmienia widocznego tekstu strony', () => {
-    document.body.innerHTML = '<p>Biuro: +44 20 7946 0958.</p>';
+  it('the renderer does not change the visible page text', () => {
+    document.body.innerHTML = '<p>Office: +44 20 7946 0958.</p>';
     const before = document.body.textContent;
     const scanner = new Scanner({ defaultRegion: 'GB', onMatches: () => {} });
     scanner.start(document.body);

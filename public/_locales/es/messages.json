@@ -1,6 +1,8 @@
 {
   "extName": { "message": "TrueDial para 3CX" },
-  "extDescription": { "message": "Click-to-call fiable para 3CX. Detecta números de teléfono sin romper la página. No oficial — sin relación con 3CX." },
+  "extDescription": {
+    "message": "Click-to-call fiable para 3CX. Detecta números de teléfono sin romper la página. No oficial — sin relación con 3CX."
+  },
 
   "ctx_call": { "message": "Llamar con 3CX: «%s»" },
 
@@ -21,16 +23,22 @@
   "opt_wizardBtn": { "message": "Asistente de configuración" },
   "opt_sec_connection": { "message": "Conexión con 3CX" },
   "opt_fqdnLabel": { "message": "FQDN de la instancia 3CX" },
-  "opt_fqdnHint": { "message": "Ruta MVP: enlace profundo del cliente web (sin configuración de administrador)." },
+  "opt_fqdnHint": {
+    "message": "Ruta MVP: enlace profundo del cliente web (sin configuración de administrador)."
+  },
   "opt_testDeepLink": { "message": "Probar enlace profundo" },
   "opt_pathLabel": { "message": "Ruta de llamada preferida" },
   "opt_path_auto": { "message": "Automática (Call Control API → enlace profundo → tel:)" },
   "opt_path_ccapi": { "message": "Solo Call Control API" },
   "opt_path_deeplink": { "message": "Solo enlace profundo del cliente web" },
   "opt_path_tel": { "message": "Solo tel: (aplicación de escritorio)" },
-  "opt_pathHint": { "message": "Si una ruta falla, la extensión pasa a la siguiente — sin fallos silenciosos." },
+  "opt_pathHint": {
+    "message": "Si una ruta falla, la extensión pasa a la siguiente — sin fallos silenciosos."
+  },
   "opt_sec_ccapi": { "message": "Call Control API (opcional)" },
-  "opt_ccapiHint": { "message": "Estado de llamada completo. Requiere una aplicación API en la consola 3CX (Admin → Integrations → API) y la licencia adecuada. Las credenciales se guardan localmente y nunca se sincronizan." },
+  "opt_ccapiHint": {
+    "message": "Estado de llamada completo. Requiere una aplicación API en la consola 3CX (Admin → Integrations → API) y la licencia adecuada. Las credenciales se guardan localmente y nunca se sincronizan."
+  },
   "opt_clientId": { "message": "Client ID" },
   "opt_clientSecret": { "message": "Client Secret" },
   "opt_extension": { "message": "Extensión (ext.)" },
@@ -41,9 +49,13 @@
   "opt_mode_subtle": { "message": "Sutil (subrayado punteado + icono al pasar el ratón)" },
   "opt_mode_aggressive": { "message": "Marcado (números visibles y clicables)" },
   "opt_mode_off": { "message": "Desactivado" },
-  "opt_allowlistToggle": { "message": "Analizar solo dominios seleccionados (lista de permitidos)" },
+  "opt_allowlistToggle": {
+    "message": "Analizar solo dominios seleccionados (lista de permitidos)"
+  },
   "opt_allowlistLabel": { "message": "Lista de permitidos (un dominio por línea)" },
-  "opt_grantAll": { "message": "Permitir la detección automática en todos los sitios (<all_urls>)" },
+  "opt_grantAll": {
+    "message": "Permitir la detección automática en todos los sitios (<all_urls>)"
+  },
   "opt_sec_sound": { "message": "Sonido de confirmación" },
   "opt_soundEnable": { "message": "Reproducir un sonido corto al iniciar una llamada" },
   "opt_tone": { "message": "Tono" },
@@ -51,11 +63,15 @@
   "opt_testSound": { "message": "Probar sonido" },
   "opt_sec_screenpop": { "message": "Screen-pop (CRM)" },
   "opt_screenpopLabel": { "message": "Plantilla de URL abierta en una llamada saliente" },
-  "opt_screenpopHint": { "message": "Marcadores: {number} (E.164), {national}. Vacío = desactivado." },
+  "opt_screenpopHint": {
+    "message": "Marcadores: {number} (E.164), {national}. Vacío = desactivado."
+  },
   "opt_save": { "message": "Guardar" },
   "opt_saved": { "message": "✓ Guardado" },
   "opt_sec_backup": { "message": "Copia de seguridad / política" },
-  "opt_backupHint": { "message": "Las exportaciones omiten el secreto de cliente. Los despliegues empresariales pueden imponer la configuración mediante política (chrome.storage.managed) — tiene prioridad sobre los ajustes locales." },
+  "opt_backupHint": {
+    "message": "Las exportaciones omiten el secreto de cliente. Los despliegues empresariales pueden imponer la configuración mediante política (chrome.storage.managed) — tiene prioridad sobre los ajustes locales."
+  },
   "opt_export": { "message": "Exportar configuración (JSON)" },
   "opt_import": { "message": "Importar desde archivo…" },
   "opt_importErr": { "message": "Archivo de configuración no válido" },
@@ -69,9 +85,13 @@
   "wiz_s3_title": { "message": "3 · Región predeterminada" },
   "wiz_s3_label": { "message": "País para números sin prefijo" },
   "wiz_s4_title": { "message": "4 · Detección automática" },
-  "wiz_s4_hint": { "message": "Para detectar números en las páginas, permite el acceso — o restríngelo a dominios seleccionados en los ajustes más adelante." },
+  "wiz_s4_hint": {
+    "message": "Para detectar números en las páginas, permite el acceso — o restríngelo a dominios seleccionados en los ajustes más adelante."
+  },
   "wiz_grantAll": { "message": "Permitir en todos los sitios (<all_urls>)" },
-  "wiz_grantPbx": { "message": "Permitir el acceso a su servidor 3CX (necesario para la Call Control API)" },
+  "wiz_grantPbx": {
+    "message": "Permitir el acceso a su servidor 3CX (necesario para la Call Control API)"
+  },
   "wiz_done_title": { "message": "Listo 🎉" },
   "wiz_sum_path": { "message": "ruta" },
   "wiz_sum_region": { "message": "región" },
@@ -81,7 +101,9 @@
   "wiz_finish": { "message": "Finalizar" },
 
   "diag_title": { "message": "Diagnóstico" },
-  "diag_hint": { "message": "Un búfer local de eventos recientes. El informe está anonimizado (números y URL enmascarados) — nada sale del navegador sin tu acción." },
+  "diag_hint": {
+    "message": "Un búfer local de eventos recientes. El informe está anonimizado (números y URL enmascarados) — nada sale del navegador sin tu acción."
+  },
   "diag_runHealth": { "message": "Ejecutar prueba de conectividad" },
   "diag_checking": { "message": "Probando…" },
   "diag_copyReport": { "message": "Copiar informe de diagnóstico" },

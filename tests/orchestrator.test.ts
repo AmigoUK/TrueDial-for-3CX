@@ -3,7 +3,11 @@ import { CallOrchestrator } from '../lib/call/orchestrator';
 import { orderStrategyIds } from '../lib/call/select';
 import type { CallStrategy, CallOutcome, StrategyId } from '../lib/call/strategy';
 
-function fake(id: StrategyId, available: boolean, outcome: Partial<CallOutcome> = {}): CallStrategy {
+function fake(
+  id: StrategyId,
+  available: boolean,
+  outcome: Partial<CallOutcome> = {},
+): CallStrategy {
   return {
     id,
     isAvailable: vi.fn(async () => available),
@@ -12,25 +16,25 @@ function fake(id: StrategyId, available: boolean, outcome: Partial<CallOutcome> 
 }
 
 describe('orderStrategyIds', () => {
-  it('auto → ccapi, potem deeplink, potem tel', () => {
+  it('auto → ccapi, then deeplink, then tel', () => {
     expect(orderStrategyIds('auto')).toEqual(['ccapi', 'deeplink', 'tel']);
   });
-  it('wymuszony deeplink', () => {
+  it('forced deeplink', () => {
     expect(orderStrategyIds('deeplink')).toEqual(['deeplink']);
   });
-  it('wymuszony tel', () => {
+  it('forced tel', () => {
     expect(orderStrategyIds('tel')).toEqual(['tel']);
   });
 });
 
-describe('CallOrchestrator (matryca fallbacków)', () => {
-  it('wybiera pierwszą dostępną', async () => {
+describe('CallOrchestrator (fallback matrix)', () => {
+  it('picks the first available strategy', async () => {
     const o = new CallOrchestrator([fake('deeplink', true), fake('tel', true)]);
     const out = await o.placeCall('+48221234567');
     expect(out).toEqual({ ok: true, strategy: 'deeplink' });
   });
 
-  it('pomija niedostępną i schodzi do następnej', async () => {
+  it('skips an unavailable strategy and falls through', async () => {
     const deeplink = fake('deeplink', false);
     const tel = fake('tel', true);
     const out = await new CallOrchestrator([deeplink, tel]).placeCall('+48221234567');
@@ -38,7 +42,7 @@ describe('CallOrchestrator (matryca fallbacków)', () => {
     expect(deeplink.placeCall).not.toHaveBeenCalled();
   });
 
-  it('gdy dostępna strategia zawiedzie (ok:false), próbuje następnej', async () => {
+  it('tries the next strategy when an available one fails (ok:false)', async () => {
     const failing: CallStrategy = {
       id: 'deeplink',
       isAvailable: async () => true,
@@ -50,7 +54,7 @@ describe('CallOrchestrator (matryca fallbacków)', () => {
     expect(out.ok).toBe(true);
   });
 
-  it('gdy strategia rzuci wyjątek, próbuje następnej', async () => {
+  it('tries the next strategy when one throws', async () => {
     const throwing: CallStrategy = {
       id: 'deeplink',
       isAvailable: async () => true,
@@ -63,7 +67,7 @@ describe('CallOrchestrator (matryca fallbacków)', () => {
     expect(out.ok).toBe(true);
   });
 
-  it('gdy żadna niedostępna — jawny błąd z ostatnim powodem', async () => {
+  it('reports an explicit error with the last reason when none is available', async () => {
     const out = await new CallOrchestrator([fake('deeplink', false)]).placeCall('+1');
     expect(out.ok).toBe(false);
     expect(out.reason).toBeDefined();

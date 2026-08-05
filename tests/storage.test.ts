@@ -7,7 +7,7 @@ import {
 } from '../lib/storage/config';
 
 describe('withConfigDefaults', () => {
-  it('uzupełnia brakujące pola defaultami', () => {
+  it('fills missing fields with defaults', () => {
     const cfg = withConfigDefaults({ fqdn: 'pbx.firma.pl' });
     expect(cfg.fqdn).toBe('pbx.firma.pl');
     expect(cfg.defaultRegion).toBe(DEFAULT_CONFIG.defaultRegion);
@@ -15,7 +15,7 @@ describe('withConfigDefaults', () => {
     expect(cfg.allowlist).toEqual([]);
   });
 
-  it('nie nadpisuje istniejących pól', () => {
+  it('does not overwrite existing fields', () => {
     const cfg = withConfigDefaults({ detectionMode: 'off', allowlistMode: true });
     expect(cfg.detectionMode).toBe('off');
     expect(cfg.allowlistMode).toBe(true);
@@ -23,24 +23,24 @@ describe('withConfigDefaults', () => {
 });
 
 describe('isSiteEnabled', () => {
-  it('domyślnie włączone gdy brak override i allowlistMode=false', () => {
+  it('enabled by default with no override and allowlistMode=false', () => {
     const cfg = withConfigDefaults({});
     expect(isSiteEnabled(cfg, 'app.example.com')).toBe(true);
   });
 
-  it('respektuje per-site wyłączenie (override)', () => {
+  it('respects a per-site disable (override)', () => {
     const cfg = withConfigDefaults({ siteOverrides: { 'app.example.com': false } });
     expect(isSiteEnabled(cfg, 'app.example.com')).toBe(false);
     expect(isSiteEnabled(cfg, 'other.com')).toBe(true);
   });
 
-  it('w allowlistMode skanuje tylko hosty z allowlisty', () => {
+  it('in allowlistMode scans only allowlisted hosts', () => {
     const cfg = withConfigDefaults({ allowlistMode: true, allowlist: ['crm.firma.pl'] });
     expect(isSiteEnabled(cfg, 'crm.firma.pl')).toBe(true);
     expect(isSiteEnabled(cfg, 'random.com')).toBe(false);
   });
 
-  it('override wyłączający wygrywa nawet w allowlistMode', () => {
+  it('a disabling override wins even in allowlistMode', () => {
     const cfg = withConfigDefaults({
       allowlistMode: true,
       allowlist: ['crm.firma.pl'],
@@ -53,7 +53,12 @@ describe('isSiteEnabled', () => {
 describe('detectionSettingsChanged', () => {
   it('ignores changes that do not affect detection (volume, screen-pop, secrets)', () => {
     const before = withConfigDefaults({ soundVolume: 0.4, screenPopUrl: '' });
-    const after = { ...before, soundVolume: 0.9, screenPopUrl: 'https://crm/{number}', clientSecret: 's' };
+    const after = {
+      ...before,
+      soundVolume: 0.9,
+      screenPopUrl: 'https://crm/{number}',
+      clientSecret: 's',
+    };
     expect(detectionSettingsChanged(before, after)).toBe(false);
   });
 
@@ -66,13 +71,15 @@ describe('detectionSettingsChanged', () => {
   it('flags allowlist and per-site override changes', () => {
     const before = withConfigDefaults({});
     expect(detectionSettingsChanged(before, { ...before, allowlistMode: true })).toBe(true);
-    expect(
-      detectionSettingsChanged(before, { ...before, siteOverrides: { 'a.com': false } }),
-    ).toBe(true);
+    expect(detectionSettingsChanged(before, { ...before, siteOverrides: { 'a.com': false } })).toBe(
+      true,
+    );
   });
 
   it('treats a missing oldValue as pure defaults', () => {
     expect(detectionSettingsChanged(undefined, withConfigDefaults({}))).toBe(false);
-    expect(detectionSettingsChanged(undefined, withConfigDefaults({ detectionMode: 'off' }))).toBe(true);
+    expect(detectionSettingsChanged(undefined, withConfigDefaults({ detectionMode: 'off' }))).toBe(
+      true,
+    );
   });
 });

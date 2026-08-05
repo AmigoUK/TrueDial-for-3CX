@@ -67,9 +67,7 @@ export async function getHistory(): Promise<CallHistoryEntry[]> {
 export async function pushHistory(entry: CallHistoryEntry): Promise<void> {
   const cfg = await getConfig();
   const cutoff = entry.ts - cfg.historyRetentionDays * 24 * 60 * 60 * 1000;
-  const history = [entry, ...(await getHistory())]
-    .filter((e) => e.ts >= cutoff)
-    .slice(0, 500);
+  const history = [entry, ...(await getHistory())].filter((e) => e.ts >= cutoff).slice(0, 500);
   await browser.storage.local.set({ [HISTORY_KEY]: history });
 }
 

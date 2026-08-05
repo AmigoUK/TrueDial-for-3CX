@@ -1,6 +1,8 @@
 {
   "extName": { "message": "TrueDial dla 3CX" },
-  "extDescription": { "message": "Niezawodne click-to-call dla 3CX. Wykrywa numery telefonów bez psucia strony. Nieoficjalne — niepowiązane z 3CX." },
+  "extDescription": {
+    "message": "Niezawodne click-to-call dla 3CX. Wykrywa numery telefonów bez psucia strony. Nieoficjalne — niepowiązane z 3CX."
+  },
 
   "ctx_call": { "message": "Zadzwoń przez 3CX: „%s”" },
 
@@ -28,9 +30,13 @@
   "opt_path_ccapi": { "message": "Tylko Call Control API" },
   "opt_path_deeplink": { "message": "Tylko deep-link web clienta" },
   "opt_path_tel": { "message": "Tylko tel: (aplikacja desktopowa)" },
-  "opt_pathHint": { "message": "Przy niepowodzeniu ścieżki rozszerzenie schodzi do następnej — bez cichych awarii." },
+  "opt_pathHint": {
+    "message": "Przy niepowodzeniu ścieżki rozszerzenie schodzi do następnej — bez cichych awarii."
+  },
   "opt_sec_ccapi": { "message": "Call Control API (opcjonalnie)" },
-  "opt_ccapiHint": { "message": "Pełny status połączenia. Wymaga aplikacji API w konsoli 3CX (Admin → Integrations → API) oraz odpowiedniej licencji. Poświadczenia są przechowywane lokalnie i nigdy nie są synchronizowane." },
+  "opt_ccapiHint": {
+    "message": "Pełny status połączenia. Wymaga aplikacji API w konsoli 3CX (Admin → Integrations → API) oraz odpowiedniej licencji. Poświadczenia są przechowywane lokalnie i nigdy nie są synchronizowane."
+  },
   "opt_clientId": { "message": "Client ID" },
   "opt_clientSecret": { "message": "Client Secret" },
   "opt_extension": { "message": "Numer wewnętrzny (ext.)" },
@@ -51,11 +57,15 @@
   "opt_testSound": { "message": "Testuj dźwięk" },
   "opt_sec_screenpop": { "message": "Screen-pop (CRM)" },
   "opt_screenpopLabel": { "message": "Szablon URL otwierany przy połączeniu wychodzącym" },
-  "opt_screenpopHint": { "message": "Placeholdery: {number} (E.164), {national}. Puste pole = wyłączone." },
+  "opt_screenpopHint": {
+    "message": "Placeholdery: {number} (E.164), {national}. Puste pole = wyłączone."
+  },
   "opt_save": { "message": "Zapisz" },
   "opt_saved": { "message": "✓ Zapisano" },
   "opt_sec_backup": { "message": "Kopia zapasowa / polityka" },
-  "opt_backupHint": { "message": "Eksport pomija sekret klienta. Wdrożenia enterprise mogą wymusić konfigurację przez politykę (chrome.storage.managed) — ma ona pierwszeństwo nad ustawieniami lokalnymi." },
+  "opt_backupHint": {
+    "message": "Eksport pomija sekret klienta. Wdrożenia enterprise mogą wymusić konfigurację przez politykę (chrome.storage.managed) — ma ona pierwszeństwo nad ustawieniami lokalnymi."
+  },
   "opt_export": { "message": "Eksportuj konfigurację (JSON)" },
   "opt_import": { "message": "Importuj z pliku…" },
   "opt_importErr": { "message": "Niepoprawny plik konfiguracji" },
@@ -69,7 +79,9 @@
   "wiz_s3_title": { "message": "3 · Region domyślny" },
   "wiz_s3_label": { "message": "Kraj dla numerów bez prefiksu" },
   "wiz_s4_title": { "message": "4 · Autodetekcja" },
-  "wiz_s4_hint": { "message": "Aby wykrywać numery na stronach, zezwól na dostęp — albo ogranicz go do wybranych domen w ustawieniach później." },
+  "wiz_s4_hint": {
+    "message": "Aby wykrywać numery na stronach, zezwól na dostęp — albo ogranicz go do wybranych domen w ustawieniach później."
+  },
   "wiz_grantAll": { "message": "Zezwól na wszystkich stronach (<all_urls>)" },
   "wiz_grantPbx": { "message": "Zezwól na dostęp do serwera 3CX (wymagane dla Call Control API)" },
   "wiz_done_title": { "message": "Gotowe 🎉" },
@@ -81,7 +93,9 @@
   "wiz_finish": { "message": "Zakończ" },
 
   "diag_title": { "message": "Diagnostyka" },
-  "diag_hint": { "message": "Lokalny bufor ostatnich zdarzeń. Raport jest zanonimizowany (numery i adresy URL są maskowane) — nic nie opuszcza przeglądarki bez Twojej akcji." },
+  "diag_hint": {
+    "message": "Lokalny bufor ostatnich zdarzeń. Raport jest zanonimizowany (numery i adresy URL są maskowane) — nic nie opuszcza przeglądarki bez Twojej akcji."
+  },
   "diag_runHealth": { "message": "Uruchom test łączności" },
   "diag_checking": { "message": "Testuję…" },
   "diag_copyReport": { "message": "Kopiuj raport diagnostyczny" },

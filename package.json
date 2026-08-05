@@ -11,6 +11,9 @@
     "build:firefox": "wxt build -b firefox",
     "zip": "wxt zip",
     "compile": "tsc --noEmit",
+    "lint": "eslint . && prettier --check .",
+    "format": "prettier --write .",
+    "icons": "node scripts/generate-icons.mjs",
     "test": "vitest run",
     "test:watch": "vitest",
     "postinstall": "wxt prepare"
@@ -22,8 +25,13 @@
   },
   "devDependencies": {
     "@preact/preset-vite": "^2.10.0",
+    "@resvg/resvg-js": "^2.6.2",
+    "eslint": "^10.8.0",
+    "eslint-config-prettier": "^10.1.8",
     "happy-dom": "^20.11.1",
+    "prettier": "^3.9.6",
     "typescript": "^5.6.0",
+    "typescript-eslint": "^8.66.0",
     "vitest": "^2.1.0",
     "wxt": "^0.19.0"
   }

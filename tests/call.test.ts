@@ -1,28 +1,33 @@
 import { describe, it, expect, beforeEach } from 'vitest';
 import { fakeBrowser } from 'wxt/testing';
-import { normalizeFqdn, buildDeepLinkUrl, isWebClientUrl, DeepLinkStrategy } from '../lib/call/deeplink';
+import {
+  normalizeFqdn,
+  buildDeepLinkUrl,
+  isWebClientUrl,
+  DeepLinkStrategy,
+} from '../lib/call/deeplink';
 import { TelStrategy } from '../lib/call/tel';
 
 describe('normalizeFqdn', () => {
-  it('zdejmuje protokół i końcowy slash', () => {
+  it('strips the protocol and a trailing slash', () => {
     expect(normalizeFqdn('https://pbx.firma.pl/')).toBe('pbx.firma.pl');
     expect(normalizeFqdn('http://pbx.firma.pl')).toBe('pbx.firma.pl');
   });
-  it('zachowuje port', () => {
+  it('preserves the port', () => {
     expect(normalizeFqdn('pbx.firma.pl:5001')).toBe('pbx.firma.pl:5001');
   });
-  it('przycina białe znaki', () => {
+  it('trims whitespace', () => {
     expect(normalizeFqdn('  pbx.firma.pl  ')).toBe('pbx.firma.pl');
   });
 });
 
 describe('buildDeepLinkUrl', () => {
-  it('buduje URL web clienta z numerem E.164', () => {
+  it('builds the web client URL with the E.164 number', () => {
     expect(buildDeepLinkUrl('pbx.firma.pl', '+48221234567')).toBe(
       'https://pbx.firma.pl/webclient/#/call?phone=%2B48221234567',
     );
   });
-  it('normalizuje FQDN przy okazji', () => {
+  it('normalises the FQDN along the way', () => {
     expect(buildDeepLinkUrl('https://pbx.firma.pl/', '+442079460958')).toBe(
       'https://pbx.firma.pl/webclient/#/call?phone=%2B442079460958',
     );
@@ -71,7 +76,9 @@ describe('DeepLinkStrategy (port-qualified FQDN)', () => {
 
     expect(outcome.ok).toBe(true);
     const tabs = await fakeBrowser.tabs.query({});
-    expect(tabs.some((t) => t.url === 'https://pbx.test:5001/webclient/#/call?phone=%2B442079460958')).toBe(true);
+    expect(
+      tabs.some((t) => t.url === 'https://pbx.test:5001/webclient/#/call?phone=%2B442079460958'),
+    ).toBe(true);
   });
 });
 

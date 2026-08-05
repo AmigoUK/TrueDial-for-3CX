@@ -38,7 +38,10 @@ describe('buildReport', () => {
     region: 'GB',
     preferredPath: 'auto',
     detectionMode: 'subtle',
-    events: [ev('dialing +44 20 7946 0958', 0), { ...ev('error', 1), level: 'error', kind: 'error' }],
+    events: [
+      ev('dialing +44 20 7946 0958', 0),
+      { ...ev('error', 1), level: 'error', kind: 'error' },
+    ],
   });
 
   it('includes version and settings summary', () => {

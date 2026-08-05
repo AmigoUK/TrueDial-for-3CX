@@ -137,7 +137,11 @@ export default defineBackground(() => {
           persistAcrossSessions: true,
         },
       ]);
-      await recordEvent('config', 'info', `content script registered for ${matches.length} pattern(s)`);
+      await recordEvent(
+        'config',
+        'info',
+        `content script registered for ${matches.length} pattern(s)`,
+      );
     } catch (err) {
       await recordEvent('config', 'error', `content script registration failed: ${String(err)}`);
     }
@@ -211,10 +215,9 @@ export default defineBackground(() => {
         // The options page passes the live (unsaved) tone/volume so a test does
         // not force a config write — a config write used to reload every tab.
         const cfg = await getConfig();
-        await playConfirmation(
-          msg.soundName ?? cfg.soundName,
-          msg.volume ?? cfg.soundVolume,
-        ).catch(() => {});
+        await playConfirmation(msg.soundName ?? cfg.soundName, msg.volume ?? cfg.soundVolume).catch(
+          () => {},
+        );
         return { ok: true };
       }
       case 'HEALTH_CHECK': {

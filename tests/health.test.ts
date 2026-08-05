@@ -24,7 +24,9 @@ describe('configuredPaths', () => {
 
 describe('recommendedPath', () => {
   it('follows the preference among configured paths', () => {
-    expect(recommendedPath(withConfigDefaults({ fqdn: 'pbx.test', preferredPath: 'auto' }))).toBe('deeplink');
+    expect(recommendedPath(withConfigDefaults({ fqdn: 'pbx.test', preferredPath: 'auto' }))).toBe(
+      'deeplink',
+    );
     expect(recommendedPath(full)).toBe('ccapi');
   });
   it('is null when the forced path is not configured', () => {

@@ -2,8 +2,8 @@ import { defineConfig } from 'vitest/config';
 import { WxtVitest } from 'wxt/testing';
 
 export default defineConfig({
-  // WxtVitest podstawia `browser` (fakeBrowser) i aliasy WXT, dzięki czemu
-  // moduły importujące 'wxt/browser' działają w testach node.
+  // WxtVitest supplies `browser` (fakeBrowser) and the WXT aliases, so modules
+  // importing 'wxt/browser' work in Node test runs.
   plugins: [WxtVitest()],
   test: {
     globals: true,

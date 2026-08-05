@@ -57,7 +57,9 @@ export function Diagnostics() {
         <button class="ghost" onClick={runHealth} disabled={checking}>
           {checking ? t('diag_checking') : t('diag_runHealth')}
         </button>
-        <button class="ghost" onClick={copyReport}>{t('diag_copyReport')}</button>
+        <button class="ghost" onClick={copyReport}>
+          {t('diag_copyReport')}
+        </button>
         <button
           class="ghost"
           onClick={async () => {
@@ -72,10 +74,18 @@ export function Diagnostics() {
 
       {health && (
         <div class="health">
-          <span>{t('diag_reachable')} <b>{yesNo(health.reachable)}</b></span>
-          <span>{t('diag_token')} <b>{yesNo(health.tokenOk)}</b></span>
-          <span>{t('diag_activePath')} <b>{health.recommended ?? t('diag_none')}</b></span>
-          <span>{t('diag_configured')} <b>{health.configured.join(', ')}</b></span>
+          <span>
+            {t('diag_reachable')} <b>{yesNo(health.reachable)}</b>
+          </span>
+          <span>
+            {t('diag_token')} <b>{yesNo(health.tokenOk)}</b>
+          </span>
+          <span>
+            {t('diag_activePath')} <b>{health.recommended ?? t('diag_none')}</b>
+          </span>
+          <span>
+            {t('diag_configured')} <b>{health.configured.join(', ')}</b>
+          </span>
         </div>
       )}
 
@@ -83,13 +93,16 @@ export function Diagnostics() {
         <p class="hint">{t('diag_noEvents')}</p>
       ) : (
         <ul class="diag">
-          {[...events].reverse().slice(0, 20).map((e) => (
-            <li key={e.ts} class={`diag-${e.level}`}>
-              <span class="mono small">{new Date(e.ts).toLocaleTimeString()}</span>
-              <span class="small">{e.kind}</span>
-              <span class="small">{e.message}</span>
-            </li>
-          ))}
+          {[...events]
+            .reverse()
+            .slice(0, 20)
+            .map((e) => (
+              <li key={e.ts} class={`diag-${e.level}`}>
+                <span class="mono small">{new Date(e.ts).toLocaleTimeString()}</span>
+                <span class="small">{e.kind}</span>
+                <span class="small">{e.message}</span>
+              </li>
+            ))}
         </ul>
       )}
     </section>

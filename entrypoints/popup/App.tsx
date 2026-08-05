@@ -66,7 +66,9 @@ export function App() {
   return (
     <div class="popup">
       <header class="row between">
-        <strong>TrueDial <span class="muted">for 3CX</span></strong>
+        <strong>
+          TrueDial <span class="muted">for 3CX</span>
+        </strong>
         <span class={`dot ${health}`} title={health} />
       </header>
 
@@ -85,16 +87,27 @@ export function App() {
           onInput={(e) => setInput((e.target as HTMLInputElement).value)}
         />
         <div class="small">
-          {input && (e164 ? <span class="ok">✓ {e164}</span> : <span class="err">{t('popup_invalid')}</span>)}
+          {input &&
+            (e164 ? (
+              <span class="ok">✓ {e164}</span>
+            ) : (
+              <span class="err">{t('popup_invalid')}</span>
+            ))}
         </div>
       </label>
-      <button class="cta" disabled={!e164 || health === 'unconfigured'} onClick={() => e164 && call(e164)}>
+      <button
+        class="cta"
+        disabled={!e164 || health === 'unconfigured'}
+        onClick={() => e164 && call(e164)}
+      >
         {t('popup_call')}
       </button>
 
       {host && (
         <label class="row between toggle">
-          <span class="small">{t('popup_detectionOn')} <b>{host}</b></span>
+          <span class="small">
+            {t('popup_detectionOn')} <b>{host}</b>
+          </span>
           <input type="checkbox" checked={siteOn} onChange={toggleSite} />
         </label>
       )}
@@ -120,10 +133,14 @@ export function App() {
           <ul class="history">
             {history.slice(0, 8).map((h) => (
               <li class="row between" key={`${h.e164}-${h.ts}`}>
-                <button class="link mono" onClick={() => call(h.e164)}>{h.e164}</button>
+                <button class="link mono" onClick={() => call(h.e164)}>
+                  {h.e164}
+                </button>
                 <span class={`small ${h.status === 'failed' ? 'err' : 'muted'}`}>
                   {h.status === 'attempted' && (
-                    <span title={t('popup_attempted')} aria-label={t('popup_attempted')}>≈ </span>
+                    <span title={t('popup_attempted')} aria-label={t('popup_attempted')}>
+                      ≈{' '}
+                    </span>
                   )}
                   {new Date(h.ts).toLocaleTimeString()}
                 </span>

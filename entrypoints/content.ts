@@ -37,7 +37,10 @@ export default defineContentScript({
       const cfg = await getConfig();
       if (cfg.detectionMode === 'off' || !isSiteEnabled(cfg, host)) return;
 
-      const r = new Renderer(placeCall, cfg.detectionMode === 'aggressive' ? 'aggressive' : 'subtle');
+      const r = new Renderer(
+        placeCall,
+        cfg.detectionMode === 'aggressive' ? 'aggressive' : 'subtle',
+      );
       const s = new Scanner({
         defaultRegion: cfg.defaultRegion,
         onMatches: (matches) => {

@@ -30,7 +30,9 @@ export function Wizard({ initial, onDone }: { initial: Config; onDone: (cfg: Con
 
   return (
     <main class="card wizard">
-      <div class="wizard-progress">{t('wiz_step')} {idx + 1} {t('wiz_of')} {STEPS.length}</div>
+      <div class="wizard-progress">
+        {t('wiz_step')} {idx + 1} {t('wiz_of')} {STEPS.length}
+      </div>
 
       {step === 'fqdn' && (
         <div>
@@ -39,7 +41,7 @@ export function Wizard({ initial, onDone }: { initial: Config; onDone: (cfg: Con
             <span>{t('opt_fqdnLabel')}</span>
             <input
               type="text"
-              placeholder="pbx.twojafirma.pl"
+              placeholder="pbx.example.co.uk"
               value={cfg.fqdn ?? ''}
               onInput={(e) => update({ fqdn: (e.target as HTMLInputElement).value })}
             />
@@ -55,7 +57,9 @@ export function Wizard({ initial, onDone }: { initial: Config; onDone: (cfg: Con
             <span>{t('opt_pathLabel')}</span>
             <select
               value={cfg.preferredPath}
-              onChange={(e) => update({ preferredPath: (e.target as HTMLSelectElement).value as PreferredPath })}
+              onChange={(e) =>
+                update({ preferredPath: (e.target as HTMLSelectElement).value as PreferredPath })
+              }
             >
               <option value="auto">{t('wiz_path_auto')}</option>
               <option value="ccapi">{t('opt_path_ccapi')}</option>
@@ -63,7 +67,9 @@ export function Wizard({ initial, onDone }: { initial: Config; onDone: (cfg: Con
               <option value="tel">{t('opt_path_tel')}</option>
             </select>
           </label>
-          <button class="ghost" disabled={!cfg.fqdn} onClick={testDeepLink}>{t('opt_testDeepLink')}</button>
+          <button class="ghost" disabled={!cfg.fqdn} onClick={testDeepLink}>
+            {t('opt_testDeepLink')}
+          </button>
         </div>
       )}
 
@@ -74,10 +80,14 @@ export function Wizard({ initial, onDone }: { initial: Config; onDone: (cfg: Con
             <span>{t('wiz_s3_label')}</span>
             <select
               value={cfg.defaultRegion}
-              onChange={(e) => update({ defaultRegion: (e.target as HTMLSelectElement).value as CountryCode })}
+              onChange={(e) =>
+                update({ defaultRegion: (e.target as HTMLSelectElement).value as CountryCode })
+              }
             >
               {REGIONS.map((r) => (
-                <option value={r.code} key={r.code}>{r.label}</option>
+                <option value={r.code} key={r.code}>
+                  {r.label}
+                </option>
               ))}
             </select>
           </label>
@@ -89,8 +99,12 @@ export function Wizard({ initial, onDone }: { initial: Config; onDone: (cfg: Con
           <h2>{t('wiz_s4_title')}</h2>
           <p class="hint">{t('wiz_s4_hint')}</p>
           <div class="row" style="gap:12px">
-            <button class="ghost" disabled={!cfg.fqdn} onClick={grantPbx}>{t('wiz_grantPbx')}</button>
-            <button class="ghost" onClick={grantAllUrls}>{t('wiz_grantAll')}</button>
+            <button class="ghost" disabled={!cfg.fqdn} onClick={grantPbx}>
+              {t('wiz_grantPbx')}
+            </button>
+            <button class="ghost" onClick={grantAllUrls}>
+              {t('wiz_grantAll')}
+            </button>
           </div>
         </div>
       )}
@@ -107,11 +121,19 @@ export function Wizard({ initial, onDone }: { initial: Config; onDone: (cfg: Con
       )}
 
       <div class="row between actions">
-        <button class="ghost" disabled={idx === 0} onClick={() => setStep(prevStep(step))}>{t('wiz_back')}</button>
+        <button class="ghost" disabled={idx === 0} onClick={() => setStep(prevStep(step))}>
+          {t('wiz_back')}
+        </button>
         {step === 'done' ? (
-          <button class="primary" onClick={() => onDone(cfg)}>{t('wiz_finish')}</button>
+          <button class="primary" onClick={() => onDone(cfg)}>
+            {t('wiz_finish')}
+          </button>
         ) : (
-          <button class="primary" disabled={!canAdvance(step, cfg)} onClick={() => setStep(nextStep(step))}>
+          <button
+            class="primary"
+            disabled={!canAdvance(step, cfg)}
+            onClick={() => setStep(nextStep(step))}
+          >
             {t('wiz_next')}
           </button>
         )}

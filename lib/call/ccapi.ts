@@ -59,7 +59,11 @@ export class CallControlStrategy implements CallStrategy {
     return { ok: false, strategy: this.id, reason: `makecall ${res.status}` };
   }
 
-  private post(cfg: CcapiConfig, e164: string, token: string): Promise<{ ok: boolean; status: number }> {
+  private post(
+    cfg: CcapiConfig,
+    e164: string,
+    token: string,
+  ): Promise<{ ok: boolean; status: number }> {
     return this.fetchFn(buildMakeCallUrl(cfg), {
       method: 'POST',
       headers: {

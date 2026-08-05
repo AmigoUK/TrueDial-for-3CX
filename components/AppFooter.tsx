@@ -9,9 +9,13 @@ export function AppFooter() {
       <span class="sep">·</span>
       <span>Project &amp; Development: Tomasz &lsquo;Amigo&rsquo; Lewandowski</span>
       <span class="sep">·</span>
-      <a href="https://www.attv.uk" target="_blank" rel="noreferrer">www.attv.uk</a>
+      <a href="https://www.attv.uk" target="_blank" rel="noreferrer">
+        www.attv.uk
+      </a>
       <span class="sep">·</span>
-      <a href={REPO} target="_blank" rel="noreferrer">GitHub</a>
+      <a href={REPO} target="_blank" rel="noreferrer">
+        GitHub
+      </a>
     </footer>
   );
 }

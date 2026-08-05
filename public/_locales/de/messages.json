@@ -1,6 +1,8 @@
 {
   "extName": { "message": "TrueDial für 3CX" },
-  "extDescription": { "message": "Zuverlässiges Click-to-Call für 3CX. Erkennt Telefonnummern, ohne die Seite zu beschädigen. Inoffiziell — nicht mit 3CX verbunden." },
+  "extDescription": {
+    "message": "Zuverlässiges Click-to-Call für 3CX. Erkennt Telefonnummern, ohne die Seite zu beschädigen. Inoffiziell — nicht mit 3CX verbunden."
+  },
 
   "ctx_call": { "message": "Über 3CX anrufen: „%s”" },
 
@@ -28,9 +30,13 @@
   "opt_path_ccapi": { "message": "Nur Call Control API" },
   "opt_path_deeplink": { "message": "Nur Web-Client-Deep-Link" },
   "opt_path_tel": { "message": "Nur tel: (Desktop-App)" },
-  "opt_pathHint": { "message": "Schlägt ein Weg fehl, wechselt die Erweiterung zum nächsten — keine stillen Fehler." },
+  "opt_pathHint": {
+    "message": "Schlägt ein Weg fehl, wechselt die Erweiterung zum nächsten — keine stillen Fehler."
+  },
   "opt_sec_ccapi": { "message": "Call Control API (optional)" },
-  "opt_ccapiHint": { "message": "Vollständiger Anrufstatus. Erfordert eine API-Anwendung in der 3CX-Konsole (Admin → Integrations → API) und die passende Lizenz. Zugangsdaten werden lokal gespeichert und nie synchronisiert." },
+  "opt_ccapiHint": {
+    "message": "Vollständiger Anrufstatus. Erfordert eine API-Anwendung in der 3CX-Konsole (Admin → Integrations → API) und die passende Lizenz. Zugangsdaten werden lokal gespeichert und nie synchronisiert."
+  },
   "opt_clientId": { "message": "Client-ID" },
   "opt_clientSecret": { "message": "Client-Secret" },
   "opt_extension": { "message": "Nebenstelle (Ext.)" },
@@ -51,11 +57,15 @@
   "opt_testSound": { "message": "Ton testen" },
   "opt_sec_screenpop": { "message": "Screen-Pop (CRM)" },
   "opt_screenpopLabel": { "message": "URL-Vorlage, die bei einem ausgehenden Anruf geöffnet wird" },
-  "opt_screenpopHint": { "message": "Platzhalter: {number} (E.164), {national}. Leer = deaktiviert." },
+  "opt_screenpopHint": {
+    "message": "Platzhalter: {number} (E.164), {national}. Leer = deaktiviert."
+  },
   "opt_save": { "message": "Speichern" },
   "opt_saved": { "message": "✓ Gespeichert" },
   "opt_sec_backup": { "message": "Sicherung / Richtlinie" },
-  "opt_backupHint": { "message": "Exporte lassen das Client-Secret aus. Enterprise-Bereitstellungen können die Konfiguration per Richtlinie erzwingen (chrome.storage.managed) — sie hat Vorrang vor lokalen Einstellungen." },
+  "opt_backupHint": {
+    "message": "Exporte lassen das Client-Secret aus. Enterprise-Bereitstellungen können die Konfiguration per Richtlinie erzwingen (chrome.storage.managed) — sie hat Vorrang vor lokalen Einstellungen."
+  },
   "opt_export": { "message": "Konfiguration exportieren (JSON)" },
   "opt_import": { "message": "Aus Datei importieren…" },
   "opt_importErr": { "message": "Ungültige Konfigurationsdatei" },
@@ -69,9 +79,13 @@
   "wiz_s3_title": { "message": "3 · Standardregion" },
   "wiz_s3_label": { "message": "Land für Nummern ohne Vorwahl" },
   "wiz_s4_title": { "message": "4 · Automatische Erkennung" },
-  "wiz_s4_hint": { "message": "Um Nummern auf Seiten zu erkennen, erlauben Sie den Zugriff — oder beschränken Sie ihn später in den Einstellungen auf ausgewählte Domains." },
+  "wiz_s4_hint": {
+    "message": "Um Nummern auf Seiten zu erkennen, erlauben Sie den Zugriff — oder beschränken Sie ihn später in den Einstellungen auf ausgewählte Domains."
+  },
   "wiz_grantAll": { "message": "Auf allen Seiten erlauben (<all_urls>)" },
-  "wiz_grantPbx": { "message": "Zugriff auf Ihren 3CX-Server erlauben (für die Call Control API erforderlich)" },
+  "wiz_grantPbx": {
+    "message": "Zugriff auf Ihren 3CX-Server erlauben (für die Call Control API erforderlich)"
+  },
   "wiz_done_title": { "message": "Fertig 🎉" },
   "wiz_sum_path": { "message": "Weg" },
   "wiz_sum_region": { "message": "Region" },
@@ -81,7 +95,9 @@
   "wiz_finish": { "message": "Fertigstellen" },
 
   "diag_title": { "message": "Diagnose" },
-  "diag_hint": { "message": "Ein lokaler Puffer der letzten Ereignisse. Der Bericht ist anonymisiert (Nummern und URLs werden maskiert) — nichts verlässt den Browser ohne Ihre Aktion." },
+  "diag_hint": {
+    "message": "Ein lokaler Puffer der letzten Ereignisse. Der Bericht ist anonymisiert (Nummern und URLs werden maskiert) — nichts verlässt den Browser ohne Ihre Aktion."
+  },
   "diag_runHealth": { "message": "Verbindungstest ausführen" },
   "diag_checking": { "message": "Test läuft…" },
   "diag_copyReport": { "message": "Diagnosebericht kopieren" },

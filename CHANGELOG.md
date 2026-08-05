@@ -7,7 +7,43 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## [Unreleased]
 
-_Nothing yet._
+> Note: the version compare links at the bottom of this file refer to git tags
+> that have not yet been pushed to the repository; the pre-1.0 versions were
+> cut in a single development session.
+
+### Added
+- Least-privilege permission model: the detection content script is registered
+  at **runtime** for exactly the origins the user has granted (no install-time
+  "read data on all websites" warning). The PBX origin is requested separately
+  when the FQDN is saved; all-sites detection remains an explicit opt-in.
+- Per-tab badge now sums detection counts across frames (iframes no longer
+  overwrite the page total); counts are cleared on navigation and tab close.
+- `attempted` call-history status: a `tel:` hand-off can never be confirmed, so
+  it is no longer recorded (or announced) as `placed`. The popup marks such
+  entries.
+- Extension icons (16/32/48/128) generated from `assets/icon.svg`
+  (`pnpm icons`).
+- Engineering hygiene: GitHub Actions CI (lint, type-check, tests, build,
+  package), ESLint (flat config) + Prettier, and a project backlog
+  (`BACKLOG.md`).
+
+### Fixed
+- Web client deep link with a port-qualified FQDN (e.g. `pbx.example.co.uk:5001`)
+  no longer fails the existing-tab lookup — match patterns cannot carry ports,
+  so tabs are matched by URL parsing instead.
+- Saving settings no longer reloads every open tab: the content script tears
+  down its highlights and re-scans in place, and only when a detection-relevant
+  setting actually changed. "Test sound" no longer persists configuration.
+- Detection counter no longer double-counts incremental mutation scans.
+- First confirmation tone is no longer lost to the offscreen-document startup
+  race (short send retry).
+
+### Changed
+- Completed the British English convention: options page title, UI
+  placeholders, the demo/test page and the remaining Polish test descriptions
+  are now in English. Placeholders use `pbx.example.co.uk`.
+- README rewritten to match the actual feature set (three call paths, runtime
+  permission model, CRM screen-pop, privacy stance).
 
 ## [1.0.0-rc.1] — 2026-07-27
 

@@ -21,7 +21,11 @@ export function totalCount(counts: FrameCounts): number {
 }
 
 /** Records one frame's count and returns the tab's new total. */
-export async function setFrameCount(tabId: number, frameId: number, count: number): Promise<number> {
+export async function setFrameCount(
+  tabId: number,
+  frameId: number,
+  count: number,
+): Promise<number> {
   const key = keyFor(tabId);
   const raw = await area().get(key);
   const counts = { ...((raw[key] as FrameCounts | undefined) ?? {}), [String(frameId)]: count };

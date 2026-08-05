@@ -31,7 +31,9 @@ describe('CallControlStrategy', () => {
   it('places a call and sends the E.164 destination with a Bearer token', async () => {
     const t = fakeToken();
     const fetchFn = vi.fn(async () => ({ ok: true, status: 200 })) as unknown as typeof fetch;
-    const out = await new CallControlStrategy(async () => cfg, t, fetchFn).placeCall('+48221234567');
+    const out = await new CallControlStrategy(async () => cfg, t, fetchFn).placeCall(
+      '+48221234567',
+    );
 
     expect(out).toEqual({ ok: true, strategy: 'ccapi' });
     const init = (fetchFn as unknown as ReturnType<typeof vi.fn>).mock.calls[0]![1];
@@ -43,8 +45,12 @@ describe('CallControlStrategy', () => {
   it('refreshes the token and retries once on 401', async () => {
     const t = fakeToken();
     let n = 0;
-    const fetchFn = vi.fn(async () => (n++ === 0 ? { ok: false, status: 401 } : { ok: true, status: 200 })) as unknown as typeof fetch;
-    const out = await new CallControlStrategy(async () => cfg, t, fetchFn).placeCall('+48221234567');
+    const fetchFn = vi.fn(async () =>
+      n++ === 0 ? { ok: false, status: 401 } : { ok: true, status: 200 },
+    ) as unknown as typeof fetch;
+    const out = await new CallControlStrategy(async () => cfg, t, fetchFn).placeCall(
+      '+48221234567',
+    );
 
     expect(out.ok).toBe(true);
     expect(fetchFn).toHaveBeenCalledTimes(2);
@@ -54,7 +60,9 @@ describe('CallControlStrategy', () => {
   it('reports a clear failure on a non-OK response', async () => {
     const t = fakeToken();
     const fetchFn = vi.fn(async () => ({ ok: false, status: 500 })) as unknown as typeof fetch;
-    const out = await new CallControlStrategy(async () => cfg, t, fetchFn).placeCall('+48221234567');
+    const out = await new CallControlStrategy(async () => cfg, t, fetchFn).placeCall(
+      '+48221234567',
+    );
     expect(out.ok).toBe(false);
     expect(out.reason).toContain('500');
   });

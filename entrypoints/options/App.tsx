@@ -115,9 +115,13 @@ export function App() {
   return (
     <div class="shell">
       <main class="card">
-        <h1>TrueDial <span class="muted">for 3CX</span></h1>
+        <h1>
+          TrueDial <span class="muted">for 3CX</span>
+        </h1>
         <p class="muted">{t('opt_tagline')}</p>
-        <button class="ghost" onClick={() => setShowWizard(true)}>{t('opt_wizardBtn')}</button>
+        <button class="ghost" onClick={() => setShowWizard(true)}>
+          {t('opt_wizardBtn')}
+        </button>
 
         <section>
           <h2>{t('opt_sec_connection')}</h2>
@@ -125,7 +129,7 @@ export function App() {
             <span>{t('opt_fqdnLabel')}</span>
             <input
               type="text"
-              placeholder="pbx.twojafirma.pl : 5001"
+              placeholder="pbx.example.co.uk or pbx.example.co.uk:5001"
               value={cfg.fqdn ?? ''}
               onInput={(e) => update({ fqdn: (e.target as HTMLInputElement).value })}
             />
@@ -139,7 +143,9 @@ export function App() {
             <span>{t('opt_pathLabel')}</span>
             <select
               value={cfg.preferredPath}
-              onChange={(e) => update({ preferredPath: (e.target as HTMLSelectElement).value as PreferredPath })}
+              onChange={(e) =>
+                update({ preferredPath: (e.target as HTMLSelectElement).value as PreferredPath })
+              }
             >
               <option value="auto">{t('opt_path_auto')}</option>
               <option value="ccapi">{t('opt_path_ccapi')}</option>
@@ -184,7 +190,7 @@ export function App() {
               <span>{t('opt_deviceId')}</span>
               <input
                 type="text"
-                placeholder="z GET /callcontrol/{ext}/devices"
+                placeholder="from GET /callcontrol/{ext}/devices"
                 value={cfg.ccDeviceId ?? ''}
                 onInput={(e) => update({ ccDeviceId: (e.target as HTMLInputElement).value })}
               />
@@ -198,10 +204,14 @@ export function App() {
             <span>{t('opt_regionLabel')}</span>
             <select
               value={cfg.defaultRegion}
-              onChange={(e) => update({ defaultRegion: (e.target as HTMLSelectElement).value as CountryCode })}
+              onChange={(e) =>
+                update({ defaultRegion: (e.target as HTMLSelectElement).value as CountryCode })
+              }
             >
               {REGIONS.map((r) => (
-                <option value={r.code} key={r.code}>{r.label}</option>
+                <option value={r.code} key={r.code}>
+                  {r.label}
+                </option>
               ))}
             </select>
           </label>
@@ -210,7 +220,9 @@ export function App() {
             <span>{t('opt_modeLabel')}</span>
             <select
               value={cfg.detectionMode}
-              onChange={(e) => update({ detectionMode: (e.target as HTMLSelectElement).value as DetectionMode })}
+              onChange={(e) =>
+                update({ detectionMode: (e.target as HTMLSelectElement).value as DetectionMode })
+              }
             >
               <option value="subtle">{t('opt_mode_subtle')}</option>
               <option value="aggressive">{t('opt_mode_aggressive')}</option>
@@ -244,7 +256,9 @@ export function App() {
               />
             </label>
           ) : (
-            <button class="ghost" onClick={grantAllUrls}>{t('opt_grantAll')}</button>
+            <button class="ghost" onClick={grantAllUrls}>
+              {t('opt_grantAll')}
+            </button>
           )}
         </section>
 
@@ -266,19 +280,25 @@ export function App() {
                 onChange={(e) => update({ soundName: (e.target as HTMLSelectElement).value })}
               >
                 {TONE_NAMES.map((n) => (
-                  <option value={n} key={n}>{n}</option>
+                  <option value={n} key={n}>
+                    {n}
+                  </option>
                 ))}
               </select>
             </label>
             <label class="field" style="flex:2">
-              <span>{t('opt_volume')}: {Math.round(cfg.soundVolume * 100)}%</span>
+              <span>
+                {t('opt_volume')}: {Math.round(cfg.soundVolume * 100)}%
+              </span>
               <input
                 type="range"
                 min="0"
                 max="1"
                 step="0.05"
                 value={cfg.soundVolume}
-                onInput={(e) => update({ soundVolume: Number((e.target as HTMLInputElement).value) })}
+                onInput={(e) =>
+                  update({ soundVolume: Number((e.target as HTMLInputElement).value) })
+                }
               />
             </label>
           </div>
@@ -288,7 +308,11 @@ export function App() {
             onClick={async () => {
               // Pass the live values instead of persisting them: a config write
               // would trigger detection updates in open tabs just to hear a beep.
-              const msg: Message = { type: 'TEST_SOUND', soundName: cfg.soundName, volume: cfg.soundVolume };
+              const msg: Message = {
+                type: 'TEST_SOUND',
+                soundName: cfg.soundName,
+                volume: cfg.soundVolume,
+              };
               await browser.runtime.sendMessage(msg);
             }}
           >
@@ -302,7 +326,7 @@ export function App() {
             <span>{t('opt_screenpopLabel')}</span>
             <input
               type="text"
-              placeholder="https://crm.twojafirma.pl/search?phone={number}"
+              placeholder="https://crm.example.co.uk/search?phone={number}"
               value={cfg.screenPopUrl}
               onInput={(e) => update({ screenPopUrl: (e.target as HTMLInputElement).value })}
             />
@@ -311,7 +335,9 @@ export function App() {
         </section>
 
         <div class="row between actions">
-          <button class="primary" onClick={save}>{t('opt_save')}</button>
+          <button class="primary" onClick={save}>
+            {t('opt_save')}
+          </button>
           {saved && <span class="ok">{t('opt_saved')}</span>}
         </div>
 
@@ -319,10 +345,17 @@ export function App() {
           <h2>{t('opt_sec_backup')}</h2>
           <p class="hint">{t('opt_backupHint')}</p>
           <div class="row" style="gap:12px">
-            <button class="ghost" onClick={doExport}>{t('opt_export')}</button>
+            <button class="ghost" onClick={doExport}>
+              {t('opt_export')}
+            </button>
             <label class="ghost" style="cursor:pointer">
               {t('opt_import')}
-              <input type="file" accept="application/json" style="display:none" onChange={doImport} />
+              <input
+                type="file"
+                accept="application/json"
+                style="display:none"
+                onChange={doImport}
+              />
             </label>
             {importErr && <span class="err">{t('opt_importErr')}</span>}
           </div>
