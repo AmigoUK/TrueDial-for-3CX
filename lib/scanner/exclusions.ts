@@ -29,13 +29,18 @@ export function isExcludedElement(el: Element | null): boolean {
   return false;
 }
 
-/** Whether an element is genuinely visible. Note: offsetParent/getComputedStyle
- *  DO force style/layout; acceptable because this runs once per scanned subtree
- *  root, not per text node. */
+/** Whether an element is genuinely visible. Note: these checks DO force
+ *  style/layout; acceptable because this runs once per scanned subtree root,
+ *  not per text node. */
 export function isVisible(el: Element | null): boolean {
   if (!el) return false;
   const htmlEl = el as HTMLElement;
-  // offsetParent === null → display:none or detached (except position:fixed).
+  // Chrome 105+: authoritative, and correct for the root elements —
+  // document.body.offsetParent is null BY DEFINITION, so the legacy check
+  // below silently excluded the entire page on the initial scan (caught by
+  // the smoke E2E; unit DOM environments do not reproduce it).
+  if (typeof htmlEl.checkVisibility === 'function') return htmlEl.checkVisibility();
+  // Fallback: offsetParent === null → display:none or detached (except fixed).
   if (htmlEl.offsetParent === null && getComputedStyle(htmlEl).position !== 'fixed') {
     return false;
   }

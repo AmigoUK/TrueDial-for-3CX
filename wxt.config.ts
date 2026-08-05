@@ -8,6 +8,11 @@ export default defineConfig({
   srcDir: '.',
   vite: () => ({
     plugins: [preact()],
+    define: {
+      // Build-time flag for the E2E variant (see entrypoints/content.ts).
+      // Statically replaced, so no `process` reference leaks into the bundle.
+      'import.meta.env.TRUEDIAL_E2E': JSON.stringify(process.env.TRUEDIAL_E2E ?? ''),
+    },
   }),
   hooks: {
     // WXT hoists a runtime-registered content script's `matches` into

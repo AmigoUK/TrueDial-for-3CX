@@ -47,3 +47,11 @@ jobs:
           # .output is a dot-directory; without this the glob silently matches
           # nothing and the upload fails.
           include-hidden-files: true
+
+      - name: Install Playwright Chromium
+        run: pnpm exec playwright install --with-deps chromium
+
+      # Rebuilds .output with the E2E variant — runs AFTER the production
+      # package has been zipped and uploaded above.
+      - name: Smoke E2E
+        run: pnpm e2e

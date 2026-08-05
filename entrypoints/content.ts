@@ -12,8 +12,12 @@ export default defineContentScript({
   // user granted (lib/permissions/registration.ts) — never in the manifest, so
   // there is no install-time "read data on all websites" warning. `matches`
   // here is only WXT metadata; the real matches come from the registration.
+  //
+  // Exception: the E2E build (TRUEDIAL_E2E=1) registers statically, because a
+  // headless browser cannot accept the optional-permission prompt. Production
+  // builds and the store package always use runtime registration.
   matches: ['<all_urls>'],
-  registration: 'runtime',
+  registration: import.meta.env.TRUEDIAL_E2E === '1' ? 'manifest' : 'runtime',
   allFrames: true,
   runAt: 'document_idle',
   async main() {
