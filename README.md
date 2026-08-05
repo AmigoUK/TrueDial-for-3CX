@@ -10,7 +10,7 @@ website you visit**.
 
 Status: **v1.0.0-rc.1** — feature-complete release candidate. Promotion to
 1.0.0 is gated on verification against a live 3CX V20 instance
-(see `docs/VERIFICATION.md` once available) and the project backlog lives in
+(see [`docs/VERIFICATION.md`](docs/VERIFICATION.md)) and the project backlog lives in
 [`BACKLOG.md`](BACKLOG.md).
 
 ---

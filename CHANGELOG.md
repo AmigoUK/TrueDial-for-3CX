@@ -24,8 +24,21 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 - Extension icons (16/32/48/128) generated from `assets/icon.svg`
   (`pnpm icons`).
 - Engineering hygiene: GitHub Actions CI (lint, type-check, tests, build,
-  package), ESLint (flat config) + Prettier, and a project backlog
+  package, smoke E2E), ESLint (flat config) + Prettier, and a project backlog
   (`BACKLOG.md`).
+- Honest call-path diagnostics: the popup shows the last call's winning path
+  and the full per-strategy trail (e.g. `ccapi ✗ (makecall 401) → deeplink ✓`),
+  plus the connectivity health check.
+- CRM screen-pop presets for HubSpot, Zoho CRM and Salesforce (URL templates,
+  user-editable, no OAuth).
+- Playwright smoke E2E loading the built extension into real Chromium:
+  detection corpus, never-break-the-page assertions, click-to-history flow,
+  options/popup rendering (`pnpm e2e`).
+- Chrome Web Store pack: `PRIVACY.md`, listing copy and permission
+  justifications, submission checklist, generated 1280×800 screenshots
+  (`pnpm store:screenshots`).
+- Live 3CX V20 verification protocol (`docs/VERIFICATION.md`) gating the
+  1.0.0 release.
 
 ### Fixed
 - Web client deep link with a port-qualified FQDN (e.g. `pbx.example.co.uk:5001`)
@@ -37,6 +50,11 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 - Detection counter no longer double-counts incremental mutation scans.
 - First confirmation tone is no longer lost to the offscreen-document startup
   race (short send retry).
+- **Detection worked in unit tests but not in a real browser:**
+  `document.body.offsetParent` is null by definition in Chrome, so the
+  visibility check silently excluded the entire page from the initial scan.
+  `isVisible` now prefers `Element.checkVisibility()`. Caught by the new
+  smoke E2E on its first run.
 
 ### Changed
 - Completed the British English convention: options page title, UI
