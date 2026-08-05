@@ -28,6 +28,7 @@ import {
   isSiteEnabled,
   loadCcToken,
   saveCcToken,
+  saveLastCall,
   type Config,
 } from '../lib/storage';
 
@@ -86,6 +87,15 @@ export default defineBackground(() => {
       ts: Date.now(),
       source,
       status: outcome.ok ? (outcome.unconfirmed ? 'attempted' : 'placed') : 'failed',
+    });
+    await saveLastCall({
+      e164,
+      ts: Date.now(),
+      ok: outcome.ok,
+      strategy: outcome.strategy,
+      unconfirmed: outcome.unconfirmed,
+      reason: outcome.reason,
+      attempts: outcome.attempts ?? [],
     });
     // Diagnostics: numbers are redacted at report time, so we can log freely.
     if (outcome.ok) {

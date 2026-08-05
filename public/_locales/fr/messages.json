@@ -18,6 +18,7 @@
   "popup_clear": { "message": "effacer" },
   "popup_noCalls": { "message": "Aucun appel." },
   "popup_attempted": { "message": "transmis à tel: — non confirmé" },
+  "popup_lastCall": { "message": "Dernier appel" },
 
   "opt_tagline": { "message": "Extension click-to-call indépendante. Sans lien avec 3CX." },
   "opt_wizardBtn": { "message": "Assistant de configuration" },

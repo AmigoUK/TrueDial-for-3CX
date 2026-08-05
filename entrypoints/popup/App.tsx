@@ -8,12 +8,23 @@ import {
   clearHistory,
   setSiteEnabled,
   isSiteEnabled,
+  loadLastCall,
   type CallHistoryEntry,
   type Config,
+  type LastCallRecord,
 } from '../../lib/storage';
+import type { HealthSnapshot } from '../../lib/diagnostics/health';
 import type { Message } from '../../lib/messaging/schema';
 
 type Health = 'unconfigured' | 'ready';
+
+/** One-line trail of the last dialling attempt, e.g. "ccapi ✗ (makecall 401) → deeplink ✓". */
+function attemptTrail(rec: LastCallRecord): string {
+  if (!rec.attempts.length) return `${rec.strategy} ${rec.ok ? '✓' : '✗'}`;
+  return rec.attempts
+    .map((a) => `${a.strategy} ${a.ok ? '✓' : '✗'}${a.reason ? ` (${a.reason})` : ''}`)
+    .join(' → ');
+}
 
 async function activeHost(): Promise<string | null> {
   const [tab] = await browser.tabs.query({ active: true, currentWindow: true });
@@ -31,12 +42,16 @@ export function App() {
   const [siteOn, setSiteOn] = useState(true);
   const [input, setInput] = useState('');
   const [history, setHistory] = useState<CallHistoryEntry[]>([]);
+  const [lastCall, setLastCall] = useState<LastCallRecord | null>(null);
+  const [snap, setSnap] = useState<HealthSnapshot | null>(null);
+  const [checking, setChecking] = useState(false);
 
   useEffect(() => {
     void (async () => {
       const c = await getConfig();
       setCfg(c);
       setHistory(await getHistory());
+      setLastCall(await loadLastCall());
       const h = await activeHost();
       setHost(h);
       if (h) setSiteOn(isSiteEnabled(c, h));
@@ -54,7 +69,21 @@ export function App() {
     const msg: Message = { type: 'PLACE_CALL', e164: num };
     await browser.runtime.sendMessage(msg);
     setHistory(await getHistory());
+    setLastCall(await loadLastCall());
   };
+
+  const runHealth = async () => {
+    setChecking(true);
+    try {
+      const msg: Message = { type: 'HEALTH_CHECK' };
+      setSnap((await browser.runtime.sendMessage(msg)) as HealthSnapshot);
+    } finally {
+      setChecking(false);
+    }
+  };
+
+  const yesNo = (v: boolean | null) =>
+    v === null ? t('diag_na') : v ? t('diag_yes') : t('diag_no');
 
   const toggleSite = async () => {
     if (!host) return;
@@ -110,6 +139,32 @@ export function App() {
           </span>
           <input type="checkbox" checked={siteOn} onChange={toggleSite} />
         </label>
+      )}
+
+      {lastCall && (
+        <div class="small" title={attemptTrail(lastCall)}>
+          <span class="muted">{t('popup_lastCall')}: </span>
+          <span class={lastCall.ok ? 'ok' : 'err'}>
+            {lastCall.strategy} {lastCall.ok ? (lastCall.unconfirmed ? '≈' : '✓') : '✗'}
+          </span>
+          {lastCall.attempts.length > 1 && (
+            <span class="muted mono"> · {attemptTrail(lastCall)}</span>
+          )}
+        </div>
+      )}
+
+      {health === 'ready' && (
+        <div class="small">
+          <button class="link" disabled={checking} onClick={runHealth}>
+            {checking ? t('diag_checking') : t('diag_runHealth')}
+          </button>
+          {snap && (
+            <div class="muted">
+              {t('diag_reachable')} {yesNo(snap.reachable)} · {t('diag_token')}{' '}
+              {yesNo(snap.tokenOk)} · {t('diag_activePath')} {snap.recommended ?? t('diag_none')}
+            </div>
+          )}
+        </div>
       )}
 
       <section>

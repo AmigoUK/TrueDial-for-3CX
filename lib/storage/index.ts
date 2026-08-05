@@ -6,6 +6,7 @@ import { browser } from 'wxt/browser';
 import { type Config, withConfigDefaults } from './config';
 import { importConfig, mergeManaged } from './portable';
 import type { TokenSet } from '../call/token';
+import type { CallAttempt, StrategyId } from '../call/strategy';
 
 export * from './config';
 export { exportConfig, importConfig } from './portable';
@@ -13,6 +14,7 @@ export { exportConfig, importConfig } from './portable';
 const CONFIG_KEY = 'config';
 const HISTORY_KEY = 'history';
 const CC_TOKEN_KEY = 'ccToken';
+const LAST_CALL_KEY = 'lastCall';
 
 export interface CallHistoryEntry {
   e164: string;
@@ -26,6 +28,32 @@ export interface CallHistoryEntry {
 export async function hasStoredConfig(): Promise<boolean> {
   const raw = await browser.storage.local.get(CONFIG_KEY);
   return raw[CONFIG_KEY] != null;
+}
+
+/** The last dialling attempt, with the per-strategy trail — shown in the popup
+ *  so a fallback is never silent. Ephemeral by design (storage.session). */
+export interface LastCallRecord {
+  e164: string;
+  ts: number;
+  ok: boolean;
+  strategy: StrategyId;
+  unconfirmed?: boolean;
+  reason?: string;
+  attempts: CallAttempt[];
+}
+
+// storage.session is present in MV3 Chrome; fall back to local if unavailable.
+function sessionArea() {
+  return browser.storage.session ?? browser.storage.local;
+}
+
+export async function saveLastCall(rec: LastCallRecord): Promise<void> {
+  await sessionArea().set({ [LAST_CALL_KEY]: rec });
+}
+
+export async function loadLastCall(): Promise<LastCallRecord | null> {
+  const raw = await sessionArea().get(LAST_CALL_KEY);
+  return (raw[LAST_CALL_KEY] as LastCallRecord | undefined) ?? null;
 }
 
 // Enterprise policy (§8): read chrome.storage.managed and validate it through

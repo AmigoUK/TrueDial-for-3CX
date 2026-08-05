@@ -4,6 +4,13 @@
 
 export type StrategyId = 'ccapi' | 'deeplink' | 'tel';
 
+/** One strategy's result within a dialling attempt (orchestrator bookkeeping). */
+export interface CallAttempt {
+  strategy: StrategyId;
+  ok: boolean;
+  reason?: string;
+}
+
 export interface CallOutcome {
   ok: boolean;
   strategy: StrategyId;
@@ -13,6 +20,9 @@ export interface CallOutcome {
    *  confirm anything actually happened. History records these as 'attempted',
    *  not 'placed'. */
   unconfirmed?: boolean;
+  /** Every strategy the orchestrator touched, in order — surfaced in the popup
+   *  so the user can see WHY a fallback happened, not just that it did. */
+  attempts?: CallAttempt[];
 }
 
 export interface CallStrategy {

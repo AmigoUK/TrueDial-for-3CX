@@ -18,6 +18,7 @@
   "popup_clear": { "message": "leeren" },
   "popup_noCalls": { "message": "Keine Anrufe." },
   "popup_attempted": { "message": "an tel: übergeben — nicht bestätigt" },
+  "popup_lastCall": { "message": "Letzter Anruf" },
 
   "opt_tagline": { "message": "Unabhängige Click-to-Call-Erweiterung. Nicht mit 3CX verbunden." },
   "opt_wizardBtn": { "message": "Einrichtungsassistent" },

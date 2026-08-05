@@ -31,7 +31,11 @@ describe('CallOrchestrator (fallback matrix)', () => {
   it('picks the first available strategy', async () => {
     const o = new CallOrchestrator([fake('deeplink', true), fake('tel', true)]);
     const out = await o.placeCall('+48221234567');
-    expect(out).toEqual({ ok: true, strategy: 'deeplink' });
+    expect(out).toEqual({
+      ok: true,
+      strategy: 'deeplink',
+      attempts: [{ strategy: 'deeplink', ok: true, reason: undefined }],
+    });
   });
 
   it('skips an unavailable strategy and falls through', async () => {
@@ -71,5 +75,22 @@ describe('CallOrchestrator (fallback matrix)', () => {
     const out = await new CallOrchestrator([fake('deeplink', false)]).placeCall('+1');
     expect(out.ok).toBe(false);
     expect(out.reason).toBeDefined();
+  });
+
+  it('records the full per-strategy trail in attempts', async () => {
+    const failing: CallStrategy = {
+      id: 'ccapi',
+      isAvailable: async () => true,
+      placeCall: async () => ({ ok: false, strategy: 'ccapi', reason: 'makecall 401' }),
+    };
+    const unavailable = fake('deeplink', false);
+    const tel = fake('tel', true);
+    const out = await new CallOrchestrator([failing, unavailable, tel]).placeCall('+1');
+    expect(out.ok).toBe(true);
+    expect(out.attempts).toEqual([
+      { strategy: 'ccapi', ok: false, reason: 'makecall 401' },
+      { strategy: 'deeplink', ok: false, reason: 'not-configured' },
+      { strategy: 'tel', ok: true, reason: undefined },
+    ]);
   });
 });
