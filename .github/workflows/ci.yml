@@ -44,3 +44,6 @@ jobs:
           name: truedial-chrome-mv3
           path: .output/*.zip
           if-no-files-found: error
+          # .output is a dot-directory; without this the glob silently matches
+          # nothing and the upload fails.
+          include-hidden-files: true
