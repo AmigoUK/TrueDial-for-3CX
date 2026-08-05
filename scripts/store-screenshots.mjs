@@ -21,8 +21,10 @@ const server = http.createServer((_req, res) => {
 });
 await new Promise((r) => server.listen(PORT, r));
 
+// Full Chromium required — the headless shell ignores extensions.
+const executablePath = existsSync(PREINSTALLED) ? PREINSTALLED : undefined;
 const context = await chromium.launchPersistentContext('', {
-  executablePath: existsSync(PREINSTALLED) ? PREINSTALLED : undefined,
+  ...(executablePath ? { executablePath } : { channel: 'chromium' }),
   headless: true,
   viewport: { width: 1280, height: 800 },
   args: [

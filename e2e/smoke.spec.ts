@@ -34,8 +34,12 @@ test.beforeAll(async () => {
   });
   await new Promise<void>((resolve) => server.listen(PORT, resolve));
 
+  // Extensions need the FULL Chromium binary. Under plain `headless: true`
+  // Playwright runs its headless shell, which silently ignores extensions —
+  // hence the explicit executablePath locally and channel 'chromium' in CI.
+  const executablePath = existsSync(PREINSTALLED) ? PREINSTALLED : undefined;
   context = await chromium.launchPersistentContext('', {
-    executablePath: existsSync(PREINSTALLED) ? PREINSTALLED : undefined,
+    ...(executablePath ? { executablePath } : { channel: 'chromium' as const }),
     headless: true,
     args: [
       '--headless=new',
