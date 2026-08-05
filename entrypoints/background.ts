@@ -9,6 +9,11 @@ import { TokenManager } from '../lib/call/token';
 import { orderStrategyIds } from '../lib/call/select';
 import { formatBadge } from '../lib/scanner/badge';
 import { setFrameCount, clearFrameCounts } from '../lib/scanner/frameCounts';
+import {
+  CONTENT_SCRIPT_ID,
+  CONTENT_SCRIPT_JS,
+  contentScriptMatches,
+} from '../lib/permissions/registration';
 import { t } from '../lib/i18n';
 import type { CallStrategy, StrategyId } from '../lib/call/strategy';
 import { validateToE164 } from '../lib/phone/validate';
@@ -111,6 +116,37 @@ export default defineBackground(() => {
     await recordEvent('call', 'info', 'screen-pop opened');
   }
 
+  // --- Least-privilege detection: keep the runtime-registered content script
+  // in sync with the origins the user has actually granted. Idempotent —
+  // unregister-then-register — so it is safe to run on every lifecycle event.
+  async function syncContentScripts(): Promise<void> {
+    try {
+      const granted = await browser.permissions.getAll();
+      const matches = contentScriptMatches(granted.origins ?? []);
+      await browser.scripting
+        .unregisterContentScripts({ ids: [CONTENT_SCRIPT_ID] })
+        .catch(() => {}); // not registered yet — fine
+      if (matches.length === 0) return;
+      await browser.scripting.registerContentScripts([
+        {
+          id: CONTENT_SCRIPT_ID,
+          js: [CONTENT_SCRIPT_JS],
+          matches,
+          allFrames: true,
+          runAt: 'document_idle',
+          persistAcrossSessions: true,
+        },
+      ]);
+      await recordEvent('config', 'info', `content script registered for ${matches.length} pattern(s)`);
+    } catch (err) {
+      await recordEvent('config', 'error', `content script registration failed: ${String(err)}`);
+    }
+  }
+
+  browser.runtime.onStartup?.addListener(() => void syncContentScripts());
+  browser.permissions.onAdded?.addListener(() => void syncContentScripts());
+  browser.permissions.onRemoved?.addListener(() => void syncContentScripts());
+
   // --- Context menu: right-click on a selection → call (§3.F2) ---
   browser.runtime.onInstalled.addListener((details) => {
     browser.contextMenus.create({
@@ -118,6 +154,7 @@ export default defineBackground(() => {
       title: t('ctx_call'),
       contexts: ['selection'],
     });
+    void syncContentScripts();
     void recordEvent('lifecycle', 'info', `installed/updated (${details.reason})`);
   });
 

@@ -71,6 +71,7 @@
   "wiz_s4_title": { "message": "4 · Détection automatique" },
   "wiz_s4_hint": { "message": "Pour détecter les numéros sur les pages, autorisez l’accès — ou limitez-le à des domaines choisis dans les réglages plus tard." },
   "wiz_grantAll": { "message": "Autoriser sur tous les sites (<all_urls>)" },
+  "wiz_grantPbx": { "message": "Autoriser l'accès à votre serveur 3CX (requis pour la Call Control API)" },
   "wiz_done_title": { "message": "Terminé 🎉" },
   "wiz_sum_path": { "message": "voie" },
   "wiz_sum_region": { "message": "région" },

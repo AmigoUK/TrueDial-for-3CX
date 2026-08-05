@@ -71,6 +71,7 @@
   "wiz_s4_title": { "message": "4 · Autodetekcja" },
   "wiz_s4_hint": { "message": "Aby wykrywać numery na stronach, zezwól na dostęp — albo ogranicz go do wybranych domen w ustawieniach później." },
   "wiz_grantAll": { "message": "Zezwól na wszystkich stronach (<all_urls>)" },
+  "wiz_grantPbx": { "message": "Zezwól na dostęp do serwera 3CX (wymagane dla Call Control API)" },
   "wiz_done_title": { "message": "Gotowe 🎉" },
   "wiz_sum_path": { "message": "ścieżka" },
   "wiz_sum_region": { "message": "region" },

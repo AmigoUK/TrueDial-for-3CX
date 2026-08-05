@@ -10,6 +10,7 @@ import {
   type DetectionMode,
 } from '../../lib/storage';
 import { normalizeFqdn, buildDeepLinkUrl } from '../../lib/call/deeplink';
+import { pbxOriginPattern, allowlistOriginPattern } from '../../lib/permissions/registration';
 import type { PreferredPath } from '../../lib/call/select';
 import { TONE_NAMES } from '../../lib/audio/tone';
 import type { Message } from '../../lib/messaging/schema';
@@ -45,6 +46,12 @@ export function App() {
         <Wizard
           initial={cfg}
           onDone={async (final) => {
+            // Request the PBX origin before any await consumes the gesture.
+            if (final.fqdn) {
+              await browser.permissions
+                .request({ origins: [pbxOriginPattern(normalizeFqdn(final.fqdn))] })
+                .catch(() => {});
+            }
             setCfg(await setConfig(final));
             setShowWizard(false);
           }}
@@ -61,6 +68,15 @@ export function App() {
       ...cfg,
       fqdn: cfg.fqdn ? normalizeFqdn(cfg.fqdn) : undefined,
     };
+    // Ask for exactly the host access this configuration needs, while we still
+    // have the user gesture: the PBX origin (CCAPI/health fetches) plus any
+    // allowlisted detection hosts. Declining only limits those features.
+    const origins: string[] = [];
+    if (clean.fqdn) origins.push(pbxOriginPattern(clean.fqdn));
+    if (clean.allowlistMode) {
+      for (const host of clean.allowlist ?? []) origins.push(allowlistOriginPattern(host));
+    }
+    if (origins.length) await browser.permissions.request({ origins }).catch(() => {});
     setCfg(await setConfig(clean));
     setSaved(true);
     setTimeout(() => setSaved(false), 1800);

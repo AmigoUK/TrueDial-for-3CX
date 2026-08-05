@@ -8,7 +8,12 @@ import type { Message } from '../lib/messaging/schema';
 // secrets and calls no 3CX API — it delegates dialling to the SW via a
 // PLACE_CALL message.
 export default defineContentScript({
+  // Registered at RUNTIME by the background worker for exactly the origins the
+  // user granted (lib/permissions/registration.ts) — never in the manifest, so
+  // there is no install-time "read data on all websites" warning. `matches`
+  // here is only WXT metadata; the real matches come from the registration.
   matches: ['<all_urls>'],
+  registration: 'runtime',
   allFrames: true,
   runAt: 'document_idle',
   async main() {

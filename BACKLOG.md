@@ -9,7 +9,7 @@ Statuses: `todo` → `in progress` → `done`. Estimates are person-days.
 | # | Item | Priority | Estimate | Status |
 |---|------|----------|----------|--------|
 | 1 | Stability bug fixes: deep link with port, settings-save reload storm, per-frame badge overwrite, detection double-counting, offscreen audio race, honest `tel:` outcome, minor dead-code cleanups | P1 | 2–3 d | done |
-| 2 | Least-privilege permission model: runtime-registered content scripts, PBX-origin grant separate from optional all-sites grant, no install-time "read all sites" warning | P1 | 2–3 d | todo |
+| 2 | Least-privilege permission model: runtime-registered content scripts, PBX-origin grant separate from optional all-sites grant, no install-time "read all sites" warning | P1 | 2–3 d | done |
 | 3 | Engineering hygiene: GitHub Actions CI (typecheck, tests, build), ESLint + Prettier, extension icons, README/CHANGELOG refresh, complete the British English convention (UI strings, demo page, test descriptions) | P1 | 1–2 d | todo |
 | 4 | Honest path diagnostics: surface which call strategy succeeded or failed (and why) in the popup; health check accessible from the popup | P2 | 1–2 d | todo |
 | 5 | CRM screen-pop presets for HubSpot, Zoho CRM and Salesforce (URL templates, no OAuth) | P2 | 1–2 d | todo |

@@ -3,6 +3,7 @@ import type { CountryCode } from 'libphonenumber-js/min';
 import type { Config } from '../../lib/storage';
 import type { PreferredPath } from '../../lib/call/select';
 import { buildDeepLinkUrl, normalizeFqdn } from '../../lib/call/deeplink';
+import { pbxOriginPattern } from '../../lib/permissions/registration';
 import { STEPS, type Step, canAdvance, nextStep, prevStep } from '../../lib/onboarding/steps';
 import { t } from '../../lib/i18n';
 import { REGIONS } from './regions';
@@ -16,6 +17,13 @@ export function Wizard({ initial, onDone }: { initial: Config; onDone: (cfg: Con
 
   const idx = STEPS.indexOf(step);
   const grantAllUrls = () => browser.permissions.request({ origins: ['<all_urls>'] });
+  const grantPbx = () => {
+    if (cfg.fqdn) {
+      void browser.permissions
+        .request({ origins: [pbxOriginPattern(normalizeFqdn(cfg.fqdn))] })
+        .catch(() => {});
+    }
+  };
   const testDeepLink = () => {
     if (cfg.fqdn) browser.tabs.create({ url: buildDeepLinkUrl(cfg.fqdn, '+000000000') });
   };
@@ -80,7 +88,10 @@ export function Wizard({ initial, onDone }: { initial: Config; onDone: (cfg: Con
         <div>
           <h2>{t('wiz_s4_title')}</h2>
           <p class="hint">{t('wiz_s4_hint')}</p>
-          <button class="ghost" onClick={grantAllUrls}>{t('wiz_grantAll')}</button>
+          <div class="row" style="gap:12px">
+            <button class="ghost" disabled={!cfg.fqdn} onClick={grantPbx}>{t('wiz_grantPbx')}</button>
+            <button class="ghost" onClick={grantAllUrls}>{t('wiz_grantAll')}</button>
+          </div>
         </div>
       )}
 

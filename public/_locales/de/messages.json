@@ -71,6 +71,7 @@
   "wiz_s4_title": { "message": "4 · Automatische Erkennung" },
   "wiz_s4_hint": { "message": "Um Nummern auf Seiten zu erkennen, erlauben Sie den Zugriff — oder beschränken Sie ihn später in den Einstellungen auf ausgewählte Domains." },
   "wiz_grantAll": { "message": "Auf allen Seiten erlauben (<all_urls>)" },
+  "wiz_grantPbx": { "message": "Zugriff auf Ihren 3CX-Server erlauben (für die Call Control API erforderlich)" },
   "wiz_done_title": { "message": "Fertig 🎉" },
   "wiz_sum_path": { "message": "Weg" },
   "wiz_sum_region": { "message": "Region" },
