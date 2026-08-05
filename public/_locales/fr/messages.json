@@ -1,122 +1,287 @@
 {
-  "extName": { "message": "TrueDial pour 3CX" },
+  "extName": {
+    "message": "TrueDial pour 3CX"
+  },
   "extDescription": {
     "message": "Click-to-call fiable pour 3CX. Détecte les numéros de téléphone sans casser la page. Non officiel — sans lien avec 3CX."
   },
-
-  "ctx_call": { "message": "Appeler via 3CX : « %s »" },
-
-  "common_loading": { "message": "Chargement…" },
-
-  "popup_configure": { "message": "Configurer la connexion 3CX →" },
-  "popup_dialLabel": { "message": "Saisir un numéro" },
-  "popup_dialPlaceholder": { "message": "ex. +33 1 42 68 53 00" },
-  "popup_invalid": { "message": "Numéro invalide" },
-  "popup_call": { "message": "Appeler" },
-  "popup_detectionOn": { "message": "Détection sur" },
-  "popup_history": { "message": "Historique" },
-  "popup_clear": { "message": "effacer" },
-  "popup_noCalls": { "message": "Aucun appel." },
-  "popup_attempted": { "message": "transmis à tel: — non confirmé" },
-  "popup_lastCall": { "message": "Dernier appel" },
-
-  "opt_tagline": { "message": "Extension click-to-call indépendante. Sans lien avec 3CX." },
-  "opt_wizardBtn": { "message": "Assistant de configuration" },
-  "opt_sec_connection": { "message": "Connexion 3CX" },
-  "opt_fqdnLabel": { "message": "FQDN de l’instance 3CX" },
+  "ctx_call": {
+    "message": "Appeler via 3CX : « %s »"
+  },
+  "common_loading": {
+    "message": "Chargement…"
+  },
+  "popup_configure": {
+    "message": "Configurer la connexion 3CX →"
+  },
+  "popup_dialLabel": {
+    "message": "Saisir un numéro"
+  },
+  "popup_dialPlaceholder": {
+    "message": "ex. +33 1 42 68 53 00"
+  },
+  "popup_invalid": {
+    "message": "Numéro invalide"
+  },
+  "popup_call": {
+    "message": "Appeler"
+  },
+  "popup_detectionOn": {
+    "message": "Détection sur"
+  },
+  "popup_history": {
+    "message": "Historique"
+  },
+  "popup_clear": {
+    "message": "effacer"
+  },
+  "popup_noCalls": {
+    "message": "Aucun appel."
+  },
+  "popup_attempted": {
+    "message": "transmis à tel: — non confirmé"
+  },
+  "popup_lastCall": {
+    "message": "Dernier appel"
+  },
+  "opt_tagline": {
+    "message": "Extension click-to-call indépendante. Sans lien avec 3CX."
+  },
+  "opt_wizardBtn": {
+    "message": "Assistant de configuration"
+  },
+  "opt_sec_connection": {
+    "message": "Connexion 3CX"
+  },
+  "opt_fqdnLabel": {
+    "message": "FQDN de l’instance 3CX"
+  },
   "opt_fqdnHint": {
     "message": "Voie MVP : lien profond du client web (aucune configuration admin)."
   },
-  "opt_testDeepLink": { "message": "Tester le lien profond" },
-  "opt_pathLabel": { "message": "Voie d’appel préférée" },
-  "opt_path_auto": { "message": "Automatique (Call Control API → lien profond → tel:)" },
-  "opt_path_ccapi": { "message": "Call Control API uniquement" },
-  "opt_path_deeplink": { "message": "Lien profond du client web uniquement" },
-  "opt_path_tel": { "message": "tel: uniquement (application de bureau)" },
+  "opt_testDeepLink": {
+    "message": "Tester le lien profond"
+  },
+  "opt_pathLabel": {
+    "message": "Voie d’appel préférée"
+  },
+  "opt_path_auto": {
+    "message": "Automatique (Call Control API → lien profond → tel:)"
+  },
+  "opt_path_ccapi": {
+    "message": "Call Control API uniquement"
+  },
+  "opt_path_deeplink": {
+    "message": "Lien profond du client web uniquement"
+  },
+  "opt_path_tel": {
+    "message": "tel: uniquement (application de bureau)"
+  },
   "opt_pathHint": {
     "message": "Si une voie échoue, l’extension passe à la suivante — aucune défaillance silencieuse."
   },
-  "opt_sec_ccapi": { "message": "Call Control API (facultatif)" },
+  "opt_sec_ccapi": {
+    "message": "Call Control API (facultatif)"
+  },
   "opt_ccapiHint": {
     "message": "Statut d’appel complet. Nécessite une application API dans la console 3CX (Admin → Integrations → API) et la licence appropriée. Les identifiants sont stockés localement et jamais synchronisés."
   },
-  "opt_clientId": { "message": "Client ID" },
-  "opt_clientSecret": { "message": "Client Secret" },
-  "opt_extension": { "message": "Numéro de poste (ext.)" },
-  "opt_deviceId": { "message": "ID de l’appareil" },
-  "opt_sec_detection": { "message": "Détection des numéros" },
-  "opt_regionLabel": { "message": "Région par défaut (numéros nationaux)" },
-  "opt_modeLabel": { "message": "Mode de présentation" },
-  "opt_mode_subtle": { "message": "Discret (soulignement pointillé + icône au survol)" },
-  "opt_mode_aggressive": { "message": "Marqué (numéros visibles et cliquables)" },
-  "opt_mode_off": { "message": "Désactivé" },
+  "opt_clientId": {
+    "message": "Client ID"
+  },
+  "opt_clientSecret": {
+    "message": "Client Secret"
+  },
+  "opt_extension": {
+    "message": "Numéro de poste (ext.)"
+  },
+  "opt_deviceId": {
+    "message": "ID de l’appareil"
+  },
+  "opt_sec_detection": {
+    "message": "Détection des numéros"
+  },
+  "opt_regionLabel": {
+    "message": "Région par défaut (numéros nationaux)"
+  },
+  "opt_modeLabel": {
+    "message": "Mode de présentation"
+  },
+  "opt_mode_subtle": {
+    "message": "Discret (soulignement pointillé + icône au survol)"
+  },
+  "opt_mode_aggressive": {
+    "message": "Marqué (numéros visibles et cliquables)"
+  },
+  "opt_mode_off": {
+    "message": "Désactivé"
+  },
   "opt_allowlistToggle": {
     "message": "N’analyser que les domaines choisis (liste d’autorisation)"
   },
-  "opt_allowlistLabel": { "message": "Liste d’autorisation (un domaine par ligne)" },
+  "opt_allowlistLabel": {
+    "message": "Liste d’autorisation (un domaine par ligne)"
+  },
   "opt_grantAll": {
     "message": "Autoriser la détection automatique sur tous les sites (<all_urls>)"
   },
-  "opt_sec_sound": { "message": "Son de confirmation" },
-  "opt_soundEnable": { "message": "Jouer un son court lorsqu’un appel est lancé" },
-  "opt_tone": { "message": "Tonalité" },
-  "opt_volume": { "message": "Volume" },
-  "opt_testSound": { "message": "Tester le son" },
-  "opt_sec_screenpop": { "message": "Screen-pop (CRM)" },
-  "opt_screenpopLabel": { "message": "Modèle d’URL ouvert lors d’un appel sortant" },
+  "opt_sec_sound": {
+    "message": "Son de confirmation"
+  },
+  "opt_soundEnable": {
+    "message": "Jouer un son court lorsqu’un appel est lancé"
+  },
+  "opt_tone": {
+    "message": "Tonalité"
+  },
+  "opt_volume": {
+    "message": "Volume"
+  },
+  "opt_testSound": {
+    "message": "Tester le son"
+  },
+  "opt_sec_screenpop": {
+    "message": "Screen-pop (CRM)"
+  },
+  "opt_screenpopLabel": {
+    "message": "Modèle d’URL ouvert lors d’un appel sortant"
+  },
+  "opt_screenpopPreset": {
+    "message": "Préréglage CRM"
+  },
+  "opt_screenpopPresetNone": {
+    "message": "— choisir un CRM —"
+  },
+  "opt_screenpopPresetHint": {
+    "message": "Remplit le modèle ci-dessous. Remplacez le segment en MAJUSCULES (p. ex. YOUR-PORTAL-ID) par la valeur de votre compte, puis enregistrez."
+  },
   "opt_screenpopHint": {
     "message": "Espaces réservés : {number} (E.164), {national}. Vide = désactivé."
   },
-  "opt_save": { "message": "Enregistrer" },
-  "opt_saved": { "message": "✓ Enregistré" },
-  "opt_sec_backup": { "message": "Sauvegarde / stratégie" },
+  "opt_save": {
+    "message": "Enregistrer"
+  },
+  "opt_saved": {
+    "message": "✓ Enregistré"
+  },
+  "opt_sec_backup": {
+    "message": "Sauvegarde / stratégie"
+  },
   "opt_backupHint": {
     "message": "Les exports omettent le secret client. Les déploiements entreprise peuvent imposer la configuration via une stratégie (chrome.storage.managed) — elle prime sur les réglages locaux."
   },
-  "opt_export": { "message": "Exporter la configuration (JSON)" },
-  "opt_import": { "message": "Importer depuis un fichier…" },
-  "opt_importErr": { "message": "Fichier de configuration invalide" },
-
-  "wiz_step": { "message": "Étape" },
-  "wiz_of": { "message": "sur" },
-  "wiz_s1_title": { "message": "1 · Adresse 3CX" },
-  "wiz_s1_hint": { "message": "ex. l’adresse où vous ouvrez le client web 3CX." },
-  "wiz_s2_title": { "message": "2 · Méthode d’appel" },
-  "wiz_path_auto": { "message": "Automatique (recommandé)" },
-  "wiz_s3_title": { "message": "3 · Région par défaut" },
-  "wiz_s3_label": { "message": "Pays pour les numéros sans préfixe" },
-  "wiz_s4_title": { "message": "4 · Détection automatique" },
+  "opt_export": {
+    "message": "Exporter la configuration (JSON)"
+  },
+  "opt_import": {
+    "message": "Importer depuis un fichier…"
+  },
+  "opt_importErr": {
+    "message": "Fichier de configuration invalide"
+  },
+  "wiz_step": {
+    "message": "Étape"
+  },
+  "wiz_of": {
+    "message": "sur"
+  },
+  "wiz_s1_title": {
+    "message": "1 · Adresse 3CX"
+  },
+  "wiz_s1_hint": {
+    "message": "ex. l’adresse où vous ouvrez le client web 3CX."
+  },
+  "wiz_s2_title": {
+    "message": "2 · Méthode d’appel"
+  },
+  "wiz_path_auto": {
+    "message": "Automatique (recommandé)"
+  },
+  "wiz_s3_title": {
+    "message": "3 · Région par défaut"
+  },
+  "wiz_s3_label": {
+    "message": "Pays pour les numéros sans préfixe"
+  },
+  "wiz_s4_title": {
+    "message": "4 · Détection automatique"
+  },
   "wiz_s4_hint": {
     "message": "Pour détecter les numéros sur les pages, autorisez l’accès — ou limitez-le à des domaines choisis dans les réglages plus tard."
   },
-  "wiz_grantAll": { "message": "Autoriser sur tous les sites (<all_urls>)" },
+  "wiz_grantAll": {
+    "message": "Autoriser sur tous les sites (<all_urls>)"
+  },
   "wiz_grantPbx": {
     "message": "Autoriser l'accès à votre serveur 3CX (requis pour la Call Control API)"
   },
-  "wiz_done_title": { "message": "Terminé 🎉" },
-  "wiz_sum_path": { "message": "voie" },
-  "wiz_sum_region": { "message": "région" },
-  "wiz_done_hint": { "message": "Vous pouvez tout modifier dans les réglages à tout moment." },
-  "wiz_back": { "message": "Retour" },
-  "wiz_next": { "message": "Suivant" },
-  "wiz_finish": { "message": "Terminer" },
-
-  "diag_title": { "message": "Diagnostic" },
+  "wiz_done_title": {
+    "message": "Terminé 🎉"
+  },
+  "wiz_sum_path": {
+    "message": "voie"
+  },
+  "wiz_sum_region": {
+    "message": "région"
+  },
+  "wiz_done_hint": {
+    "message": "Vous pouvez tout modifier dans les réglages à tout moment."
+  },
+  "wiz_back": {
+    "message": "Retour"
+  },
+  "wiz_next": {
+    "message": "Suivant"
+  },
+  "wiz_finish": {
+    "message": "Terminer"
+  },
+  "diag_title": {
+    "message": "Diagnostic"
+  },
   "diag_hint": {
     "message": "Un tampon local des événements récents. Le rapport est anonymisé (numéros et URL masqués) — rien ne quitte le navigateur sans votre action."
   },
-  "diag_runHealth": { "message": "Lancer le test de connectivité" },
-  "diag_checking": { "message": "Test en cours…" },
-  "diag_copyReport": { "message": "Copier le rapport de diagnostic" },
-  "diag_clear": { "message": "Effacer" },
-  "diag_copied": { "message": "✓ Copié" },
-  "diag_reachable": { "message": "PBX joignable :" },
-  "diag_token": { "message": "Jeton API :" },
-  "diag_activePath": { "message": "Voie active :" },
-  "diag_configured": { "message": "Configuré :" },
-  "diag_none": { "message": "aucune (non configuré)" },
-  "diag_noEvents": { "message": "Aucun événement." },
-  "diag_yes": { "message": "oui" },
-  "diag_no": { "message": "non" },
-  "diag_na": { "message": "s. o." }
+  "diag_runHealth": {
+    "message": "Lancer le test de connectivité"
+  },
+  "diag_checking": {
+    "message": "Test en cours…"
+  },
+  "diag_copyReport": {
+    "message": "Copier le rapport de diagnostic"
+  },
+  "diag_clear": {
+    "message": "Effacer"
+  },
+  "diag_copied": {
+    "message": "✓ Copié"
+  },
+  "diag_reachable": {
+    "message": "PBX joignable :"
+  },
+  "diag_token": {
+    "message": "Jeton API :"
+  },
+  "diag_activePath": {
+    "message": "Voie active :"
+  },
+  "diag_configured": {
+    "message": "Configuré :"
+  },
+  "diag_none": {
+    "message": "aucune (non configuré)"
+  },
+  "diag_noEvents": {
+    "message": "Aucun événement."
+  },
+  "diag_yes": {
+    "message": "oui"
+  },
+  "diag_no": {
+    "message": "non"
+  },
+  "diag_na": {
+    "message": "s. o."
+  }
 }

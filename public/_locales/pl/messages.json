@@ -1,114 +1,287 @@
 {
-  "extName": { "message": "TrueDial dla 3CX" },
+  "extName": {
+    "message": "TrueDial dla 3CX"
+  },
   "extDescription": {
     "message": "Niezawodne click-to-call dla 3CX. Wykrywa numery telefonów bez psucia strony. Nieoficjalne — niepowiązane z 3CX."
   },
-
-  "ctx_call": { "message": "Zadzwoń przez 3CX: „%s”" },
-
-  "common_loading": { "message": "Ładowanie…" },
-
-  "popup_configure": { "message": "Skonfiguruj połączenie z 3CX →" },
-  "popup_dialLabel": { "message": "Wybierz numer" },
-  "popup_dialPlaceholder": { "message": "np. +48 22 123 45 67" },
-  "popup_invalid": { "message": "Niepoprawny numer" },
-  "popup_call": { "message": "Zadzwoń" },
-  "popup_detectionOn": { "message": "Detekcja na" },
-  "popup_history": { "message": "Historia" },
-  "popup_clear": { "message": "wyczyść" },
-  "popup_noCalls": { "message": "Brak połączeń." },
-  "popup_attempted": { "message": "przekazane do tel: — bez potwierdzenia" },
-  "popup_lastCall": { "message": "Ostatnie połączenie" },
-
-  "opt_tagline": { "message": "Niezależne rozszerzenie click-to-call. Nie jest powiązane z 3CX." },
-  "opt_wizardBtn": { "message": "Kreator konfiguracji" },
-  "opt_sec_connection": { "message": "Połączenie z 3CX" },
-  "opt_fqdnLabel": { "message": "FQDN instancji 3CX" },
-  "opt_fqdnHint": { "message": "Ścieżka MVP: deep-link web clienta (bez konfiguracji admina)." },
-  "opt_testDeepLink": { "message": "Testuj deep-link" },
-  "opt_pathLabel": { "message": "Preferowana ścieżka połączenia" },
-  "opt_path_auto": { "message": "Automatycznie (Call Control API → deep-link → tel:)" },
-  "opt_path_ccapi": { "message": "Tylko Call Control API" },
-  "opt_path_deeplink": { "message": "Tylko deep-link web clienta" },
-  "opt_path_tel": { "message": "Tylko tel: (aplikacja desktopowa)" },
+  "ctx_call": {
+    "message": "Zadzwoń przez 3CX: „%s”"
+  },
+  "common_loading": {
+    "message": "Ładowanie…"
+  },
+  "popup_configure": {
+    "message": "Skonfiguruj połączenie z 3CX →"
+  },
+  "popup_dialLabel": {
+    "message": "Wybierz numer"
+  },
+  "popup_dialPlaceholder": {
+    "message": "np. +48 22 123 45 67"
+  },
+  "popup_invalid": {
+    "message": "Niepoprawny numer"
+  },
+  "popup_call": {
+    "message": "Zadzwoń"
+  },
+  "popup_detectionOn": {
+    "message": "Detekcja na"
+  },
+  "popup_history": {
+    "message": "Historia"
+  },
+  "popup_clear": {
+    "message": "wyczyść"
+  },
+  "popup_noCalls": {
+    "message": "Brak połączeń."
+  },
+  "popup_attempted": {
+    "message": "przekazane do tel: — bez potwierdzenia"
+  },
+  "popup_lastCall": {
+    "message": "Ostatnie połączenie"
+  },
+  "opt_tagline": {
+    "message": "Niezależne rozszerzenie click-to-call. Nie jest powiązane z 3CX."
+  },
+  "opt_wizardBtn": {
+    "message": "Kreator konfiguracji"
+  },
+  "opt_sec_connection": {
+    "message": "Połączenie z 3CX"
+  },
+  "opt_fqdnLabel": {
+    "message": "FQDN instancji 3CX"
+  },
+  "opt_fqdnHint": {
+    "message": "Ścieżka MVP: deep-link web clienta (bez konfiguracji admina)."
+  },
+  "opt_testDeepLink": {
+    "message": "Testuj deep-link"
+  },
+  "opt_pathLabel": {
+    "message": "Preferowana ścieżka połączenia"
+  },
+  "opt_path_auto": {
+    "message": "Automatycznie (Call Control API → deep-link → tel:)"
+  },
+  "opt_path_ccapi": {
+    "message": "Tylko Call Control API"
+  },
+  "opt_path_deeplink": {
+    "message": "Tylko deep-link web clienta"
+  },
+  "opt_path_tel": {
+    "message": "Tylko tel: (aplikacja desktopowa)"
+  },
   "opt_pathHint": {
     "message": "Przy niepowodzeniu ścieżki rozszerzenie schodzi do następnej — bez cichych awarii."
   },
-  "opt_sec_ccapi": { "message": "Call Control API (opcjonalnie)" },
+  "opt_sec_ccapi": {
+    "message": "Call Control API (opcjonalnie)"
+  },
   "opt_ccapiHint": {
     "message": "Pełny status połączenia. Wymaga aplikacji API w konsoli 3CX (Admin → Integrations → API) oraz odpowiedniej licencji. Poświadczenia są przechowywane lokalnie i nigdy nie są synchronizowane."
   },
-  "opt_clientId": { "message": "Client ID" },
-  "opt_clientSecret": { "message": "Client Secret" },
-  "opt_extension": { "message": "Numer wewnętrzny (ext.)" },
-  "opt_deviceId": { "message": "Device ID" },
-  "opt_sec_detection": { "message": "Detekcja numerów" },
-  "opt_regionLabel": { "message": "Region domyślny (numery krajowe)" },
-  "opt_modeLabel": { "message": "Tryb prezentacji" },
-  "opt_mode_subtle": { "message": "Subtelny (podkreślenie + ikona na hover)" },
-  "opt_mode_aggressive": { "message": "Agresywny (wyraźne, klikalne numery)" },
-  "opt_mode_off": { "message": "Wyłączony" },
-  "opt_allowlistToggle": { "message": "Skanuj tylko wybrane domeny (allowlist)" },
-  "opt_allowlistLabel": { "message": "Allowlist (po jednej domenie w linii)" },
-  "opt_grantAll": { "message": "Zezwól na autodetekcję na wszystkich stronach (<all_urls>)" },
-  "opt_sec_sound": { "message": "Dźwięk potwierdzenia" },
-  "opt_soundEnable": { "message": "Odtwarzaj krótki dźwięk po zainicjowaniu połączenia" },
-  "opt_tone": { "message": "Ton" },
-  "opt_volume": { "message": "Głośność" },
-  "opt_testSound": { "message": "Testuj dźwięk" },
-  "opt_sec_screenpop": { "message": "Screen-pop (CRM)" },
-  "opt_screenpopLabel": { "message": "Szablon URL otwierany przy połączeniu wychodzącym" },
+  "opt_clientId": {
+    "message": "Client ID"
+  },
+  "opt_clientSecret": {
+    "message": "Client Secret"
+  },
+  "opt_extension": {
+    "message": "Numer wewnętrzny (ext.)"
+  },
+  "opt_deviceId": {
+    "message": "Device ID"
+  },
+  "opt_sec_detection": {
+    "message": "Detekcja numerów"
+  },
+  "opt_regionLabel": {
+    "message": "Region domyślny (numery krajowe)"
+  },
+  "opt_modeLabel": {
+    "message": "Tryb prezentacji"
+  },
+  "opt_mode_subtle": {
+    "message": "Subtelny (podkreślenie + ikona na hover)"
+  },
+  "opt_mode_aggressive": {
+    "message": "Agresywny (wyraźne, klikalne numery)"
+  },
+  "opt_mode_off": {
+    "message": "Wyłączony"
+  },
+  "opt_allowlistToggle": {
+    "message": "Skanuj tylko wybrane domeny (allowlist)"
+  },
+  "opt_allowlistLabel": {
+    "message": "Allowlist (po jednej domenie w linii)"
+  },
+  "opt_grantAll": {
+    "message": "Zezwól na autodetekcję na wszystkich stronach (<all_urls>)"
+  },
+  "opt_sec_sound": {
+    "message": "Dźwięk potwierdzenia"
+  },
+  "opt_soundEnable": {
+    "message": "Odtwarzaj krótki dźwięk po zainicjowaniu połączenia"
+  },
+  "opt_tone": {
+    "message": "Ton"
+  },
+  "opt_volume": {
+    "message": "Głośność"
+  },
+  "opt_testSound": {
+    "message": "Testuj dźwięk"
+  },
+  "opt_sec_screenpop": {
+    "message": "Screen-pop (CRM)"
+  },
+  "opt_screenpopLabel": {
+    "message": "Szablon URL otwierany przy połączeniu wychodzącym"
+  },
+  "opt_screenpopPreset": {
+    "message": "Preset CRM"
+  },
+  "opt_screenpopPresetNone": {
+    "message": "— wybierz CRM —"
+  },
+  "opt_screenpopPresetHint": {
+    "message": "Wypełnia szablon poniżej. Zamień segment WIELKIMI-LITERAMI (np. YOUR-PORTAL-ID) na wartość ze swojego konta i zapisz."
+  },
   "opt_screenpopHint": {
     "message": "Placeholdery: {number} (E.164), {national}. Puste pole = wyłączone."
   },
-  "opt_save": { "message": "Zapisz" },
-  "opt_saved": { "message": "✓ Zapisano" },
-  "opt_sec_backup": { "message": "Kopia zapasowa / polityka" },
+  "opt_save": {
+    "message": "Zapisz"
+  },
+  "opt_saved": {
+    "message": "✓ Zapisano"
+  },
+  "opt_sec_backup": {
+    "message": "Kopia zapasowa / polityka"
+  },
   "opt_backupHint": {
     "message": "Eksport pomija sekret klienta. Wdrożenia enterprise mogą wymusić konfigurację przez politykę (chrome.storage.managed) — ma ona pierwszeństwo nad ustawieniami lokalnymi."
   },
-  "opt_export": { "message": "Eksportuj konfigurację (JSON)" },
-  "opt_import": { "message": "Importuj z pliku…" },
-  "opt_importErr": { "message": "Niepoprawny plik konfiguracji" },
-
-  "wiz_step": { "message": "Krok" },
-  "wiz_of": { "message": "z" },
-  "wiz_s1_title": { "message": "1 · Adres 3CX" },
-  "wiz_s1_hint": { "message": "Np. adres, pod którym otwierasz web client 3CX." },
-  "wiz_s2_title": { "message": "2 · Sposób dzwonienia" },
-  "wiz_path_auto": { "message": "Automatycznie (zalecane)" },
-  "wiz_s3_title": { "message": "3 · Region domyślny" },
-  "wiz_s3_label": { "message": "Kraj dla numerów bez prefiksu" },
-  "wiz_s4_title": { "message": "4 · Autodetekcja" },
+  "opt_export": {
+    "message": "Eksportuj konfigurację (JSON)"
+  },
+  "opt_import": {
+    "message": "Importuj z pliku…"
+  },
+  "opt_importErr": {
+    "message": "Niepoprawny plik konfiguracji"
+  },
+  "wiz_step": {
+    "message": "Krok"
+  },
+  "wiz_of": {
+    "message": "z"
+  },
+  "wiz_s1_title": {
+    "message": "1 · Adres 3CX"
+  },
+  "wiz_s1_hint": {
+    "message": "Np. adres, pod którym otwierasz web client 3CX."
+  },
+  "wiz_s2_title": {
+    "message": "2 · Sposób dzwonienia"
+  },
+  "wiz_path_auto": {
+    "message": "Automatycznie (zalecane)"
+  },
+  "wiz_s3_title": {
+    "message": "3 · Region domyślny"
+  },
+  "wiz_s3_label": {
+    "message": "Kraj dla numerów bez prefiksu"
+  },
+  "wiz_s4_title": {
+    "message": "4 · Autodetekcja"
+  },
   "wiz_s4_hint": {
     "message": "Aby wykrywać numery na stronach, zezwól na dostęp — albo ogranicz go do wybranych domen w ustawieniach później."
   },
-  "wiz_grantAll": { "message": "Zezwól na wszystkich stronach (<all_urls>)" },
-  "wiz_grantPbx": { "message": "Zezwól na dostęp do serwera 3CX (wymagane dla Call Control API)" },
-  "wiz_done_title": { "message": "Gotowe 🎉" },
-  "wiz_sum_path": { "message": "ścieżka" },
-  "wiz_sum_region": { "message": "region" },
-  "wiz_done_hint": { "message": "Możesz zmienić wszystko w ustawieniach w dowolnej chwili." },
-  "wiz_back": { "message": "Wstecz" },
-  "wiz_next": { "message": "Dalej" },
-  "wiz_finish": { "message": "Zakończ" },
-
-  "diag_title": { "message": "Diagnostyka" },
+  "wiz_grantAll": {
+    "message": "Zezwól na wszystkich stronach (<all_urls>)"
+  },
+  "wiz_grantPbx": {
+    "message": "Zezwól na dostęp do serwera 3CX (wymagane dla Call Control API)"
+  },
+  "wiz_done_title": {
+    "message": "Gotowe 🎉"
+  },
+  "wiz_sum_path": {
+    "message": "ścieżka"
+  },
+  "wiz_sum_region": {
+    "message": "region"
+  },
+  "wiz_done_hint": {
+    "message": "Możesz zmienić wszystko w ustawieniach w dowolnej chwili."
+  },
+  "wiz_back": {
+    "message": "Wstecz"
+  },
+  "wiz_next": {
+    "message": "Dalej"
+  },
+  "wiz_finish": {
+    "message": "Zakończ"
+  },
+  "diag_title": {
+    "message": "Diagnostyka"
+  },
   "diag_hint": {
     "message": "Lokalny bufor ostatnich zdarzeń. Raport jest zanonimizowany (numery i adresy URL są maskowane) — nic nie opuszcza przeglądarki bez Twojej akcji."
   },
-  "diag_runHealth": { "message": "Uruchom test łączności" },
-  "diag_checking": { "message": "Testuję…" },
-  "diag_copyReport": { "message": "Kopiuj raport diagnostyczny" },
-  "diag_clear": { "message": "Wyczyść" },
-  "diag_copied": { "message": "✓ Skopiowano" },
-  "diag_reachable": { "message": "PBX osiągalny:" },
-  "diag_token": { "message": "Token API:" },
-  "diag_activePath": { "message": "Aktywna ścieżka:" },
-  "diag_configured": { "message": "Skonfigurowane:" },
-  "diag_none": { "message": "brak (nieskonfigurowane)" },
-  "diag_noEvents": { "message": "Brak zdarzeń." },
-  "diag_yes": { "message": "tak" },
-  "diag_no": { "message": "nie" },
-  "diag_na": { "message": "n/d" }
+  "diag_runHealth": {
+    "message": "Uruchom test łączności"
+  },
+  "diag_checking": {
+    "message": "Testuję…"
+  },
+  "diag_copyReport": {
+    "message": "Kopiuj raport diagnostyczny"
+  },
+  "diag_clear": {
+    "message": "Wyczyść"
+  },
+  "diag_copied": {
+    "message": "✓ Skopiowano"
+  },
+  "diag_reachable": {
+    "message": "PBX osiągalny:"
+  },
+  "diag_token": {
+    "message": "Token API:"
+  },
+  "diag_activePath": {
+    "message": "Aktywna ścieżka:"
+  },
+  "diag_configured": {
+    "message": "Skonfigurowane:"
+  },
+  "diag_none": {
+    "message": "brak (nieskonfigurowane)"
+  },
+  "diag_noEvents": {
+    "message": "Brak zdarzeń."
+  },
+  "diag_yes": {
+    "message": "tak"
+  },
+  "diag_no": {
+    "message": "nie"
+  },
+  "diag_na": {
+    "message": "n/d"
+  }
 }

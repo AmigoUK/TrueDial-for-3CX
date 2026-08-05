@@ -11,6 +11,7 @@ import {
 } from '../../lib/storage';
 import { normalizeFqdn, buildDeepLinkUrl } from '../../lib/call/deeplink';
 import { pbxOriginPattern, allowlistOriginPattern } from '../../lib/permissions/registration';
+import { CRM_PRESETS, presetById } from '../../lib/crm/presets';
 import type { PreferredPath } from '../../lib/call/select';
 import { TONE_NAMES } from '../../lib/audio/tone';
 import type { Message } from '../../lib/messaging/schema';
@@ -322,6 +323,25 @@ export function App() {
 
         <section>
           <h2>{t('opt_sec_screenpop')}</h2>
+          <label class="field">
+            <span>{t('opt_screenpopPreset')}</span>
+            <select
+              value=""
+              onChange={(e) => {
+                const preset = presetById((e.target as HTMLSelectElement).value);
+                if (preset) update({ screenPopUrl: preset.template });
+                (e.target as HTMLSelectElement).value = '';
+              }}
+            >
+              <option value="">{t('opt_screenpopPresetNone')}</option>
+              {CRM_PRESETS.map((p) => (
+                <option value={p.id} key={p.id}>
+                  {p.label}
+                </option>
+              ))}
+            </select>
+            <span class="hint">{t('opt_screenpopPresetHint')}</span>
+          </label>
           <label class="field">
             <span>{t('opt_screenpopLabel')}</span>
             <input

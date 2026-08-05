@@ -39,7 +39,7 @@ items with rationale).
 - `lib/call` — `CallOrchestrator`, strategies (`ccapi`, `deeplink`, `tel`),
   `TokenManager`, path ordering. `tel:` outcomes are flagged `unconfirmed`.
 - `lib/permissions` — origin patterns + runtime registration logic.
-- `lib/crm` — screen-pop templating + adapter interface.
+- `lib/crm` — screen-pop templating + CRM presets (HubSpot, Zoho, Salesforce).
 - `lib/diagnostics` — ring buffer, redaction, report, health check.
 - `lib/audio` — pure tone specs + offscreen management (send retry).
 - `lib/onboarding` — wizard step machine.

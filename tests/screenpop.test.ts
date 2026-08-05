@@ -1,6 +1,6 @@
 import { describe, it, expect } from 'vitest';
 import { buildScreenPopUrl } from '../lib/crm/template';
-import { GenericUrlAdapter } from '../lib/crm/adapter';
+import { CRM_PRESETS, presetById } from '../lib/crm/presets';
 
 describe('buildScreenPopUrl', () => {
   it('substitutes {number} with URL-encoded E.164', () => {
@@ -27,14 +27,28 @@ describe('buildScreenPopUrl', () => {
   });
 });
 
-describe('GenericUrlAdapter', () => {
-  it('matches any URL (long-tail fallback) and builds a pop URL', () => {
-    const a = new GenericUrlAdapter('https://crm/s?p={number}');
-    expect(a.matches(new URL('https://anything.test/'))).toBe(true);
-    expect(a.popUrl('+442079460958')).toContain('%2B442079460958');
+describe('CRM presets', () => {
+  it('covers the targeted CRMs with unique ids', () => {
+    expect(CRM_PRESETS.map((p) => p.id)).toEqual(['hubspot', 'zoho', 'salesforce']);
+    expect(new Set(CRM_PRESETS.map((p) => p.id)).size).toBe(CRM_PRESETS.length);
   });
 
-  it('popUrl is null without a template', () => {
-    expect(new GenericUrlAdapter('').popUrl('+442079460958')).toBeNull();
+  it('every preset template carries a placeholder and builds a pop URL', () => {
+    for (const p of CRM_PRESETS) {
+      // After the user substitutes their account segment, the template must
+      // resolve into a working screen-pop URL.
+      const filled = p.template
+        .replace('YOUR-PORTAL-ID', '12345678')
+        .replace('YOUR-DOMAIN', 'example');
+      const url = buildScreenPopUrl(filled, '+442079460958');
+      expect(url, p.id).not.toBeNull();
+      expect(url!, p.id).toMatch(/^https:\/\//);
+      expect(decodeURIComponent(url!), p.id).toMatch(/0958/);
+    }
+  });
+
+  it('presetById finds presets and returns undefined for unknown ids', () => {
+    expect(presetById('hubspot')?.label).toBe('HubSpot');
+    expect(presetById('nope')).toBeUndefined();
   });
 });
