@@ -33,4 +33,15 @@ describe('parseMessage', () => {
     expect(parseMessage('PLACE_CALL')).toBeNull();
     expect(parseMessage(42)).toBeNull();
   });
+
+  it('accepts TEST_SOUND with and without inline tone parameters', () => {
+    expect(parseMessage({ type: 'TEST_SOUND' })).toEqual({ type: 'TEST_SOUND' });
+    const msg: Message = { type: 'TEST_SOUND', soundName: 'beep', volume: 0.4 };
+    expect(parseMessage(msg)).toEqual(msg);
+  });
+
+  it('rejects TEST_SOUND with an out-of-range volume', () => {
+    expect(parseMessage({ type: 'TEST_SOUND', volume: 1.5 })).toBeNull();
+    expect(parseMessage({ type: 'TEST_SOUND', volume: -0.1 })).toBeNull();
+  });
 });

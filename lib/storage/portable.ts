@@ -37,8 +37,10 @@ const importSchema = z
     historyRetentionDays: z.number(),
   })
   .partial()
-  .strict()
   .catchall(z.unknown());
+
+// The recognised config keys — everything else in an import is dropped.
+const KNOWN_KEYS = new Set(Object.keys(importSchema.shape));
 
 /** Parses a JSON config into a validated partial patch, or null on failure. */
 export function importConfig(json: string): Partial<Config> | null {
@@ -52,10 +54,9 @@ export function importConfig(json: string): Partial<Config> | null {
   if (!res.success) return null;
 
   // Keep only keys we recognise (drop the catchall extras).
-  const known = importSchema.omit({}).keyof().options as string[];
   const patch: Record<string, unknown> = {};
   for (const [k, v] of Object.entries(res.data)) {
-    if (known.includes(k) && v !== undefined) patch[k] = v;
+    if (KNOWN_KEYS.has(k) && v !== undefined) patch[k] = v;
   }
   return patch as Partial<Config>;
 }

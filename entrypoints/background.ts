@@ -8,6 +8,7 @@ import { CallControlStrategy } from '../lib/call/ccapi';
 import { TokenManager } from '../lib/call/token';
 import { orderStrategyIds } from '../lib/call/select';
 import { formatBadge } from '../lib/scanner/badge';
+import { setFrameCount, clearFrameCounts } from '../lib/scanner/frameCounts';
 import { t } from '../lib/i18n';
 import type { CallStrategy, StrategyId } from '../lib/call/strategy';
 import { validateToE164 } from '../lib/phone/validate';
@@ -79,11 +80,17 @@ export default defineBackground(() => {
       e164,
       ts: Date.now(),
       source,
-      status: outcome.ok ? 'placed' : 'failed',
+      status: outcome.ok ? (outcome.unconfirmed ? 'attempted' : 'placed') : 'failed',
     });
     // Diagnostics: numbers are redacted at report time, so we can log freely.
     if (outcome.ok) {
-      await recordEvent('call', 'info', `call placed via ${outcome.strategy}`);
+      await recordEvent(
+        'call',
+        'info',
+        outcome.unconfirmed
+          ? `call handed off via ${outcome.strategy} (unconfirmed)`
+          : `call placed via ${outcome.strategy}`,
+      );
       await maybeScreenPop(e164);
       const cfg = await getConfig();
       if (cfg.soundEnabled) {
@@ -121,6 +128,13 @@ export default defineBackground(() => {
     if (e164) await placeCall(e164, info.pageUrl);
   });
 
+  // Frame counts are per-document: drop them when the tab closes or starts
+  // loading a new document (surviving frames re-report after the scan).
+  browser.tabs.onRemoved.addListener((tabId) => void clearFrameCounts(tabId));
+  browser.tabs.onUpdated.addListener((tabId, info) => {
+    if (info.status === 'loading') void clearFrameCounts(tabId);
+  });
+
   // --- Message router (content/popup/options) ---
   // Returning a Promise → the polyfill sends the resolved value as the response;
   // returning undefined → the message is not handled.
@@ -147,16 +161,23 @@ export default defineBackground(() => {
         return { enabled: isSiteEnabled(cfg, msg.host) };
       }
       case 'DETECTION_COUNT': {
+        // Each frame reports its own count; the badge shows the per-tab sum.
         const tabId = sender.tab?.id;
         if (tabId != null) {
-          await browser.action.setBadgeText({ tabId, text: formatBadge(msg.count) });
+          const total = await setFrameCount(tabId, sender.frameId ?? 0, msg.count);
+          await browser.action.setBadgeText({ tabId, text: formatBadge(total) });
           await browser.action.setBadgeBackgroundColor({ tabId, color: '#2563eb' });
         }
         return { ok: true };
       }
       case 'TEST_SOUND': {
+        // The options page passes the live (unsaved) tone/volume so a test does
+        // not force a config write — a config write used to reload every tab.
         const cfg = await getConfig();
-        await playConfirmation(cfg.soundName, cfg.soundVolume).catch(() => {});
+        await playConfirmation(
+          msg.soundName ?? cfg.soundName,
+          msg.volume ?? cfg.soundVolume,
+        ).catch(() => {});
         return { ok: true };
       }
       case 'HEALTH_CHECK': {

@@ -15,6 +15,7 @@
   "popup_history": { "message": "Historial" },
   "popup_clear": { "message": "borrar" },
   "popup_noCalls": { "message": "Sin llamadas." },
+  "popup_attempted": { "message": "entregado a tel: — sin confirmar" },
 
   "opt_tagline": { "message": "Extensión click-to-call independiente. Sin relación con 3CX." },
   "opt_wizardBtn": { "message": "Asistente de configuración" },

@@ -1,7 +1,7 @@
 import { defineContentScript } from 'wxt/sandbox';
 import { Scanner } from '../lib/scanner/scanner';
 import { Renderer } from '../lib/renderer/renderer';
-import { getConfig, isSiteEnabled } from '../lib/storage';
+import { getConfig, isSiteEnabled, detectionSettingsChanged } from '../lib/storage';
 import type { Message } from '../lib/messaging/schema';
 
 // Content script (all_frames): detection and presentation ONLY. It holds no
@@ -13,32 +13,51 @@ export default defineContentScript({
   runAt: 'document_idle',
   async main() {
     const host = location.host;
-    const cfg = await getConfig();
-    if (cfg.detectionMode === 'off' || !isSiteEnabled(cfg, host)) return;
+    let scanner: Scanner | null = null;
+    let renderer: Renderer | null = null;
 
     const placeCall = (e164: string): void => {
       const msg: Message = { type: 'PLACE_CALL', e164, source: location.href };
       browser.runtime.sendMessage(msg).catch(() => {});
     };
 
-    const renderer = new Renderer(placeCall, cfg.detectionMode === 'aggressive' ? 'aggressive' : 'subtle');
-
-    // Report the running detected-number count to the SW for the toolbar badge.
-    let detected = 0;
+    // Report this frame's detected-number count to the SW for the toolbar
+    // badge (the SW sums the counts across frames).
     const reportCount = (n: number): void => {
       const msg: Message = { type: 'DETECTION_COUNT', count: n };
       browser.runtime.sendMessage(msg).catch(() => {});
     };
 
-    const scanner = new Scanner({
-      defaultRegion: cfg.defaultRegion,
-      onMatches: (matches) => {
-        renderer.apply(matches);
-        detected += matches.length;
-        reportCount(detected);
-      },
-      onOverflow: (total) => reportCount(total),
-    });
+    const start = async (): Promise<void> => {
+      const cfg = await getConfig();
+      if (cfg.detectionMode === 'off' || !isSiteEnabled(cfg, host)) return;
+
+      const r = new Renderer(placeCall, cfg.detectionMode === 'aggressive' ? 'aggressive' : 'subtle');
+      const s = new Scanner({
+        defaultRegion: cfg.defaultRegion,
+        onMatches: (matches) => {
+          r.apply(matches);
+          // The scanner's capped count is authoritative — an accumulated sum
+          // here would double-count incremental mutation scans.
+          reportCount(s.count);
+        },
+        onOverflow: (total) => reportCount(total),
+      });
+      renderer = r;
+      scanner = s;
+
+      const startWhenReady = () => s.start(document.body);
+      if (document.body) startWhenReady();
+      else document.addEventListener('DOMContentLoaded', startWhenReady, { once: true });
+    };
+
+    const stop = (): void => {
+      scanner?.stop();
+      scanner = null;
+      renderer?.teardown();
+      renderer = null;
+      reportCount(0);
+    };
 
     // Keyboard activation (accessibility): Enter/Space on a highlight.
     document.addEventListener('keydown', (ev) => {
@@ -51,13 +70,16 @@ export default defineContentScript({
       }
     });
 
-    const startWhenReady = () => scanner.start(document.body);
-    if (document.body) startWhenReady();
-    else document.addEventListener('DOMContentLoaded', startWhenReady, { once: true });
+    await start();
 
-    // A per-site toggle / mode change from the popup → reload the tab to reflect it.
+    // React to config changes in place — never location.reload(), which would
+    // discard the host page's state (unsaved forms, scroll position) on every
+    // save. Only detection-relevant changes trigger a teardown + re-scan.
     browser.storage.onChanged.addListener((changes, area) => {
-      if (area === 'local' && changes.config) location.reload();
+      if (area !== 'local' || !changes.config) return;
+      if (!detectionSettingsChanged(changes.config.oldValue, changes.config.newValue)) return;
+      stop();
+      void start();
     });
   },
 });

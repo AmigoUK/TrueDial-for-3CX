@@ -18,7 +18,14 @@ export interface CallHistoryEntry {
   e164: string;
   ts: number;
   source?: string;
-  status: 'placed' | 'failed';
+  /** 'attempted' = handed off without confirmation (the tel: path). */
+  status: 'placed' | 'attempted' | 'failed';
+}
+
+/** Whether the user has ever saved a config (as opposed to pure defaults). */
+export async function hasStoredConfig(): Promise<boolean> {
+  const raw = await browser.storage.local.get(CONFIG_KEY);
+  return raw[CONFIG_KEY] != null;
 }
 
 // Enterprise policy (§8): read chrome.storage.managed and validate it through

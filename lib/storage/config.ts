@@ -16,7 +16,7 @@ export interface Config {
   ccDeviceId?: string;
   /** Default region for national numbers (libphonenumber). */
   defaultRegion: CountryCode;
-  /** Presentation mode for detection (slice 1: 'subtle' or 'off'). */
+  /** Presentation mode for detection. */
   detectionMode: DetectionMode;
   /** Preferred call path; the orchestrator falls back from here. */
   preferredPath: PreferredPath;
@@ -61,4 +61,24 @@ export function isSiteEnabled(cfg: Config, host: string): boolean {
   if (override !== undefined) return override; // a manual decision wins
   if (cfg.allowlistMode) return cfg.allowlist.includes(host);
   return true;
+}
+
+// Config keys that affect what the content script detects and renders. Changes
+// to anything else (volume, screen-pop template, credentials…) must NOT disturb
+// open pages.
+const DETECTION_KEYS = [
+  'detectionMode',
+  'defaultRegion',
+  'allowlistMode',
+  'allowlist',
+  'siteOverrides',
+] as const satisfies readonly (keyof Config)[];
+
+/** Whether a config change requires the content script to re-scan the page. */
+export function detectionSettingsChanged(before: unknown, after: unknown): boolean {
+  const project = (value: unknown): string => {
+    const cfg = withConfigDefaults((value as Partial<Config> | undefined) ?? {});
+    return JSON.stringify(DETECTION_KEYS.map((k) => cfg[k]));
+  };
+  return project(before) !== project(after);
 }

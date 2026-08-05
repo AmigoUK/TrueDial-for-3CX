@@ -5,6 +5,7 @@ import {
   setConfig,
   exportConfig,
   importConfig,
+  hasStoredConfig,
   type Config,
   type DetectionMode,
 } from '../../lib/storage';
@@ -28,7 +29,9 @@ export function App() {
   useEffect(() => {
     void (async () => {
       const c = await getConfig();
-      if (!c.fqdn && !c.defaultRegion) c.defaultRegion = suggestRegion();
+      // Suggest a region from the browser locale only on a true first run —
+      // getConfig() always fills defaults, so probe the raw store instead.
+      if (!(await hasStoredConfig())) c.defaultRegion = suggestRegion();
       setCfg(c);
       setShowWizard(!isConfigured(c));
     })();
@@ -267,8 +270,9 @@ export function App() {
             class="ghost"
             style="margin-top:6px"
             onClick={async () => {
-              await setConfig(cfg); // persist so the SW reads current settings
-              const msg: Message = { type: 'TEST_SOUND' };
+              // Pass the live values instead of persisting them: a config write
+              // would trigger detection updates in open tabs just to hear a beep.
+              const msg: Message = { type: 'TEST_SOUND', soundName: cfg.soundName, volume: cfg.soundVolume };
               await browser.runtime.sendMessage(msg);
             }}
           >

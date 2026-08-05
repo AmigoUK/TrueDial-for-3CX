@@ -29,7 +29,9 @@ export function isExcludedElement(el: Element | null): boolean {
   return false;
 }
 
-/** Whether an element is genuinely visible (a cheap signal, no forced layout). */
+/** Whether an element is genuinely visible. Note: offsetParent/getComputedStyle
+ *  DO force style/layout; acceptable because this runs once per scanned subtree
+ *  root, not per text node. */
 export function isVisible(el: Element | null): boolean {
   if (!el) return false;
   const htmlEl = el as HTMLElement;

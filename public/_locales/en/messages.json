@@ -15,6 +15,7 @@
   "popup_history": { "message": "History" },
   "popup_clear": { "message": "clear" },
   "popup_noCalls": { "message": "No calls." },
+  "popup_attempted": { "message": "handed off to tel: — not confirmed" },
 
   "opt_tagline": { "message": "Independent click-to-call extension. Not affiliated with 3CX." },
   "opt_wizardBtn": { "message": "Setup wizard" },

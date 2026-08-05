@@ -9,6 +9,7 @@ import type { CountryCode } from 'libphonenumber-js/min';
 import { extractCandidates } from '../phone/candidates';
 import { validateToE164 } from '../phone/validate';
 import { isExcludedElement, isVisible } from './exclusions';
+import { MAX_MATCHES } from './constants';
 
 export interface Match {
   node: Text;
@@ -17,7 +18,6 @@ export interface Match {
   e164: string;
 }
 
-const MAX_MATCHES = 200; // §7.2: beyond this, only a counter
 const DEBOUNCE_MS = 250;
 
 export interface ScannerOptions {
@@ -34,6 +34,13 @@ export class Scanner {
   private matchCount = 0;
 
   constructor(private readonly opts: ScannerOptions) {}
+
+  /** The authoritative number of matches found so far (capped at MAX_MATCHES).
+   *  Callers report THIS for the badge — never their own running sums, which
+   *  drift from the cap across incremental mutation scans. */
+  get count(): number {
+    return this.matchCount;
+  }
 
   /** First full scan plus start the mutation observer. */
   start(root: ParentNode = document.body): void {

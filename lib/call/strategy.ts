@@ -1,6 +1,6 @@
-// The shared interface for call paths. In slice 1 only DeepLinkStrategy exists;
-// later slices add CallControlStrategy (CCAPI) and TelStrategy (tel:) WITHOUT
-// changing callers — CallOrchestrator picks the first available one by priority.
+// The shared interface for call paths. Three strategies implement it —
+// CallControlStrategy (CCAPI), DeepLinkStrategy and TelStrategy — and
+// CallOrchestrator picks the first available one by priority.
 
 export type StrategyId = 'ccapi' | 'deeplink' | 'tel';
 
@@ -9,6 +9,10 @@ export interface CallOutcome {
   strategy: StrategyId;
   /** The failure reason (for explicit reporting — zero silent failures). */
   reason?: string;
+  /** True when the strategy can only hand the call off (e.g. tel:) and cannot
+   *  confirm anything actually happened. History records these as 'attempted',
+   *  not 'placed'. */
+  unconfirmed?: boolean;
 }
 
 export interface CallStrategy {

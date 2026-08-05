@@ -66,8 +66,4 @@ export class TokenManager implements TokenProvider {
     await this.deps.save(set);
     return set.accessToken;
   }
-
-  async invalidate(): Promise<void> {
-    await this.deps.save(null);
-  }
 }

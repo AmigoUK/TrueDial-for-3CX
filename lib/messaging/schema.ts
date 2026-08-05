@@ -5,7 +5,8 @@
 
 import { z } from 'zod';
 
-// E.164: '+' followed by 1–15 digits, first digit 1–9.
+// Practical E.164: '+', a leading digit 1–9, then 6–14 more digits (7–15 in
+// total) — deliberately stricter than the bare spec to reject junk early.
 const e164 = z.string().regex(/^\+[1-9]\d{6,14}$/, 'not E.164');
 
 export const messageSchema = z.discriminatedUnion('type', [
@@ -15,7 +16,13 @@ export const messageSchema = z.discriminatedUnion('type', [
   z.object({ type: z.literal('GET_SITE_ENABLED'), host: z.string().min(1) }),
   z.object({ type: z.literal('HEALTH_CHECK') }),
   z.object({ type: z.literal('DETECTION_COUNT'), count: z.number().int().nonnegative() }),
-  z.object({ type: z.literal('TEST_SOUND') }),
+  // Optional tone/volume let the options page test unsaved settings without
+  // persisting them (a config write triggers a rescan in every tab).
+  z.object({
+    type: z.literal('TEST_SOUND'),
+    soundName: z.string().min(1).optional(),
+    volume: z.number().min(0).max(1).optional(),
+  }),
 ]);
 
 export type Message = z.infer<typeof messageSchema>;

@@ -32,13 +32,31 @@ async function ensureOffscreen(): Promise<void> {
   });
 }
 
+// createDocument resolves before the offscreen page has necessarily registered
+// its onMessage listener, so the very first send can find no receiver and
+// reject. A short retry covers that startup race.
+const SEND_ATTEMPTS = 4;
+const SEND_RETRY_DELAY_MS = 75;
+
+async function sendWithRetry(message: unknown): Promise<void> {
+  for (let attempt = 1; ; attempt++) {
+    try {
+      await browser.runtime.sendMessage(message);
+      return;
+    } catch (err) {
+      if (attempt >= SEND_ATTEMPTS) throw err;
+      await new Promise((r) => setTimeout(r, SEND_RETRY_DELAY_MS));
+    }
+  }
+}
+
 /** Plays a confirmation tone honouring the user's sound settings. */
 export async function playConfirmation(soundName: string, volume: number): Promise<void> {
   const vol = clampVolume(volume);
   if (vol === 0) return;
   await ensureOffscreen();
   const spec = toneSpec(soundName);
-  await browser.runtime.sendMessage({
+  await sendWithRetry({
     type: 'PLAY_TONE',
     freq: spec.freq,
     durationMs: spec.durationMs,

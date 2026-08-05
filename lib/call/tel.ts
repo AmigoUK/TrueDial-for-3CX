@@ -19,8 +19,10 @@ export class TelStrategy implements CallStrategy {
 
   async placeCall(e164: string): Promise<CallOutcome> {
     // Opening a tel: URL in a new tab hands off to the OS handler; the tab
-    // itself does not render anything meaningful.
+    // itself does not render anything meaningful. We cannot observe whether a
+    // handler picked it up, so the outcome is flagged unconfirmed and history
+    // records it as 'attempted' rather than 'placed'.
     await browser.tabs.create({ url: `tel:${e164}`, active: false });
-    return { ok: true, strategy: this.id };
+    return { ok: true, strategy: this.id, unconfirmed: true };
   }
 }

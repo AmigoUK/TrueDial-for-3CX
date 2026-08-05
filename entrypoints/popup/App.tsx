@@ -122,6 +122,9 @@ export function App() {
               <li class="row between" key={`${h.e164}-${h.ts}`}>
                 <button class="link mono" onClick={() => call(h.e164)}>{h.e164}</button>
                 <span class={`small ${h.status === 'failed' ? 'err' : 'muted'}`}>
+                  {h.status === 'attempted' && (
+                    <span title={t('popup_attempted')} aria-label={t('popup_attempted')}>≈ </span>
+                  )}
                   {new Date(h.ts).toLocaleTimeString()}
                 </span>
               </li>

@@ -15,6 +15,7 @@
   "popup_history": { "message": "Historia" },
   "popup_clear": { "message": "wyczyść" },
   "popup_noCalls": { "message": "Brak połączeń." },
+  "popup_attempted": { "message": "przekazane do tel: — bez potwierdzenia" },
 
   "opt_tagline": { "message": "Niezależne rozszerzenie click-to-call. Nie jest powiązane z 3CX." },
   "opt_wizardBtn": { "message": "Kreator konfiguracji" },

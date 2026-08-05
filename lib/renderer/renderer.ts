@@ -79,7 +79,9 @@ export class Renderer {
 
     const byNode = new Map<Text, Match[]>();
     for (const m of matches) {
-      (byNode.get(m.node) ?? byNode.set(m.node, []).get(m.node)!).push(m);
+      const list = byNode.get(m.node) ?? [];
+      list.push(m);
+      byNode.set(m.node, list);
     }
     for (const [node, list] of byNode) {
       list.sort((a, b) => b.start - a.start);
@@ -104,5 +106,19 @@ export class Renderer {
         }
       }
     }
+  }
+
+  /** Reverses every highlight: unwraps our spans back into plain text and
+   *  removes the injected style. Leaves the host DOM as it was found (modulo
+   *  text-node splits, which are invisible to the page). */
+  teardown(): void {
+    for (const span of [...document.querySelectorAll(`[${ATTR}]`)]) {
+      const parent = span.parentNode;
+      if (!parent) continue;
+      while (span.firstChild) parent.insertBefore(span.firstChild, span);
+      parent.removeChild(span);
+      parent.normalize();
+    }
+    document.getElementById(STYLE_ID)?.remove();
   }
 }
