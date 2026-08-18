@@ -50,6 +50,12 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
   1.0.0 release.
 
 ### Fixed
+- **The hover affordance shifted the host page's text.** The handset lived in an
+  in-flow `::after`, so every line containing a number carried a phantom gap
+  whether or not the icon was visible — 19 px on the demo corpus, in direct
+  contradiction of the extension's one promise. It is now absolutely positioned
+  and takes no layout space in either state, pinned by an E2E assertion that
+  measures a character's position with and without the extension's stylesheet.
 - Web client deep link with a port-qualified FQDN (e.g. `pbx.example.co.uk:5001`)
   no longer fails the existing-tab lookup — match patterns cannot carry ports,
   so tabs are matched by URL parsing instead.
@@ -70,6 +76,12 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
   regression only reproduces in unit tests once that is forced to `null`.
 
 ### Changed
+- The handset affordance is drawn from an SVG mask tinted with `currentColor`
+  instead of the U+260E dingbat, which rendered as a mono glyph on one system
+  and a colour emoji on the next. Aggressive mode no longer shows it
+  permanently — out-of-flow positioning means a persistent icon would overlap
+  the following character, and the solid underline plus accent colour already
+  carry the stronger affordance.
 - Completed the British English convention: options page title, UI
   placeholders, the demo/test page and the remaining Polish test descriptions
   are now in English. Placeholders use `pbx.example.co.uk`.

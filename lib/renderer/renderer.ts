@@ -9,30 +9,57 @@ import type { Match } from '../scanner/scanner';
 const STYLE_ID = 'truedial-style';
 const ATTR = 'data-truedial';
 
-// Subtle (default): dotted underline, icon on hover only. Aggressive (opt-in
-// per site): solid accent underline and an always-visible icon — a stronger,
-// link-like affordance, but still no <a> and no navigation hijack.
+// Subtle (default): dotted underline, handset on hover only. Aggressive (opt-in
+// per site): solid accent underline and accent colour — a stronger, link-like
+// affordance, but still no <a> and no navigation hijack.
+//
+// The handset is drawn by an absolutely positioned pseudo-element carrying an
+// SVG mask. Two rules follow from "never break the host page":
+//   * out of flow, so it reserves NO space — an in-flow pseudo-element shifts
+//     every line containing a number, whether or not the icon is visible;
+//   * masked rather than glyphed, so `currentColor` gives it the page's own
+//     text colour and it renders identically everywhere. The old U+260E
+//     dingbat was a lottery: a mono glyph on one system, colour emoji on
+//     another.
+// Being out of flow, it can overlap the character that follows while visible,
+// which is why it appears on hover only — in aggressive mode too, where the
+// solid underline and accent colour already carry the affordance.
+const HANDSET_MASK = `url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24'%3E%3Cpath d='M6.62 10.79c1.44 2.83 3.76 5.14 6.59 6.59l2.2-2.2c.27-.27.67-.36 1.02-.24 1.12.37 2.33.57 3.57.57.55 0 1 .45 1 1V20c0 .55-.45 1-1 1-9.39 0-17-7.61-17-17 0-.55.45-1 1-1h3.5c.55 0 1 .45 1 1 0 1.25.2 2.45.57 3.57.11.35.03.74-.25 1.02l-2.2 2.2z'/%3E%3C/svg%3E")`;
+
 const CSS = `
 [${ATTR}]{
   cursor:pointer;
+  position:relative;
   text-decoration:underline dotted currentColor;
   text-underline-offset:2px;
   border-radius:2px;
 }
 [${ATTR}]:hover{ background:rgba(37,99,235,.12); }
 [${ATTR}]::after{
-  content:"\\260E";
-  font-size:.85em;
-  margin-left:.25em;
+  content:"";
+  position:absolute;
+  left:100%;
+  top:50%;
+  transform:translateY(-50%);
+  margin-left:.15em;
+  width:.85em;
+  height:.85em;
+  background-color:currentColor;
+  -webkit-mask-image:${HANDSET_MASK};
+  mask-image:${HANDSET_MASK};
+  -webkit-mask-repeat:no-repeat;
+  mask-repeat:no-repeat;
+  -webkit-mask-size:contain;
+  mask-size:contain;
   opacity:0;
   transition:opacity .12s;
+  pointer-events:none;
 }
 [${ATTR}]:hover::after{ opacity:.85; }
 [${ATTR}][data-aggressive]{
   text-decoration:underline solid #2563eb;
   color:#2563eb;
 }
-[${ATTR}][data-aggressive]::after{ opacity:.9; }
 `;
 
 export type RenderMode = 'subtle' | 'aggressive';

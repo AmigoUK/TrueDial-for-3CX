@@ -98,6 +98,43 @@ test('never breaks the host page: traps untouched, text unchanged', async () => 
   await page.close();
 });
 
+test('the hover affordance takes no layout space in the host page', async () => {
+  const page = await openDemo();
+
+  // "Never breaks the page" has to hold in pixels, not just in text content.
+  // The measurement isolates our own contribution: take the position of the
+  // full stop that follows a highlighted number, disable ONLY the TrueDial
+  // stylesheet, and take it again. Disabling a sheet touches no DOM, so the
+  // scanner's MutationObserver stays quiet and nothing re-wraps mid-measure.
+  const shift = await page.evaluate(() => {
+    const li = [...document.querySelectorAll('li.ok')].find((el) =>
+      el.textContent?.includes('At the end of a sentence'),
+    );
+    if (!li) throw new Error('demo line missing');
+    const trailing = li.lastChild as Text;
+    if (!(trailing instanceof Text) || !trailing.data.includes('.')) {
+      throw new Error('expected a trailing text node after the highlight');
+    }
+    const measure = () => {
+      const range = document.createRange();
+      range.setStart(trailing, trailing.data.length - 1);
+      range.setEnd(trailing, trailing.data.length);
+      return range.getBoundingClientRect().x;
+    };
+    const sheet = document.getElementById('truedial-style') as HTMLStyleElement | null;
+    if (!sheet) throw new Error('TrueDial stylesheet missing');
+    const withStyles = measure();
+    sheet.disabled = true;
+    void li.getBoundingClientRect(); // force a synchronous relayout
+    const withoutStyles = measure();
+    sheet.disabled = false;
+    return Math.abs(withStyles - withoutStyles);
+  });
+
+  expect(shift).toBeLessThan(0.5);
+  await page.close();
+});
+
 test('clicking a highlight dispatches a call that lands in history', async () => {
   const page = await openDemo();
   await page.locator('[data-truedial][data-e164="+442079460958"]').first().click();
