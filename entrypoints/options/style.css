@@ -182,19 +182,43 @@ label.ghost {
 }
 
 .wizard {
-  min-height: 320px;
+  /* The settings card grows to fill the shell; the wizard must not, or its one
+     field per step ends up marooned above the buttons. */
+  flex: 0 0 auto;
+  min-height: 300px;
   display: flex;
   flex-direction: column;
 }
-.wizard > div {
-  flex: 1 0 auto;
+/* Only the step body takes the slack. The old rule grew every direct child,
+   progress row included, stranding a single field in the middle of the card. */
+.wizard-step {
+  flex: 1 1 auto;
 }
 .wizard-progress {
+  display: flex;
+  align-items: center;
+  gap: 12px;
   font-size: 12px;
   color: var(--muted);
   margin-bottom: 16px;
   letter-spacing: 0.04em;
   text-transform: uppercase;
+}
+/* One segment per step, filled up to the current one — progress you can see
+   without reading. The wording beside it remains the accessible version. */
+.wizard-bar {
+  display: flex;
+  flex: 1;
+  gap: 4px;
+}
+.wizard-bar i {
+  flex: 1;
+  height: 3px;
+  border-radius: 999px;
+  background: var(--border);
+}
+.wizard-bar i.on {
+  background: var(--accent);
 }
 .wizard h2 {
   color: var(--text);

@@ -88,6 +88,11 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
   regression only reproduces in unit tests once that is forced to `null`.
 
 ### Changed
+- The setup wizard no longer strands a single field in an empty card: the step
+  body alone takes the slack (the old rule grew every direct child, progress row
+  included) and the wizard card stops stretching to the window's full height.
+  Progress is now a segmented bar as well as the wording, which stays as the
+  accessible reading.
 - Call history reads like a phone list instead of a database dump: numbers are
   shown in international form (`+44 20 7946 0958`, the raw E.164 kept in the
   title), times lose their seconds, and anything older than today shows a date

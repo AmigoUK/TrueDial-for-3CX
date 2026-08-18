@@ -31,11 +31,18 @@ export function Wizard({ initial, onDone }: { initial: Config; onDone: (cfg: Con
   return (
     <main class="card wizard">
       <div class="wizard-progress">
-        {t('wiz_step')} {idx + 1} {t('wiz_of')} {STEPS.length}
+        <span>
+          {t('wiz_step')} {idx + 1} {t('wiz_of')} {STEPS.length}
+        </span>
+        <span class="wizard-bar" aria-hidden="true">
+          {STEPS.map((s, i) => (
+            <i key={s} class={i <= idx ? 'on' : ''} />
+          ))}
+        </span>
       </div>
 
       {step === 'fqdn' && (
-        <div>
+        <div class="wizard-step">
           <h2>{t('wiz_s1_title')}</h2>
           <label class="field">
             <span>{t('opt_fqdnLabel')}</span>
@@ -51,7 +58,7 @@ export function Wizard({ initial, onDone }: { initial: Config; onDone: (cfg: Con
       )}
 
       {step === 'path' && (
-        <div>
+        <div class="wizard-step">
           <h2>{t('wiz_s2_title')}</h2>
           <label class="field">
             <span>{t('opt_pathLabel')}</span>
@@ -74,7 +81,7 @@ export function Wizard({ initial, onDone }: { initial: Config; onDone: (cfg: Con
       )}
 
       {step === 'region' && (
-        <div>
+        <div class="wizard-step">
           <h2>{t('wiz_s3_title')}</h2>
           <label class="field">
             <span>{t('wiz_s3_label')}</span>
@@ -95,7 +102,7 @@ export function Wizard({ initial, onDone }: { initial: Config; onDone: (cfg: Con
       )}
 
       {step === 'permissions' && (
-        <div>
+        <div class="wizard-step">
           <h2>{t('wiz_s4_title')}</h2>
           <p class="hint">{t('wiz_s4_hint')}</p>
           <div class="row" style="gap:12px">
@@ -110,7 +117,7 @@ export function Wizard({ initial, onDone }: { initial: Config; onDone: (cfg: Con
       )}
 
       {step === 'done' && (
-        <div>
+        <div class="wizard-step">
           <h2>{t('wiz_done_title')}</h2>
           <p class="hint">
             3CX: <b>{cfg.fqdn ? normalizeFqdn(cfg.fqdn) : '—'}</b> · {t('wiz_sum_path')}:{' '}
