@@ -1,6 +1,9 @@
+# pnpm 11 asks explicitly which dependencies may run build scripts; without an
+# answer it refuses to run any package script at all. Both entries already
+# appear under onlyBuiltDependencies, which older pnpm reads.
 allowBuilds:
-  esbuild: set this to true or false
-  spawn-sync: set this to true or false
+  esbuild: true
+  spawn-sync: true
 onlyBuiltDependencies:
   - esbuild
   - spawn-sync
