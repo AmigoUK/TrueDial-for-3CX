@@ -10,7 +10,10 @@ All copy in British English. Paste into the Developer Dashboard as indicated.
   page. Unofficial — not affiliated with 3CX.
 - **Category:** Productivity → Communication
 - **Language:** English (UK). Additional locales shipped in-package: Polish,
-  German, French, Spanish.
+  German, French, Spanish — listing copy for each in [`LISTING.pl.md`](LISTING.pl.md),
+  [`LISTING.de.md`](LISTING.de.md), [`LISTING.fr.md`](LISTING.fr.md) and
+  [`LISTING.es.md`](LISTING.es.md). The sections below (privacy tab, permission
+  justifications) address the review team and stay in English.
 
 ## Description
 
@@ -69,6 +72,8 @@ All copy in British English. Paste into the Developer Dashboard as indicated.
 ## Assets
 
 - Icon 128×128: `public/icon/128.png` (source `assets/icon.svg`).
+- Small promo tile 440×280: `docs/store/promo/small-tile-440x280.png` (source
+  `assets/promo-tile.svg`; both it and the icons come from `pnpm icons`).
 - Screenshots 1280×800 (generate with `pnpm store:screenshots`, output in
   `docs/store/screenshots/`):
   1. `detection.png` — the demo page with numbers highlighted and traps

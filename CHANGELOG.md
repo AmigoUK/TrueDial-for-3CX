@@ -22,7 +22,16 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
   it is no longer recorded (or announced) as `placed`. The popup marks such
   entries.
 - Extension icons (16/32/48/128) generated from `assets/icon.svg`
-  (`pnpm icons`).
+  (`pnpm icons`), alongside the store's 440×280 promo tile from
+  `assets/promo-tile.svg`.
+- Localised store listing copy for Polish, German, French and Spanish
+  (`docs/store/LISTING.<locale>.md`), matching the locales the package ships.
+- `pnpm store:check` — a pre-submission check on the built package: version
+  drift against `package.json`, icon dimensions, locale completeness,
+  unexpected permissions, hoisted `host_permissions`, statically declared
+  content scripts and stray source maps. It also warns that a pre-release
+  suffix cannot survive into the manifest, so uploading `1.0.0-rc.1` publishes
+  — and burns — `1.0.0`.
 - Engineering hygiene: GitHub Actions CI (lint, type-check, tests, build,
   package, smoke E2E), ESLint (flat config) + Prettier, and a project backlog
   (`BACKLOG.md`).
@@ -54,7 +63,11 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
   `document.body.offsetParent` is null by definition in Chrome, so the
   visibility check silently excluded the entire page from the initial scan.
   `isVisible` now prefers `Element.checkVisibility()`. Caught by the new
-  smoke E2E on its first run.
+  smoke E2E on its first run. The legacy branch, still taken by any engine
+  without `checkVisibility`, carried the same fault: `<body>` and the root
+  element are now judged by computed display there too. `tests/visibility.test.ts`
+  pins both paths — happy-dom reports `offsetParent` as `undefined`, so the
+  regression only reproduces in unit tests once that is forced to `null`.
 
 ### Changed
 - Completed the British English convention: options page title, UI

@@ -40,6 +40,13 @@ export function isVisible(el: Element | null): boolean {
   // below silently excluded the entire page on the initial scan (caught by
   // the smoke E2E; unit DOM environments do not reproduce it).
   if (typeof htmlEl.checkVisibility === 'function') return htmlEl.checkVisibility();
+  // Legacy path, for engines without checkVisibility: <body> and the root
+  // element must be judged by computed display, because offsetParent is null
+  // for them by definition — the very trap described above.
+  const doc = htmlEl.ownerDocument;
+  if (htmlEl === doc.body || htmlEl === doc.documentElement) {
+    return getComputedStyle(htmlEl).display !== 'none';
+  }
   // Fallback: offsetParent === null → display:none or detached (except fixed).
   if (htmlEl.offsetParent === null && getComputedStyle(htmlEl).position !== 'fixed') {
     return false;

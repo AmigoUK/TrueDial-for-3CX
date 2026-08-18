@@ -15,15 +15,20 @@ prepared in-repo.
 2. Build the package: `pnpm zip` → `.output/truedial-for-3cx-<version>-chrome.zip`.
    (Do **not** submit an E2E build; run a plain `pnpm zip` so the manifest has
    no static content script.)
-3. Sanity-check the zip's `manifest.json`:
-   - no `content_scripts`, no `host_permissions`;
-   - `optional_host_permissions: ["<all_urls>"]`;
-   - `permissions`: storage, contextMenus, tabs, offscreen, scripting;
-   - `icons` present (16/32/48/128).
+3. Verify the package: `pnpm store:check` (or `node scripts/verify-package.mjs`).
+   It fails on anything that would cost a review round — a manifest version that
+   drifted from `package.json`, a missing or mis-sized icon, an incomplete
+   locale set, an unexpected permission, a hoisted `host_permissions`, a static
+   content script, or a stray source map. It also warns when `package.json`
+   carries a pre-release suffix: the manifest cannot, so uploading `1.0.0-rc.1`
+   publishes `1.0.0` and burns that number for the real 1.0.0.
 4. In the dashboard: **New item** → upload the zip.
 5. **Store listing** tab: paste name, summary, description and category from
    [`LISTING.md`](LISTING.md); upload the three 1280×800 screenshots from
-   `docs/store/screenshots/` and the 128×128 icon.
+   `docs/store/screenshots/`, the 128×128 icon and the 440×280 promo tile from
+   `docs/store/promo/`. Then add the localised listings — Polish, German, French
+   and Spanish — from `LISTING.<locale>.md`, mirroring the locales the package
+   itself ships.
 6. **Privacy** tab: single-purpose statement, permission justifications and
    data-usage answers from `LISTING.md`; link the privacy policy
    ([`PRIVACY.md`](../../PRIVACY.md), hosted copy or GitHub URL).
