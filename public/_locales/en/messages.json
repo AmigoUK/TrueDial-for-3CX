@@ -283,5 +283,14 @@
   },
   "diag_na": {
     "message": "n/a"
+  },
+  "popup_settings": {
+    "message": "Settings"
+  },
+  "popup_statusReady": {
+    "message": "Ready"
+  },
+  "popup_statusUnconfigured": {
+    "message": "Not set up"
   }
 }

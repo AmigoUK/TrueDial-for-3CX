@@ -283,5 +283,14 @@
   },
   "diag_na": {
     "message": "k. A."
+  },
+  "popup_settings": {
+    "message": "Einstellungen"
+  },
+  "popup_statusReady": {
+    "message": "Bereit"
+  },
+  "popup_statusUnconfigured": {
+    "message": "Nicht eingerichtet"
   }
 }

@@ -12,6 +12,11 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 > cut in a single development session.
 
 ### Added
+- The popup names its own state and always offers a way out: the status dot now
+  carries a "Ready" / "Not set up" label rather than meaning something by colour
+  alone, and a settings button sits beside it — previously settings were
+  reachable from the popup only while the extension was unconfigured, leaving
+  everyone else to right-click the toolbar icon.
 - Least-privilege permission model: the detection content script is registered
   at **runtime** for exactly the origins the user has granted (no install-time
   "read data on all websites" warning). The PBX origin is requested separately
@@ -83,6 +88,11 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
   regression only reproduces in unit tests once that is forced to `null`.
 
 ### Changed
+- Call history reads like a phone list instead of a database dump: numbers are
+  shown in international form (`+44 20 7946 0958`, the raw E.164 kept in the
+  title), times lose their seconds, and anything older than today shows a date
+  so last week's call cannot be mistaken for this morning's. The connectivity
+  test is styled as an action rather than sharing the history links' appearance.
 - The handset affordance is drawn from an SVG mask tinted with `currentColor`
   instead of the U+260E dingbat, which rendered as a mono glyph on one system
   and a colour emoji on the next. Aggressive mode no longer shows it

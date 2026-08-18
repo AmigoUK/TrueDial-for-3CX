@@ -283,5 +283,14 @@
   },
   "diag_na": {
     "message": "s. o."
+  },
+  "popup_settings": {
+    "message": "Paramètres"
+  },
+  "popup_statusReady": {
+    "message": "Prêt"
+  },
+  "popup_statusUnconfigured": {
+    "message": "Non configuré"
   }
 }

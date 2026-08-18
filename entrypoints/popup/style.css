@@ -7,6 +7,8 @@
   --ok: #22c55e;
   --err: #f87171;
   --warn: #eab308;
+  color-scheme: dark;
+  accent-color: var(--accent);
 }
 * {
   box-sizing: border-box;
@@ -58,6 +60,50 @@ body {
 
 header strong {
   font-size: 14px;
+}
+
+/* The status was a bare coloured dot: meaning carried by colour alone, and only
+   on hover. It now reads out loud next to the dot. */
+.status {
+  display: inline-flex;
+  align-items: center;
+  gap: 5px;
+}
+
+/* A permanent way into settings; the old popup offered one only while the
+   extension was unconfigured. */
+.icon {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  padding: 4px;
+  border: 0;
+  border-radius: 6px;
+  background: none;
+  color: var(--muted);
+  cursor: pointer;
+}
+.icon:hover {
+  background: var(--panel);
+  color: var(--text);
+}
+
+/* An action, distinct from the history's navigation links. */
+.mini {
+  padding: 4px 9px;
+  border: 1px solid #334155;
+  border-radius: 7px;
+  background: transparent;
+  color: var(--text);
+  font-size: 11px;
+  cursor: pointer;
+}
+.mini:hover:not(:disabled) {
+  border-color: var(--accent);
+}
+.mini:disabled {
+  opacity: 0.5;
+  cursor: not-allowed;
 }
 
 .dot {
