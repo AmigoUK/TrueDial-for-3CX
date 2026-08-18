@@ -7,9 +7,18 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## [Unreleased]
 
-> Note: the version compare links at the bottom of this file refer to git tags
-> that have not yet been pushed to the repository; the pre-1.0 versions were
-> cut in a single development session.
+_Nothing yet._
+
+## [1.0.0-rc.2] — 2026-08-18
+
+Second release candidate: the store pack, a detection fault that made the core
+feature do nothing in a real browser, and a pass over the surfaces people touch
+daily. `1.0.0` stays reserved for the live-V20 verification in
+[`docs/VERIFICATION.md`](docs/VERIFICATION.md).
+
+The extension ZIP is attached to this release — the repository source has no
+`manifest.json` (WXT generates it at build time), so a downloaded source
+archive cannot be loaded into Chrome.
 
 ### Added
 - The popup names its own state and always offers a way out: the status dot now
@@ -237,7 +246,8 @@ guiding principle: **never break the host page**.
 - 35 tests (Vitest): phone corpus, false-positive corpus, messaging,
   orchestrator, and a DOM-level scanner integration (happy-dom).
 
-[Unreleased]: https://github.com/AmigoUK/TrueDial-for-3CX/compare/v1.0.0-rc.1...HEAD
+[Unreleased]: https://github.com/AmigoUK/TrueDial-for-3CX/compare/v1.0.0-rc.2...HEAD
+[1.0.0-rc.2]: https://github.com/AmigoUK/TrueDial-for-3CX/compare/v1.0.0-rc.1...v1.0.0-rc.2
 [1.0.0-rc.1]: https://github.com/AmigoUK/TrueDial-for-3CX/compare/v0.9.0...v1.0.0-rc.1
 [0.9.0]: https://github.com/AmigoUK/TrueDial-for-3CX/compare/v0.8.0...v0.9.0
 [0.8.0]: https://github.com/AmigoUK/TrueDial-for-3CX/compare/v0.7.0...v0.8.0
