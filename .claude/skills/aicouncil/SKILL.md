@@ -69,7 +69,7 @@ thinks". Every analysis contains:
 - **If a subagent tool (Agent/Task) is available** — and this is the preferred
   path — spawn **one subagent per specialist, all in a single parallel
   batch**. Each prompt contains: the problem statement, the user's context,
-  and *only that specialist's* persona definition. Do not mention that other
+  and _only that specialist's_ persona definition. Do not mention that other
   specialists exist or what they might say. Ask for the five-part structure
   above as the final message. This is genuine independence — analysis #4
   cannot anchor on #1 because it has never seen it.
