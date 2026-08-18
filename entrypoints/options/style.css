@@ -6,6 +6,10 @@
   --accent: #2563eb;
   --ok: #22c55e;
   --border: #24334a;
+  /* Tells the engine this surface is dark, so native widgets — checkboxes,
+     select popups, scrollbars — stop rendering light-on-dark. */
+  color-scheme: dark;
+  accent-color: var(--accent);
 }
 * {
   box-sizing: border-box;
@@ -75,7 +79,7 @@ section {
 .field > span:first-child {
   font-weight: 500;
 }
-input[type='text'],
+input:not([type='checkbox']):not([type='range']),
 select,
 textarea {
   padding: 9px 11px;
@@ -91,6 +95,41 @@ select:focus,
 textarea:focus {
   outline: 2px solid var(--accent);
   border-color: transparent;
+}
+
+/* accent-color tints a range's fill and thumb but leaves the track light, so
+   the volume slider needs its own dark track. The exact level is spelled out
+   next to it in words, so a uniform track loses nothing. */
+input[type='range'] {
+  -webkit-appearance: none;
+  appearance: none;
+  height: 4px;
+  border-radius: 999px;
+  background: var(--border);
+}
+input[type='range']::-webkit-slider-thumb {
+  -webkit-appearance: none;
+  appearance: none;
+  width: 14px;
+  height: 14px;
+  border: 0;
+  border-radius: 50%;
+  background: var(--accent);
+  cursor: pointer;
+}
+input[type='range']::-moz-range-thumb {
+  width: 14px;
+  height: 14px;
+  border: 0;
+  border-radius: 50%;
+  background: var(--accent);
+  cursor: pointer;
+}
+
+/* A button standing between two fields needs the same rhythm as a field,
+   otherwise it reads as a label for the one below it. */
+section > button {
+  margin-bottom: 14px;
 }
 
 .row {

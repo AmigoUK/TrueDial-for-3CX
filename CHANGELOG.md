@@ -50,6 +50,13 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
   1.0.0 release.
 
 ### Fixed
+- Settings styling gaps that made the page look broken: the Client Secret field
+  rendered as a bright white box (the input rule matched `type='text'` only, so
+  `password` fell through to the browser default), the volume slider kept a
+  light track on the dark card, unchecked boxes rendered light-on-dark, and a
+  button standing between two fields sat flush against the label below it,
+  reading as its caption. The input rule now matches by exclusion so future
+  field types are covered, and the page declares `color-scheme: dark`.
 - **The hover affordance shifted the host page's text.** The handset lived in an
   in-flow `::after`, so every line containing a number carried a phantom gap
   whether or not the icon was visible — 19 px on the demo corpus, in direct
