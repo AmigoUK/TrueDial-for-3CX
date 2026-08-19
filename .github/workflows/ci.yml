@@ -54,13 +54,21 @@ jobs:
           # nothing and the upload fails.
           include-hidden-files: true
 
-      # Downloads a browser and runs apt for its system libraries — the one
-      # step here that depends on the network and on Ubuntu's mirrors. It has
-      # hung for 19 minutes on a green commit; a tight cap names the culprit
-      # instead of letting the job time out anonymously.
+      - name: Cache Playwright browsers
+        uses: actions/cache@v4
+        with:
+          path: ~/.cache/ms-playwright
+          key: playwright-${{ runner.os }}-${{ hashFiles('pnpm-lock.yaml') }}
+
+      # Deliberately WITHOUT --with-deps. That flag runs apt, and the runners'
+      # Ubuntu mirrors stalled this step for eight minutes on two consecutive
+      # attempts, after which nothing else ran. The runner image already carries
+      # the browser libraries; if one ever goes missing, the E2E step below
+      # fails with the library named, which beats hanging on a mirror. The cap
+      # stays so a slow download names itself.
       - name: Install Playwright Chromium
         timeout-minutes: 8
-        run: pnpm exec playwright install --with-deps chromium
+        run: pnpm exec playwright install chromium
 
       # Rebuilds .output with the E2E variant — runs AFTER the production
       # package has been zipped and uploaded above.
