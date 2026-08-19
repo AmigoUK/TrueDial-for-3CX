@@ -7,3 +7,12 @@ allowBuilds:
 onlyBuiltDependencies:
   - esbuild
   - spawn-sync
+
+# One vite for the whole tree. wxt accepts ^5 || ^6 and @preact/preset-vite
+# accepts 2.x–8.x, so a fresh resolution is free to hand them different majors
+# — which is exactly what broke the type-check on the vitest 3 bump: two
+# incompatible copies of vite's plugin types met in wxt.config.ts. Overrides
+# must live here: pnpm silently ignores a `pnpm.overrides` block in
+# package.json once a workspace file exists.
+overrides:
+  vite: ^6.4.3

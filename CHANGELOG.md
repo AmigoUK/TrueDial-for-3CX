@@ -7,7 +7,14 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## [Unreleased]
 
-_Nothing yet._
+### Changed
+- Development dependencies: vitest 2 → 3, and vite is now pinned to a single
+  major for the whole dependency tree. wxt accepts `^5 || ^6` and
+  `@preact/preset-vite` accepts `2.x–8.x`, so a fresh resolution is free to hand
+  them different majors — which is what failed the type-check on the vitest 3
+  bump, as two incompatible copies of vite's plugin types met in
+  `wxt.config.ts`. The pin lives in `pnpm-workspace.yaml`: pnpm silently ignores
+  a `pnpm.overrides` block in `package.json` once a workspace file exists.
 
 ## [1.0.0-rc.2] — 2026-08-18
 
