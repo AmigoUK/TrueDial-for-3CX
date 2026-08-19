@@ -4,10 +4,16 @@ on:
   push:
     branches: ['**']
   pull_request:
+  # Lets a stuck or flaky run be repeated from the Actions tab without pushing
+  # an empty commit — `gh run rerun` only works once a run has finished.
+  workflow_dispatch:
 
 jobs:
   build-and-test:
     runs-on: ubuntu-latest
+    # A healthy run takes two to four minutes. The cap exists so a hung step
+    # fails fast instead of holding the runner for the six-hour default.
+    timeout-minutes: 15
     steps:
       - uses: actions/checkout@v4
 
@@ -48,7 +54,12 @@ jobs:
           # nothing and the upload fails.
           include-hidden-files: true
 
+      # Downloads a browser and runs apt for its system libraries — the one
+      # step here that depends on the network and on Ubuntu's mirrors. It has
+      # hung for 19 minutes on a green commit; a tight cap names the culprit
+      # instead of letting the job time out anonymously.
       - name: Install Playwright Chromium
+        timeout-minutes: 8
         run: pnpm exec playwright install --with-deps chromium
 
       # Rebuilds .output with the E2E variant — runs AFTER the production
