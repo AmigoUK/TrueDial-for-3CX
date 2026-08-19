@@ -44,6 +44,14 @@ jobs:
       - name: Package extension
         run: pnpm zip
 
+      # Runs against the production package, before the E2E variant overwrites
+      # .output: manifest version against package.json, icon dimensions, the
+      # locale set, unexpected permissions, a hoisted host_permissions, a static
+      # content script, stray source maps. Every one of those costs a review
+      # round if it reaches the store.
+      - name: Verify package
+        run: pnpm store:check
+
       - name: Upload package
         uses: actions/upload-artifact@v4
         with:
